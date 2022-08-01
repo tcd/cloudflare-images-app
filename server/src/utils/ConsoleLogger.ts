@@ -35,8 +35,8 @@ const LogLevelIds: Record<LogLevel, number> = {
 export class ConsoleLogger implements ILogger {
     public trace(message?: any, ...optionalParams: any[]) { this._log("trace", message, ...optionalParams) }
     public debug(message?: any, ...optionalParams: any[]) { this._log("debug", message, ...optionalParams) }
-    public info (message?: any, ...optionalParams: any[]) { this._log("info",  message, ...optionalParams)  }
-    public warn (message?: any, ...optionalParams: any[]) { this._log("warn",  message, ...optionalParams)  }
+    public info (message?: any, ...optionalParams: any[]) { this._log("info",  message, ...optionalParams) }
+    public warn (message?: any, ...optionalParams: any[]) { this._log("warn",  message, ...optionalParams) }
     public error(message?: any, ...optionalParams: any[]) { this._log("error", message, ...optionalParams) }
     public fatal(message?: any, ...optionalParams: any[]) { this._log("fatal", message, ...optionalParams) }
     // public fatal(args: any) { console.error(args) }
