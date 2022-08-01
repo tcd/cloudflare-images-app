@@ -1,0 +1,7 @@
+**/ignore
+**/node_modules
+**/.env*
+**/dist
+**/build
+# **/logs
+!**/.keep

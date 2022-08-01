@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        // Version Control
+        "**/.git": true,
+    },
+}

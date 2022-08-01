@@ -1,0 +1,23 @@
+{
+    "name": "cloudflare-images-app",
+    "version": "0.1.0",
+    "description": "Node server and React client for interacting with the Cloudflare Images API.",
+    "license": "MIT",
+    "author": "Clay Dunston <dunstontc@gmail.com>",
+    "repository": "github:tcd/cloudflare-images-app",
+    "bugs": "https://github.com/tcd/cloudflare-images-app/issues",
+    "keywords": [
+        "cloudflare",
+        "Cloudflare",
+        "Cloudflare Images",
+        "API Client",
+        "Assets"
+    ],
+    "scripts": {
+        "tag": "node ./scripts/tag.mjs"
+    },
+    "devDependencies": {
+        "inquirer": "^9.0.2",
+        "shelljs": "^0.8.5"
+    }
+}
