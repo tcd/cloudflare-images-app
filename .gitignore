@@ -3,5 +3,5 @@
 **/.env*
 **/dist
 **/build
-# **/logs
-!**/.keep
+**/logs
+!**/logs/.keep
