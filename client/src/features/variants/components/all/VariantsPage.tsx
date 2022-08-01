@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
@@ -12,6 +13,7 @@ import { VariantsTable } from "./VariantsTable"
 export const VariantsPage = (_props: unknown): JSX.Element => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const shouldFetch = useSelector(Selectors.Variants.requests.fetchAll.shouldFetch)
 
@@ -22,7 +24,7 @@ export const VariantsPage = (_props: unknown): JSX.Element => {
     }, [dispatch, shouldFetch])
 
     const handleClick = () => {
-        // dispatch(Actions.Images.beginUpdate())
+        navigate("/variants/create")
     }
 
     const pageAction = (

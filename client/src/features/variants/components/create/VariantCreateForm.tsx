@@ -4,11 +4,10 @@ import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import SyncIcon from "@mui/icons-material/Sync"
 
-import { DebouncedTextField, Page } from "@feature/common"
+import { DebouncedTextField, Card } from "@feature/common"
 import { Actions, Selectors } from "@app/state"
-import { VariantCreateForm } from "."
 
-export const VariantCreatePage = (_props: unknown): JSX.Element => {
+export const VariantCreateForm = (_props: unknown): JSX.Element => {
 
     const dispatch = useDispatch()
 
@@ -21,8 +20,7 @@ export const VariantCreatePage = (_props: unknown): JSX.Element => {
     // }, [dispatch, shouldFetch])
 
     return (
-        <Page title="New Variant">
-            <VariantCreateForm />
-        </Page>
+        <Card title="New Variant">
+        </Card>
     )
 }
