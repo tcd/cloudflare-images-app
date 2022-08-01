@@ -31,18 +31,19 @@ class App {
     }
 
     public listen() {
-        const message = `
-            =================================
-            ENV: ${this.env}
-            🚀 App listening on port ${this.port}
-            =================================
-        `.trim()
+        // const message = `
+        //     =================================
+        //     ENV: ${this.env}
+        //     🚀 App listening on port ${this.port}
+        //     =================================
+        // `.trim().replace(/(^\s+)/g, "")
         this.app.listen(this.port, () => {
-            logger.info("server started", { env: this.env, port: this.port })
-            // logger.info(`=================================`)
-            // logger.info(`ENV: ${this.env}`)
-            // logger.info(`🚀 App listening on port ${this.port}`)
-            // logger.info(`=================================`)
+            // logger.info(message)
+            // logger.info("server started", { env: this.env, port: this.port })
+            logger.info(`=================================`)
+            logger.info(`ENV: ${this.env}`)
+            logger.info(`🚀 App listening on port ${this.port}`)
+            logger.info(`=================================`)
         })
     }
 

@@ -1,2 +1,1 @@
-export * from "./CloudflareController"
-export * from "./IndexController"
+export * from "./cloudflare"
