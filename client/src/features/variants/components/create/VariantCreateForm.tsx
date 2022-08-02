@@ -1,17 +1,12 @@
-import { useEffect } from "react"
-import Cloudflare from "cloudflare-images"
 import { useDispatch, useSelector } from "react-redux"
 import { useFormik, Formik, Form, Field } from "formik"
+import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
-import Tooltip from "@mui/material/Tooltip"
-import IconButton from "@mui/material/IconButton"
-import SyncIcon from "@mui/icons-material/Sync"
+import LoadingButton from "@mui/lab/LoadingButton"
 
-import { DebouncedTextField, Card, FormikTextField } from "@feature/common"
+import { Card, CustomSelect, FormikInput, FormikSelect } from "@feature/common"
 import { Actions, Selectors } from "@app/state"
 import { VariantForm } from "@app/lib"
-import { TextField } from "@mui/material"
-// import { TextField } from "formik-mui"
 
 const initialValues: VariantForm.CreateVariantFormData = {
     id: "",
@@ -28,8 +23,8 @@ const VariantSchema = object({
     id: string().required(),
     options: object({
         fit: string().required().oneOf(Object.values(VariantForm.VariantFits)),
-        height: number().required().positive().integer(),
-        width: number().required().positive().integer(),
+        height: number().required().min(0).positive().integer(),
+        width: number().required().min(0).positive().integer(),
         metadata: string().required().oneOf(Object.values(VariantForm.MetadataOptions)),
         neverRequireSignedURLs: boolean().required(),
     }),
@@ -41,7 +36,8 @@ export const VariantCreateForm = (_props: unknown): JSX.Element => {
 
     const formik = useFormik({
         initialValues: initialValues,
-        validationSchema: VariantSchema,
+        // validationSchema: VariantSchema,
+        validate: VariantForm.validate,
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2))
         },
@@ -55,12 +51,67 @@ export const VariantCreateForm = (_props: unknown): JSX.Element => {
     //     }
     // }, [dispatch, shouldFetch])
 
+    const handleSubmitClick = async () => {
+        await formik.validateForm()
+        if (formik.isValid) {
+            formik.submitForm()
+        }
+    }
+
+    const cardFooter = (
+        <Box sx={{ mt: 3 }}>
+            <LoadingButton
+                variant="contained"
+                loading={formik.isSubmitting}
+                disabled={!formik.isValid}
+                onClick={handleSubmitClick}
+            >
+                Submit
+            </LoadingButton>
+        </Box>
+    )
+
     return (
-        <Card title="New Variant">
+        <Card footer={cardFooter}>
             <Grid container direction="column">
+                <FormikInput
+                    id="id"
+                    formik={formik}
+                    label="Id"
+                    type="text"
+                />
+                <Box>
+                    Resizing Options
+                </Box>
+                <FormikInput
+                    id="width"
+                    formik={formik}
+                    label="Width"
+                    type="number"
+                />
+                <FormikInput
+                    id="height"
+                    formik={formik}
+                    label="Height"
+                    type="number"
+                />
+                <FormikSelect
+                    id="fit"
+                    options={VariantForm.fitOptions}
+                    formik={formik}
+                    label="Fit"
+                />
+                <FormikSelect
+                    id="metadata"
+                    options={VariantForm.metadataOptions}
+                    formik={formik}
+                    label="Metadata"
+                />
+            </Grid>
+            {/* <Grid container direction="column">
                 <Grid item container direction="row" columns={2}>
                     <Grid item columns={2}>
-                        <FormikTextField
+                        <FormikInput
                             id="id"
                             formik={formik}
                             label="Id"
@@ -70,22 +121,18 @@ export const VariantCreateForm = (_props: unknown): JSX.Element => {
                     <Grid item columns={2}>
                         Resizing Options
                     </Grid>
-                    <Grid item container direction="row" columns={2}>
-
-                    </Grid>
                     <Grid item xs={1}>
                         <TextField
-                            label="W"
+                            label="Width"
                         />
                     </Grid>
                     <Grid item xs={1}>
                         <TextField
-                            label="H"
+                            label="Height"
                         />
-
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid> */}
         </Card>
     )
 }
@@ -102,7 +149,7 @@ export const _VariantCreateForm = () => {
     return (
         <form onSubmit={formik.handleSubmit}>
 
-            <FormikTextField
+            <FormikInput
                 id="id"
                 formik={formik}
                 label="Id"

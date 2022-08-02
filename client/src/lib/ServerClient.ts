@@ -33,7 +33,7 @@ export class ServerClient {
             credentials: this.options,
             options: options,
         }
-        const response = await this.client.post("images", request)
+        const response = await this.client.post("images/list", request)
         return response.data
     }
 
@@ -53,7 +53,7 @@ export class ServerClient {
         const request = {
             credentials: this.options,
         }
-        const response = await this.client.post("variants", request)
+        const response = await this.client.post("variants/list", request)
         return response.data
     }
 

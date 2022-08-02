@@ -32,6 +32,7 @@ const componentOverrides: Components = {
     MuiTextField: {
         defaultProps: {
             variant: "standard",
+            margin: "dense",
         },
     },
     MuiPaper: {

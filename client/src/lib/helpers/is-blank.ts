@@ -12,6 +12,10 @@
  */
 export const isBlank = (data: any): boolean => {
 
+    // Any boolean value is not blank.
+    if (data === false) { return false }
+    if (data === true)  { return false }
+
     // Null or undefined
     if (data == undefined) { return true }
     if (data == null)      { return true }

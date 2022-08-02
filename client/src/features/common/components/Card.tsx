@@ -14,13 +14,18 @@ export interface CardProps {
     children: ReactNode
     CardProps?: MuiCardProps
     sx?: SxProps
+    footer?: ReactNode
 }
 
-const defaultProps: Partial<CardProps> = {
+const defaultProps: CardProps = {
     title: null,
     children: null,
     CardProps: {},
-    sx: {},
+    sx: {
+        display: "flex",
+        flexFlow: "column nowrap",
+    },
+    footer: null,
 }
 
 export const Card = (props: CardProps): JSX.Element => {
@@ -31,6 +36,7 @@ export const Card = (props: CardProps): JSX.Element => {
         children,
         sx,
         CardProps,
+        footer,
     } = props
 
     const titleProps: TypographyProps = {
@@ -46,6 +52,14 @@ export const Card = (props: CardProps): JSX.Element => {
             </Typography>
         )
     }
+    let $footer: JSX.Element = null
+    if (footer) {
+        $footer = (
+            <>
+                {footer}
+            </>
+        )
+    }
 
     return (
         <MuiCard sx={sx} {...CardProps}>
@@ -54,6 +68,7 @@ export const Card = (props: CardProps): JSX.Element => {
                 <Box>
                     <>{children && children}</>
                 </Box>
+                {$footer}
             </CardContent>
         </MuiCard>
     )

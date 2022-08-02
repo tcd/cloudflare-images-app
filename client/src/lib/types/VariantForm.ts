@@ -1,7 +1,8 @@
+import { isBlank } from "@app/lib"
+
 // =============================================================================
 // Metadata
 // =============================================================================
-
 /** Valid values for the `Variant.options.metadata` */
 export const MetadataOptions = {
     "Strip all metadata":         "none",
@@ -58,6 +59,13 @@ export type VariantFitDescription = keyof typeof VariantFits
 export type VariantFit = typeof VariantFits[VariantFitDescription]
 
 // =============================================================================
+// Select Options
+// =============================================================================
+
+export const fitOptions      = Object.entries(VariantFits).map(([key, value]) => ({ label: key, value }))
+export const metadataOptions = Object.entries(MetadataOptions).map(([key, value]) => ({ label: key, value }))
+
+// =============================================================================
 // Form Data
 // =============================================================================
 
@@ -74,4 +82,24 @@ export interface CreateVariantFormData {
     height: number
     /** Indicates whether the variant can access an image without a signature, regardless of image access control. */
     neverRequireSignedURLs?: boolean
+}
+
+export const validate = (values: CreateVariantFormData): Record<keyof CreateVariantFormData, string> => {
+    console.log({ values })
+    const errors: Record<keyof CreateVariantFormData, string> = {
+        id: "",
+        fit: "",
+        metadata: "",
+        width: "",
+        height: "",
+        neverRequireSignedURLs: "",
+    }
+
+    if (isBlank(values.id))                     { errors.id                     = "required" }
+    if (isBlank(values.height))                 { errors.height                 = "required" }
+    if (isBlank(values.width))                  { errors.width                  = "required" }
+    if (isBlank(values.fit))                    { errors.fit                    = "required" }
+    if (isBlank(values.neverRequireSignedURLs)) { errors.neverRequireSignedURLs = "required" }
+
+    return errors
 }
