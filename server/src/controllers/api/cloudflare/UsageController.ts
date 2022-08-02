@@ -7,7 +7,7 @@ import { CredentialsRequest } from "@src/dtos"
 @Controller("/api/cloudflare/usage")
 export class UsageController {
 
-    @Post("/usage")
+    @Post("/")
     @HttpCode(200)
     @UseBefore(validationMiddleware(CredentialsRequest, "body"))
     public async getUsageStatistics(@Body() request: CredentialsRequest) {
