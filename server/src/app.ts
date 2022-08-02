@@ -7,7 +7,7 @@ import { useExpressServer, getMetadataArgsStorage } from "routing-controllers"
 import { routingControllersToSpec } from "routing-controllers-openapi"
 import swaggerUi from "swagger-ui-express"
 
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from "@config"
+import { CONFIG } from "@config"
 import {
     errorMiddleware,
     notFoundMiddleware,
@@ -21,8 +21,8 @@ class App {
 
     constructor(Controllers: Function[]) {
         this.app = express()
-        this.env = NODE_ENV || "development"
-        this.port = PORT || 3000
+        this.env = CONFIG.NODE_ENV
+        this.port = CONFIG.PORT || 3000
 
         this.initializeMiddleware()
         this.initializeRoutes(Controllers)
@@ -31,19 +31,15 @@ class App {
     }
 
     public listen() {
-        // const message = `
-        //     =================================
-        //     ENV: ${this.env}
-        //     🚀 App listening on port ${this.port}
-        //     =================================
-        // `.trim().replace(/(^\s+)/g, "")
+        const message = `
+            =================================
+            🚀 App started
+            ENV:  ${this.env}
+            PORT: http://localhost:${this.port}
+            =================================
+        `.trim().replaceAll(/^\s+/gm, "")
         this.app.listen(this.port, () => {
-            // logger.info(message)
-            // logger.info("server started", { env: this.env, port: this.port })
-            logger.info(`=================================`)
-            logger.info(`ENV: ${this.env}`)
-            logger.info(`🚀 App listening on port ${this.port}`)
-            logger.info(`=================================`)
+            logger.info(message)
         })
     }
 
@@ -52,7 +48,7 @@ class App {
     }
 
     private initializeMiddleware() {
-        this.app.use(morgan(LOG_FORMAT, { stream }))
+        this.app.use(morgan(CONFIG.LOG_FORMAT, { stream }))
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
     }
@@ -60,8 +56,8 @@ class App {
     private initializeRoutes(controllers: Function[]) {
         useExpressServer(this.app, {
             cors: {
-                origin: ORIGIN,
-                credentials: CREDENTIALS,
+                origin: CONFIG.ORIGIN,
+                credentials: CONFIG.CREDENTIALS,
             },
             controllers: controllers,
             defaultErrorHandler: false,
