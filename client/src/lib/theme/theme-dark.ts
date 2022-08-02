@@ -29,6 +29,11 @@ const paletteOptions: PaletteOptions = {
 // =============================================================================
 
 const componentOverrides: Components = {
+    MuiTextField: {
+        defaultProps: {
+            variant: "standard",
+        },
+    },
     MuiPaper: {
         styleOverrides: {
             root: {

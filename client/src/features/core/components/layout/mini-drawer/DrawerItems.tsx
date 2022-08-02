@@ -15,7 +15,7 @@ const drawerItemProps: DrawerItemProps[] = [
         text: "Variants",
         url: "/variants",
         icon: <PhotoFilterIcon />,
-        matchPattern: /(^\/variants$)/,
+        matchPattern: /(^\/variants(\/create)?$)/,
     },
     {
         text: "Settings",
