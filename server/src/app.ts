@@ -31,15 +31,12 @@ class App {
     }
 
     public listen() {
-        const message = `
-            =================================
-            🚀 App started
-            ENV:  ${this.env}
-            PORT: http://localhost:${this.port}
-            =================================
-        `.trim().replaceAll(/^\s+/gm, "")
         this.app.listen(this.port, () => {
-            logger.info(message)
+            logger.info({
+                message: "🚀 App started",
+                env: this.env,
+                port: this.port,
+            })
         })
     }
 
