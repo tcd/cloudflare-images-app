@@ -6,12 +6,14 @@ import { ValidationError } from "class-validator"
 export class HttpException extends HttpError {
     name = "HttpException"
 
-    private _errors: ErrorData
+    public _errors: ErrorData
+    public innerError: Error
 
-    constructor(status: number, message: string) {
+    constructor(status: number, message: string, innerError: Error = null) {
         super(status, message)
         Object.setPrototypeOf(this, HttpException.prototype)
         this._errors = new ErrorData()
+        this.innerError = innerError
     }
 
     public static fromValidationErrors(errors: ValidationError[]): HttpException {

@@ -1,5 +1,7 @@
 export * from "./ErrorData"
+export * from "./is-axios-error"
 export * from "./is-blank"
 export * from "./IsNotBlank"
 export * from "./logger"
+export * from "./parse-error"
 export * from "./stream"
