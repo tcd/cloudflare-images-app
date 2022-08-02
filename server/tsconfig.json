@@ -24,7 +24,7 @@
         "baseUrl": "src",
         "paths": {
             "@src/*": ["*"],
-            "@config": ["config"],
+            "@config": ["./src/config/Config.ts"],
         },
         "typeRoots": [
             "node_modules/@types",
