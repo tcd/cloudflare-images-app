@@ -37,6 +37,10 @@ export const CLOUDFLARE_COLORS = {
             subtitleFg: "#36393A", // https://blog.cloudflare.com/when-the-window-is-not-fully-open-your-tcp-stack-is-doing-more-than-you-think/
             bodyFg: "#36393A", // https://blog.cloudflare.com/platform-week-2022-wrap-up/
         },
+        signupForm: {
+            darkGreen: "#196535",
+            lightGreen: "#e3f8eb",
+        },
     },
     light: {
         buttonOrange: {

@@ -16,6 +16,8 @@ export const VariantsPage = (_props: unknown): JSX.Element => {
     const navigate = useNavigate()
 
     const shouldFetch = useSelector(Selectors.Variants.requests.fetchAll.shouldFetch)
+    const fetching = useSelector(Selectors.Variants.requests.fetchAll.fetching)
+    const deleting = useSelector(Selectors.Variants.requests.delete.submitting)
 
     useEffect(() => {
         if (shouldFetch) {
@@ -39,7 +41,7 @@ export const VariantsPage = (_props: unknown): JSX.Element => {
     )
 
     return (
-        <Page title="Variants" action={pageAction}>
+        <Page title="Variants" action={pageAction} loading={fetching || deleting}>
             <VariantsTable />
         </Page>
     )

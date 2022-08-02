@@ -19,5 +19,10 @@ export const defaultPaletteOptions: PaletteOptions = {
     },
     success: {
         main: CLOUDFLARE_COLORS.green,
+        dark: CLOUDFLARE_COLORS.scraped.signupForm.darkGreen,
+        light: CLOUDFLARE_COLORS.scraped.signupForm.lightGreen,
+    },
+    info: {
+        main: CLOUDFLARE_COLORS.scraped.footer.links,
     },
 }

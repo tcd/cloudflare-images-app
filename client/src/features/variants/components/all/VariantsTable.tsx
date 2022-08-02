@@ -9,8 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 import EyeIcon from "@mui/icons-material/RemoveRedEye"
 
-import { isBlank } from "@app/lib"
-import { Selectors } from "@app/state"
+import { Actions, Selectors } from "@app/state"
 import { DataTable, DataTableColumn  } from "@feature/common"
 
 const ActionsColumn = ({ row }: { row: Cloudflare.Variants.Variant }): JSX.Element => {
@@ -35,7 +34,7 @@ const ActionsColumn = ({ row }: { row: Cloudflare.Variants.Variant }): JSX.Eleme
             cancellationButtonProps: { color: "info",  variant: "contained" },
         })
             .then(() => {
-                // dispatch(Actions.Variants.submitDelete({ id: row.id }));
+                dispatch(Actions.Variants.submitDelete(row.id))
             })
             .catch(() => {
                 console.debug("variant delete not confirmed")
@@ -44,7 +43,7 @@ const ActionsColumn = ({ row }: { row: Cloudflare.Variants.Variant }): JSX.Eleme
 
     return (
         <Stack direction="row" sx={{ whiteSpace: "nowrap" }}>
-            <Tooltip title="Details" placement="top">
+            {/* <Tooltip title="Details" placement="top">
                 <IconButton onClick={handleViewClick}>
                     <EyeIcon />
                 </IconButton>
@@ -53,10 +52,10 @@ const ActionsColumn = ({ row }: { row: Cloudflare.Variants.Variant }): JSX.Eleme
                 <IconButton onClick={handleEditClick}>
                     <EditIcon />
                 </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Delete" placement="top">
                 <IconButton onClick={handleDeleteClick}>
-                    <DeleteIcon />
+                    <DeleteIcon color="primary" />
                 </IconButton>
             </Tooltip>
         </Stack>
@@ -89,6 +88,13 @@ const columns: DataTableColumn<Cloudflare.Variants.Variant>[] = [
         sortable: false,
         align: "center",
         renderFunc: (row) => row.options.fit,
+    },
+    {
+        field: "id",
+        header: "Actions",
+        sortable: false,
+        align: "center",
+        renderFunc: (row) => <ActionsColumn row={row} />,
     },
 ]
 
