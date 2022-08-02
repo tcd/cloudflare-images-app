@@ -25,6 +25,7 @@ export const DebouncedTextField = (props: DebouncedTextField): JSX.Element => {
 
     const [_value, setValue] = useState(value)
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedOnChange = useCallback(
         debounce((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             onChange(event)
