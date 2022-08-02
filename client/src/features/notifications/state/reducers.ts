@@ -77,6 +77,16 @@ export const extraReducers = (builder: ActionReducerMapBuilder<NotificationsStat
         .addCase(CoreActions.resetState, () => INITIAL_NOTIFICATIONS_STATE)
         .addCase(CoreActions.fetchUsageStats.fulfilled, (state) => notifySuccess(state, "Credentials Confirmed"))
         .addCase(CoreActions.fetchUsageStats.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Confirm Credentials"))
+        // ---------------------------------------------------------------------
+        // Images
+        // ---------------------------------------------------------------------
         .addCase(ImagesActions.fetchOnePage.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Sync Images"))
-        .addCase(VariantsActions.fetchAll.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Sync Variants"))
+        // ---------------------------------------------------------------------
+        // Variants
+        // ---------------------------------------------------------------------
+        .addCase(VariantsActions.submitCreate.fulfilled, (state) => notifySuccess(state, "Variant Created"))
+        .addCase(VariantsActions.submitDelete.fulfilled, (state) => notifySuccess(state, "Variant Deleted"))
+        .addCase(VariantsActions.fetchAll.rejected,     (state, { payload }) => notifyError(state, payload, "Unable to Sync Variants"))
+        .addCase(VariantsActions.submitCreate.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Create Variant"))
+        .addCase(VariantsActions.submitDelete.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Delete Variant"))
 };

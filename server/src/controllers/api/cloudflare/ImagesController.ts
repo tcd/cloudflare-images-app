@@ -7,7 +7,7 @@ import { ListImagesRequest } from "@src/dtos/ListImagesRequest"
 @Controller("/api/cloudflare/images")
 export class ImagesController {
 
-    @Post("/")
+    @Post("/list")
     @HttpCode(200)
     @UseBefore(validationMiddleware(ListImagesRequest, "body"))
     public async listImages(@Body() request: ListImagesRequest) {

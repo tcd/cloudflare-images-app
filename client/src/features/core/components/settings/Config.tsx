@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useConfirm } from "material-ui-confirm"
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
@@ -11,6 +12,7 @@ import { Card } from "@feature/common"
 export const Config = (_props: unknown): JSX.Element => {
 
     const dispatch = useDispatch()
+    const confirm = useConfirm()
 
     const initialValues = useSelector(Selectors.Core.config)
     const [formData, setFormData] = useState({ ...initialValues })
@@ -30,8 +32,27 @@ export const Config = (_props: unknown): JSX.Element => {
         { name: "accountHash", label: "Cloudflare Account Hash" },
     ]
 
-    const handleClick = () => {
-        dispatch(Actions.Core.fetchUsageStats())
+    // const handleClick = () => {
+    //     dispatch(Actions.Core.fetchUsageStats())
+    // }
+
+    const handleResetClick = () => {
+        confirm({
+            title: "Confirm",
+            description: "Are you sure? This will clear all app data.",
+            confirmationButtonProps: { color: "error", variant: "contained" },
+            cancellationButtonProps: { color: "info",  variant: "contained" },
+        })
+            .then(() => {
+                dispatch(Actions.Core.resetState())
+                setFormData({ ...initialValues })
+            })
+            .catch((error) => {
+                console.debug("reset state not confirmed")
+                if (error) {
+                    console.error(error)
+                }
+            })
     }
 
     const $inputs = inputProps.map(({ name, label }) => {
@@ -53,8 +74,9 @@ export const Config = (_props: unknown): JSX.Element => {
         <Card title="Configuration" sx={{ my: 4, mt: 6 }}>
             <Grid container direction="column" rowGap={3}>
                 {$inputs}
-                <Grid item>
+                <Grid item display="flex" justifyContent="space-between">
                     <Button onClick={handleSubmit}>Submit</Button>
+                    <Button onClick={handleResetClick}>Log Out</Button>
                 </Grid>
             </Grid>
             {/* <Button onClick={handleClick}>Test</Button> */}

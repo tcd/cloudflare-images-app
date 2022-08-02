@@ -1,14 +1,16 @@
 import { ReactNode } from "react"
+import { useSelector } from "react-redux"
 import {
     CssBaseline,
     ThemeProvider as MuiThemeProvider,
 } from "@mui/material"
+import { ConfirmProvider } from "material-ui-confirm"
 
 import { Selectors } from "@app/state"
 import { CloudflareThemes } from "@app/lib"
-import { useSelector } from "react-redux"
 import { AppNotifications } from "@feature/notifications"
 import { FetchAllHandler } from "src/features/images/components/FetchAllHandler"
+
 
 export interface ThemeProviderProps {
     children: ReactNode
@@ -42,7 +44,9 @@ export const ThemeProvider = ({ children = null }: ThemeProviderProps): JSX.Elem
             <CssBaseline />
             <AppNotifications />
             <FetchAllHandler />
-            {children && children}
+            <ConfirmProvider>
+                {children && children}
+            </ConfirmProvider>
         </MuiThemeProvider>
     )
 }

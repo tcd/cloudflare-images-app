@@ -84,16 +84,18 @@ export interface CreateVariantFormData {
     neverRequireSignedURLs?: boolean
 }
 
+export const initialValues: CreateVariantFormData = {
+    id: "",
+    fit: "scale-down",
+    height: 768,
+    width: 1366,
+    metadata: "none",
+    neverRequireSignedURLs: false,
+}
+
 export const validate = (values: CreateVariantFormData): Record<keyof CreateVariantFormData, string> => {
-    console.log({ values })
-    const errors: Record<keyof CreateVariantFormData, string> = {
-        id: "",
-        fit: "",
-        metadata: "",
-        width: "",
-        height: "",
-        neverRequireSignedURLs: "",
-    }
+    // console.log({ values })
+    const errors = {} as Record<keyof CreateVariantFormData, string>
 
     if (isBlank(values.id))                     { errors.id                     = "required" }
     if (isBlank(values.height))                 { errors.height                 = "required" }

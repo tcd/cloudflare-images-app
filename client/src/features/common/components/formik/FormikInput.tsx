@@ -14,9 +14,9 @@ export const FormikInput = (props: FormikInputProps): JSX.Element => {
         ...rest
     } = props
 
-    const valuePath = ["values", id].join(".")
+    const valuePath   = ["values", id].join(".")
     const touchedPath = ["touched", id].join(".")
-    const errorsPath = ["errors", id].join(".")
+    const errorsPath  = ["errors", id].join(".")
 
     const value   = get(formik, valuePath)
     const touched = get(formik, touchedPath)

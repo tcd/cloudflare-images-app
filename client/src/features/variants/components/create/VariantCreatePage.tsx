@@ -1,27 +1,26 @@
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import Tooltip from "@mui/material/Tooltip"
-import IconButton from "@mui/material/IconButton"
-import SyncIcon from "@mui/icons-material/Sync"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
-import { DebouncedTextField, Page } from "@feature/common"
-import { Actions, Selectors } from "@app/state"
+import { Page } from "@feature/common"
+import { Selectors } from "@app/state"
 import { VariantCreateForm } from "."
 
 export const VariantCreatePage = (_props: unknown): JSX.Element => {
 
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    // const shouldFetch = useSelector(Selectors.Variants.requests.fetchOne.shouldFetch)
+    const submitting = useSelector(Selectors.Variants.requests.create.submitting)
+    const completed = useSelector(Selectors.Variants.requests.create.completed)
 
-    // useEffect(() => {
-    //     if (shouldFetch) {
-    //         dispatch(Actions.Variants.fetchAll())
-    //     }
-    // }, [dispatch, shouldFetch])
+    useEffect(() => {
+        if (completed) {
+            navigate("/variants")
+        }
+    }, [navigate, completed])
 
     return (
-        <Page title="New Variant">
+        <Page title="New Variant" loading={submitting}>
             <VariantCreateForm />
         </Page>
     )

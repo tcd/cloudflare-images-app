@@ -36,11 +36,10 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
             cancellationButtonProps: { color: "info",  variant: "contained" },
         })
             .then(() => {
-                // dispatch(Actions.ExternalApis.setActiveId(row.id as number));
-                // dispatch(Actions.ExternalApis.submitDelete());
+                // dispatch(Actions.Images.submitDelete(row.id));
             })
             .catch(() => {
-                console.debug("external api delete not confirmed")
+                console.debug("image delete not confirmed")
             })
     }
 

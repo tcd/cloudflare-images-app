@@ -23,6 +23,8 @@ export interface VariantsState {
     requests: {
         fetchAll: RequestState<Cloudflare.Responses.ListVariants>
         fetchOne: RequestState<Cloudflare.Responses.Variant>
+        create: RequestState<Cloudflare.Responses.Variant>
+        delete: RequestState<Cloudflare.Responses.Variant>
     }
 }
 
@@ -36,6 +38,8 @@ export const INITIAL_VARIANTS_STATE: VariantsState = {
     requests: {
         fetchAll: { status: "idle", updatedAt: DateTime.now().toISO() },
         fetchOne: { status: "idle", updatedAt: DateTime.now().toISO() },
+        create:   { status: "idle", updatedAt: DateTime.now().toISO() },
+        delete:   { status: "idle", updatedAt: DateTime.now().toISO() },
     },
 }
 
