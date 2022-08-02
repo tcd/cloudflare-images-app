@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useConfirm } from "material-ui-confirm"
+import { DateTime } from "luxon"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
-
-import { ImageWithoutVariants, isBlank } from "@app/lib"
-import { DataTable, DataTableColumn  } from "@feature/common"
-
+import EyeIcon from "@mui/icons-material/RemoveRedEye"
 import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
-import EyeIcon from "@mui/icons-material/RemoveRedEye"
+
+import { ImageWithoutVariants, isBlank } from "@app/lib"
 import { Selectors } from "@app/state"
+import { DataTable, DataTableColumn  } from "@feature/common"
+
 
 const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
 
@@ -80,6 +81,7 @@ const columns: DataTableColumn<ImageWithoutVariants>[] = [
         header: "Uploaded",
         sortable: true,
         align: "center",
+        renderFunc: (row) => DateTime.fromISO(row.uploaded).toFormat("yyyy-MM-dd, hh:mm a"),
     },
 ]
 
@@ -92,7 +94,7 @@ export const ImagesTable = (_props: unknown): JSX.Element => {
             rows={rows}
             columns={columns}
             // progressPending={fetching}
-            pagination={false}
+            pagination={true}
             paginationServer={false}
             noDataMessage="No images found"
         />
