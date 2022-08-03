@@ -10,6 +10,7 @@ import {
 import {
     ImagesPage,
     ImageDetailPage,
+    UploadImagePage,
 } from "@feature/images"
 
 import {
@@ -40,6 +41,7 @@ const routes = (): RouteObject[] => {
                     path: "images",
                     children: [
                         { index: true, element: <ImagesPage /> },
+                        { path: "create", element: <UploadImagePage /> },
                         { path: ":imageId", element: <ImageDetailPage /> },
                     ],
                 },
