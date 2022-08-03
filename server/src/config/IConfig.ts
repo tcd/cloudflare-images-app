@@ -1,9 +1,7 @@
-import { config } from "dotenv"
-config({ path: `.env.${process.env.NODE_ENV || "development"}.local` })
-
+import { join, resolve } from "path"
 import type { TLogLevelName } from "tslog"
 
-export type NodeEnv = "development" | "production" | "test"
+import type { NodeEnv } from "@src/types"
 
 export interface IConfig {
     NODE_ENV: NodeEnv
@@ -13,10 +11,13 @@ export interface IConfig {
 
     LOG_LEVEL: TLogLevelName
     LOG_FORMAT: string
-    LOG_DIR: string
 
+    /** to whitelist for CORS */
     ORIGIN: string
+    /** for CORS */
     CREDENTIALS: boolean
+    /** Absolute path to the root folder of the application */
+    ROOT: string
 }
 
 export class Config implements IConfig {
@@ -29,10 +30,11 @@ export class Config implements IConfig {
 
     public LOG_LEVEL: TLogLevelName
     public LOG_FORMAT: string
-    public LOG_DIR: string
 
     public ORIGIN: string
     public CREDENTIALS: boolean
+
+    public ROOT: string
 
     constructor() {
         this.NODE_ENV    = process.env?.NODE_ENV as NodeEnv ?? "development"
@@ -40,8 +42,11 @@ export class Config implements IConfig {
         this.SECRET_KEY  = process.env?.SECRET_KEY
         this.LOG_LEVEL   = process.env?.LOG_LEVEL as TLogLevelName ?? "silly"
         this.LOG_FORMAT  = process.env?.LOG_FORMAT
-        this.LOG_DIR     = process.env?.LOG_DIR
         this.ORIGIN      = process.env?.ORIGIN
         this.CREDENTIALS = process.env?.CREDENTIALS === "true"
+        this.ROOT        = resolve(__dirname, "..", "..")
     }
+
+    public get tmpDir(): string { return join(this.ROOT, "tmp") }
+    public get logDir(): string { return join(this.ROOT, "logs") }
 }

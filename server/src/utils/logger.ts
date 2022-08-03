@@ -1,4 +1,4 @@
-import { join, resolve } from "path"
+import { join } from "path"
 import { appendFileSync } from "fs"
 import {
     Logger,
@@ -8,8 +8,7 @@ import {
 import { CONFIG } from "@config"
 
 const logFileName = `${CONFIG.NODE_ENV}.logs.jsonl`
-const logFolderPath = resolve(__dirname, CONFIG.LOG_DIR)
-const logFilePath = join(logFolderPath, logFileName)
+const logFilePath = join(CONFIG.logDir, logFileName)
 
 export const logToFile = (logObject: ILogObject) => {
     const {

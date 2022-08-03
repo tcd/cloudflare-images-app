@@ -1,5 +1,5 @@
 import "@src/config/configure"
-import { App } from "@src/app"
+import { App } from "@src/App"
 import { validateEnv } from "@src/config"
 
 validateEnv()
