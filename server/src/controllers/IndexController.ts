@@ -1,14 +1,29 @@
-import { Controller, Get, HttpCode } from "routing-controllers"
+import { StatusCodes } from "http-status-codes"
 
-@Controller()
-export class IndexController {
-    @Get("/")
-    @Get("/api")
-    @Get("/api/cloudflare")
-    @Get("/api/cloudflare/images")
-    @Get("/api/cloudflare/variants")
-    @HttpCode(200)
-    public index() {
-        return { message: "ok" }
+import { sleep } from "@src/utils"
+import { Req, Res, Next } from "@src/types"
+
+export abstract class IndexController {
+
+    // @Get("/")
+    // @Get("/api")
+    // @Get("/api/cloudflare")
+    // @Get("/api/cloudflare/images")
+    // @Get("/api/cloudflare/variants")
+    public static async index(req: Req<unknown>, res: Res, next: Next): Promise<void> {
+        try {
+            res.status(StatusCodes.OK)
+            res.json({ message: "Okay" })
+        } catch (error) {
+            next(error)
+        }
     }
+
+    public static async testing(_req: Req<unknown>, res: Res, _next: Next): Promise<void> {
+        await sleep(2_000)
+        throw new Error("oh no!")
+        res.status(StatusCodes.OK)
+        res.json({ message: "Okay" })
+    }
+
 }

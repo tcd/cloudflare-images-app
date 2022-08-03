@@ -1,19 +1,8 @@
 import "@src/config/configure"
-import App from "@src/app"
-import {
-    IndexController,
-    ImagesController,
-    UsageController,
-    VariantsController,
-} from "@src/controllers"
+import { App } from "@src/app"
 import { validateEnv } from "@src/config"
 
 validateEnv()
 
-const app = new App([
-    IndexController,
-    ImagesController,
-    UsageController,
-    VariantsController,
-])
+const app = new App()
 app.listen()
