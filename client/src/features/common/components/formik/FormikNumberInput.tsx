@@ -3,7 +3,7 @@ import isNumber from "lodash/isNumber"
 import { useFormik } from "formik"
 import TextField, { TextFieldProps } from "@mui/material/TextField"
 
-export type FormikNumberInputProps = TextFieldProps & {
+type FormikNumberInputProps = TextFieldProps & {
     id: string
     formik: ReturnType<typeof useFormik>
 }

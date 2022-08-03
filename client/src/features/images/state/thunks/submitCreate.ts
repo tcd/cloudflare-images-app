@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
-import { Requests, Responses } from "cloudflare-images"
+import { Responses } from "cloudflare-images"
 import { RootState, Selectors } from "@app/state"
 import { FeatureKeys, ServerClient } from "@app/lib"
 
 const actionType = `${FeatureKeys.Images}/submitCreate`
 
-export const submitCreate = createAsyncThunk<Responses.CreateImage, Requests.CreateImage>(actionType, async (request: Requests.CreateImage, thunkApi) => {
+export const submitCreate = createAsyncThunk<Responses.CreateImage, FormData>(actionType, async (formData: FormData, thunkApi) => {
     try {
         const rootState = thunkApi.getState() as RootState
 
@@ -17,7 +17,7 @@ export const submitCreate = createAsyncThunk<Responses.CreateImage, Requests.Cre
 
         const credentials = Selectors.Core.credentials(rootState)
         const client = new ServerClient(credentials)
-        const response = await client.createImage(request)
+        const response = await client.createImage(formData)
         if (response?.success) {
             return response
         } else {

@@ -1,3 +1,5 @@
 export * from "./FormikInput"
+export * from "./FormikFileInput"
 export * from "./FormikNumberInput"
 export * from "./FormikSelect"
+export * from "./FormikSwitch"

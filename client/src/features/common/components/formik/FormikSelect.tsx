@@ -4,7 +4,7 @@ import { TextFieldProps } from "@mui/material/TextField"
 
 import { CustomSelect, CustomSelectOption } from "@feature/common"
 
-export type FormikSelectProps = TextFieldProps & {
+type FormikSelectProps = TextFieldProps & {
     id: string
     formik: ReturnType<typeof useFormik>
     options: CustomSelectOption[]

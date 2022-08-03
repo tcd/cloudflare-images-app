@@ -20,7 +20,9 @@
                 "src/server.ts",
             ],
             "cwd": "${workspaceRoot}/server",
-            "internalConsoleOptions": "openOnSessionStart",
+            // "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "skipFiles": [
                 "<node_internals>/**",
                 "node_modules/**",

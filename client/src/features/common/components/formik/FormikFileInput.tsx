@@ -2,15 +2,17 @@ import get from "lodash/get"
 import { useFormik } from "formik"
 import TextField, { TextFieldProps } from "@mui/material/TextField"
 
-type FormikInputProps = TextFieldProps & {
+type FormikFileInputProps = TextFieldProps & {
     id: string
     formik: ReturnType<typeof useFormik>
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => any
 }
 
-export const FormikInput = (props: FormikInputProps): JSX.Element => {
+export const FormikFileInput = (props: FormikFileInputProps): JSX.Element => {
     const {
         id,
         formik,
+        onChange,
         ...rest
     } = props
 
@@ -22,13 +24,20 @@ export const FormikInput = (props: FormikInputProps): JSX.Element => {
     const touched = get(formik, touchedPath)
     const errors  = get(formik, errorsPath)
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onChange) {
+            onChange(event)
+        }
+        formik.handleChange(event)
+    }
+
     return (
         <TextField
             {...rest}
+            type="file"
             id={id}
             name={id}
-            value={value}
-            onChange={formik.handleChange}
+            onChange={handleChange}
             onBlur={formik.handleBlur}
             helperText={touched && errors}
             error={formik.touched[id] && Boolean(formik.errors[id])}

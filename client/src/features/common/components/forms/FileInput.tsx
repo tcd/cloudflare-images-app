@@ -1,5 +1,7 @@
 import { useRef, useState } from "react"
 
+import Button from "@mui/material/Button"
+
 export interface FileInputProps {
     label: string
 }
@@ -28,12 +30,16 @@ export const FileInput = (props: FileInputProps): JSX.Element => {
         <>
             <input
                 ref={fileInputRef}
-                style={{
-                    display: "none",
-                }}
+                hidden={true}
                 type="file"
                 onChange={handleChange}
             />
+            <Button
+                onClick={() => fileInputRef?.current?.click()}
+                variant="contained"
+            >
+                Upload
+            </Button>
         </>
     )
 }
