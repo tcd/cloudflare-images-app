@@ -7,6 +7,7 @@ import {
     ImagesController,
     VariantsController,
 } from "@src/controllers"
+import { logger } from "@src/util"
 
 const ROUTES: IRouteData[] = [
     { method: "GET",  route: "/",     handler: IndexController.index   },

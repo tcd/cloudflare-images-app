@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 
-import { logger } from "@src/utils"
+import { logger } from "@src/util"
 
 export const notFoundMiddleware = (req: Request, res: Response, next: NextFunction) => {
     if (!res.status) {

@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes"
 
-import { sleep } from "@src/utils"
+import { sleep } from "@src/util"
 import { Req, Res, Next } from "@src/types"
 
 export abstract class IndexController {

@@ -1,4 +1,4 @@
-import { ErrorData } from "@src/utils"
+import { ErrorData } from "@src/util"
 import { ValidationError } from "class-validator"
 import { HttpError } from "./HttpError"
 

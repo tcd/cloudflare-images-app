@@ -47,6 +47,7 @@ export class Config implements IConfig {
         this.ROOT        = resolve(__dirname, "..", "..")
     }
 
-    public get tmpDir(): string { return join(this.ROOT, "tmp") }
     public get logDir(): string { return join(this.ROOT, "logs") }
+    public get tmpDir(): string { return join(this.ROOT, "tmp") }
+    public get storageDir(): string { return join(this.ROOT, "tmp", "storage") }
 }

@@ -3,16 +3,15 @@ import express, { Application } from "express"
 import morgan from "morgan"
 import serveFavicon from "serve-favicon"
 import cors from "cors"
+import multer, { Options as MulterOptions } from "multer"
 
 import { CONFIG } from "@config"
-import { logger, stream } from "@src/utils"
+import { logger, stream } from "@src/util"
 import {
     errorMiddleware,
     notFoundMiddleware,
 } from "@src/middleware"
 import { RouteBuilder } from "./RouteBuilder"
-
-// const wrap = fn => (...args) => fn(...args).catch(args[2])
 
 export class App {
     public app: Application
@@ -48,10 +47,18 @@ export class App {
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(serveFavicon(join(__dirname, "..", "public", "favicon.ico")))
+        this.app.use(multer(this.multerOptions).any())
     }
 
     private initializeErrorHandling() {
         this.app.use(errorMiddleware)
         this.app.use(notFoundMiddleware)
+    }
+
+    private get multerOptions(): MulterOptions {
+        return {
+            dest: CONFIG.storageDir,
+            preservePath: false,
+        }
     }
 }

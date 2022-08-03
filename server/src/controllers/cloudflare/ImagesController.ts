@@ -2,7 +2,7 @@ import { CloudflareClient } from "cloudflare-images"
 import { StatusCodes } from "http-status-codes"
 
 import { Req, Res, Next } from "@src/types"
-import { logger } from "@src/utils"
+import { isBlank, logger } from "@src/util"
 import {
     IdRequest,
     ListImagesRequest,
@@ -31,8 +31,9 @@ export class ImagesController {
     public static async createImage(req: Req<any>, res: Res, _next: Next) {
         const data: any = {
             "content-type": req.headers["content-type"],
-            // "body": request.body,
+            "body": req.body,
         }
+        debugger
         logger.info(data)
         // const response = JSON.stringify(request)
         // logger.info(JSON.stringify(request.body))

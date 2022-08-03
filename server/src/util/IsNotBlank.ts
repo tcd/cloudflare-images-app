@@ -4,7 +4,7 @@ import {
     ValidationArguments,
 } from "class-validator"
 
-import { isBlank } from "@src/utils"
+import { isBlank } from "@src/util"
 
 export const IsNotBlank = (validationOptions?: ValidationOptions) => {
     return function (object: Object, propertyName: string) {

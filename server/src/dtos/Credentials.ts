@@ -1,6 +1,6 @@
 import { IsString } from "class-validator"
 
-import { IsNotBlank } from "@src/utils"
+import { IsNotBlank } from "@src/util"
 
 export class Credentials {
 

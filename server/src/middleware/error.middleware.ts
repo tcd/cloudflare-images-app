@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 
-import { logger, isAxiosError } from "@src/utils"
+import { logger, isAxiosError } from "@src/util"
 import { HttpException } from "@src/exceptions"
 
 export const errorMiddleware = (error: HttpException, req: Request, res: Response, next: NextFunction) => {
