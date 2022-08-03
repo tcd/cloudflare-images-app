@@ -6,7 +6,7 @@ import { FeatureKeys, ServerClient } from "@app/lib"
 
 const actionType = `${FeatureKeys.Variants}/submitCreate`
 
-export const submitCreate = createAsyncThunk<Responses.VariantDetails, Requests.CreateVariant>(actionType, async (request: Requests.CreateVariant, thunkApi) => {
+export const submitCreate = createAsyncThunk<Responses.CreateVariant, Requests.CreateVariant>(actionType, async (request: Requests.CreateVariant, thunkApi) => {
     try {
         const rootState = thunkApi.getState() as RootState
 

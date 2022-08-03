@@ -14,7 +14,7 @@
         "class-transformer": "^0.5.1",
         "class-validator": "^0.13.2",
         "class-validator-jsonschema": "^3.1.1",
-        "cloudflare-images": "^0.6.1",
+        "cloudflare-images": "^0.8.0-rc.1",
         "cors": "^2.8.5",
         "cross-env": "^7.0.3",
         "dotenv": "^16.0.1",

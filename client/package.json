@@ -30,7 +30,7 @@
         "@typescript-eslint/parser": "^5.16.0",
         "axios": "^0.27.2",
         "babel-loader": "^8.2.4",
-        "cloudflare-images": "^0.6.1",
+        "cloudflare-images": "^0.8.0-rc.1",
         "cross-env": "^7.0.3",
         "css-loader": "^6.7.1",
         "csstype": "^3.1.0",

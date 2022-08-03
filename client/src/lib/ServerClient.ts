@@ -31,8 +31,9 @@ export class ServerClient {
         }
     }
 
-    public async uploadImage(request: Requests.ImageUpload): Promise<Responses.UploadImage> {
-        return null
+    public async createImage(request: Requests.CreateImage): Promise<Responses.CreateImage> {
+        const response = await this.client.post("images/create", request)
+        return response.data
     }
 
     public async listImages(options: Requests.ListImages): Promise<Responses.ListImages> {
@@ -47,13 +48,13 @@ export class ServerClient {
         return response.data
     }
 
-    public async getImageDetails(imageId: string): Promise<Responses.ImageDetails> {
+    public async getImageDetails(imageId: string): Promise<Responses.GetImage> {
         const request = this.buildRequest({ id: imageId })
         const response = await this.client.post("images/get", request)
         return response.data
     }
 
-    public async createImageVariant(options: Variants.Variant): Promise<Responses.VariantDetails> {
+    public async createImageVariant(options: Variants.Variant): Promise<Responses.CreateVariant> {
         const request = this.buildRequest({ options })
         const response = await this.client.post("variants/create", request)
         return response.data
@@ -65,13 +66,13 @@ export class ServerClient {
         return response.data
     }
 
-    public async getVariant(variantId: string): Promise<Responses.VariantDetails> {
+    public async getVariant(variantId: string): Promise<Responses.GetVariant> {
         const request = this.buildRequest({ id: variantId })
         const response = await this.client.post("variants/get", request)
         return response.data
     }
 
-    public async deleteVariant(variantId: string): Promise<Responses.Response> {
+    public async deleteVariant(variantId: string): Promise<Responses.DeleteVariant> {
         const request = this.buildRequest({ id: variantId })
         const response = await this.client.post("variants/delete", request)
         return response.data

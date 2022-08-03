@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
 import { DateTime } from "luxon"
 
-import type Cloudflare from "cloudflare-images"
+import type { Responses} from "cloudflare-images"
 import { FeatureKeys, RequestState, ImageWithoutVariants } from "@app/lib"
 import { reducers, extraReducers } from "./reducers"
 
@@ -23,7 +23,9 @@ export interface ImagesState {
     requests: {
         fetchAll: RequestState<any>
         fetchOne: RequestState<any>
-        fetchOnePage: RequestState<Cloudflare.Responses.ListImages>
+        fetchOnePage: RequestState<Responses.ListImages>
+        create: RequestState<Responses.CreateImage>
+        delete: RequestState<Responses.DeleteImage>
     }
     update: {
         inProgress: boolean
@@ -46,6 +48,8 @@ export const INITIAL_IMAGES_STATE: ImagesState = {
         fetchAll:     { status: "idle", updatedAt: DateTime.now().toISO() },
         fetchOne:     { status: "idle", updatedAt: DateTime.now().toISO() },
         fetchOnePage: { status: "idle", updatedAt: DateTime.now().toISO() },
+        create:       { status: "idle", updatedAt: DateTime.now().toISO() },
+        delete:       { status: "idle", updatedAt: DateTime.now().toISO() },
     },
     update: {
         inProgress: false,

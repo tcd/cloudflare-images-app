@@ -22,9 +22,10 @@ export interface VariantsState {
     searchFilter: string
     requests: {
         fetchAll: RequestState<Cloudflare.Responses.ListVariants>
-        fetchOne: RequestState<Cloudflare.Responses.Variant>
-        create: RequestState<Cloudflare.Responses.Variant>
-        delete: RequestState<Cloudflare.Responses.Variant>
+        fetchOne: RequestState<Cloudflare.Responses.GetVariant>
+        create: RequestState<Cloudflare.Responses.CreateVariant>
+        update: RequestState<Cloudflare.Responses.UpdateVariant>
+        delete: RequestState<Cloudflare.Responses.DeleteVariant>
     }
 }
 
@@ -39,6 +40,7 @@ export const INITIAL_VARIANTS_STATE: VariantsState = {
         fetchAll: { status: "idle", updatedAt: DateTime.now().toISO() },
         fetchOne: { status: "idle", updatedAt: DateTime.now().toISO() },
         create:   { status: "idle", updatedAt: DateTime.now().toISO() },
+        update:   { status: "idle", updatedAt: DateTime.now().toISO() },
         delete:   { status: "idle", updatedAt: DateTime.now().toISO() },
     },
 }

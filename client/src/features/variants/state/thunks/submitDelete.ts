@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
-import { Requests, Responses } from "cloudflare-images"
+import { Responses } from "cloudflare-images"
 import { RootState, Selectors } from "@app/state"
 import { FeatureKeys, ServerClient } from "@app/lib"
 
 const actionType = `${FeatureKeys.Variants}/submitDelete`
 
-export const submitDelete = createAsyncThunk<Responses.Variant, string>(actionType, async (id: string, thunkApi) => {
+export const submitDelete = createAsyncThunk<Responses.DeleteVariant, string>(actionType, async (id: string, thunkApi) => {
     try {
         const rootState = thunkApi.getState() as RootState
 
