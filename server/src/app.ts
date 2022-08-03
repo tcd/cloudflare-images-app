@@ -1,17 +1,19 @@
+import { join } from "path"
 import "reflect-metadata"
 // import { defaultMetadataStorage } from "class-transformer"
 import { validationMetadatasToSchemas } from "class-validator-jsonschema"
 import express from "express"
 import morgan from "morgan"
+import serveFavicon from "serve-favicon"
 import { useExpressServer, getMetadataArgsStorage } from "routing-controllers"
 import { routingControllersToSpec } from "routing-controllers-openapi"
 import swaggerUi from "swagger-ui-express"
 
-import { CONFIG } from "@config"
 import {
     errorMiddleware,
     notFoundMiddleware,
 } from "@src/middleware"
+import { CONFIG } from "@config"
 import { logger, stream } from "@src/utils"
 
 class App {
@@ -48,6 +50,7 @@ class App {
         this.app.use(morgan(CONFIG.LOG_FORMAT, { stream }))
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
+        this.app.use(serveFavicon(join(__dirname, "..", "public", "favicon.ico")))
     }
 
     private initializeRoutes(controllers: Function[]) {
