@@ -1,9 +1,8 @@
 import { join } from "path"
-import express, { Application, Router } from "express"
+import express, { Application } from "express"
 import morgan from "morgan"
 import serveFavicon from "serve-favicon"
 import cors from "cors"
-import PromiseRouter from "express-promise-router"
 
 import { CONFIG } from "@config"
 import { logger, stream } from "@src/utils"
@@ -11,27 +10,22 @@ import {
     errorMiddleware,
     notFoundMiddleware,
 } from "@src/middleware"
-import {
-    IndexController,
-    UsageController,
-} from "@src/controllers"
+import { RouteBuilder } from "./RouteBuilder"
 
 // const wrap = fn => (...args) => fn(...args).catch(args[2])
 
 export class App {
     public app: Application
-    public router: Router
     public env: string
     public port: string | number
 
     constructor() {
         this.app = express()
-        // this.router = PromiseRouter()
         this.env = CONFIG.NODE_ENV
         this.port = CONFIG.PORT || 3000
 
         this.initializeMiddleware()
-        this.initializeRoutes()
+        new RouteBuilder(this.app).build()
         this.initializeErrorHandling()
     }
 
@@ -59,23 +53,5 @@ export class App {
     private initializeErrorHandling() {
         this.app.use(errorMiddleware)
         this.app.use(notFoundMiddleware)
-    }
-
-    private initializeRoutes() {
-        this.app.get("/", (req, res, next) => IndexController.index(req, res, next))
-        // this.app.get("/test", (req, res, next) => IndexController.testing(req, res, next))
-        this.postAsync("/test", IndexController.testing)
-        // this.app.get("/test", wrap(async (req, res, next) => await IndexController.testing(req, res, next)))
-        this.postAsync("/api/cloudflare/usage", UsageController.getUsageStatistics)
-    }
-
-    public postAsync(route: string, handler: any) {
-        this.app.post(route, async (req, res, next) => {
-            try {
-                await handler(req, res, next)
-            } catch (error) {
-                next(error)
-            }
-        })
     }
 }
