@@ -1,7 +1,6 @@
-import { HttpError } from "routing-controllers"
-
 import { ErrorData } from "@src/utils"
 import { ValidationError } from "class-validator"
+import { HttpError } from "./HttpError"
 
 export class HttpException extends HttpError {
     name = "HttpException"
