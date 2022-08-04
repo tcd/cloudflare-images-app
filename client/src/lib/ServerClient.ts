@@ -1,4 +1,4 @@
-import axios, { Axios } from "axios"
+import axios, { Axios, AxiosRequestConfig } from "axios"
 import type {
     CloudflareClientOptions,
     Requests,
@@ -31,8 +31,15 @@ export class ServerClient {
         }
     }
 
-    public async createImage(request: Requests.CreateImage): Promise<Responses.CreateImage> {
-        const response = await this.client.post("images/create", request)
+    public async createImage(formData: FormData): Promise<Responses.CreateImage> {
+        const config: AxiosRequestConfig = {
+            headers: {
+                "content-type": "multipart/form-data",
+            },
+        }
+        formData.append("apiKey", this.options.apiKey)
+        formData.append("accountId", this.options.accountId)
+        const response = await this.client.post("images/create", formData, config)
         return response.data
     }
 

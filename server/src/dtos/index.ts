@@ -1,3 +1,4 @@
+export * from "./CreateImageRequest"
 export * from "./CreateVariantRequest"
 export * from "./Credentials"
 export * from "./CredentialsRequest"

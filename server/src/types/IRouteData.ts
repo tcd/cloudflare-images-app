@@ -6,4 +6,5 @@ export interface IRouteData {
     method: "GET" | "POST"
     route: string
     handler: AsyncRouteHandler
+    dto?: any
 }
