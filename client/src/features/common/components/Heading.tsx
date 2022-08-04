@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import { SxProps } from "@mui/material"
 import Box from "@mui/material/Box"
+import Grid, { GridProps } from "@mui/material/Grid"
 import Divider from "@mui/material/Divider"
 import Breadcrumbs from "@mui/material/Breadcrumbs"
 import Typography from "@mui/material/Typography"
@@ -32,14 +33,26 @@ export const Heading = (props: HeadingProps): JSX.Element => {
 
     return (
         <Box sx={containerSx}>
-            <Box sx={rowSx}>
+            {/* <Box sx={rowSx}>
                 <Typography variant="h4" gutterBottom>
                     {props.title}
                 </Typography>
                 <Box sx={childrenContainerSx}>
                     <>{children && children}</>
                 </Box>
-            </Box>
+            </Box> */}
+            <Grid {...containerProps}>
+                <Grid {...leftColumnProps}>
+                    <Typography variant="h4" gutterBottom>
+                        {props.title}
+                    </Typography>
+                </Grid>
+                <Grid {...rightColumnProps}>
+                    <Box sx={childrenContainerSx}>
+                        <>{children && children}</>
+                    </Box>
+                </Grid>
+            </Grid>
             <If test={crumbsTest}>
                 <Box sx={breadcrumbRowSx}>
                     <Breadcrumbs>
@@ -58,11 +71,45 @@ export const Heading = (props: HeadingProps): JSX.Element => {
 // Styles
 // =============================================================================
 
+const containerProps: GridProps = {
+    container: true,
+    direction: "row",
+    columns: 2,
+    sx: {
+        boxSizing: "border-box",
+    },
+}
+
+
+const sharedColumnProps: GridProps = {
+    item: true,
+    xs: 2,
+    md: 1,
+}
+
+const leftColumnProps: GridProps = {
+    ...sharedColumnProps,
+    display: "flex",
+    justifyContent: "flex-start",
+}
+
+const rightColumnProps: GridProps = {
+    ...sharedColumnProps,
+    display: "flex",
+    // justifyContent: "flex-end",
+    justifyContent: {
+        xs: "flex-start",
+        md: "flex-end",
+    },
+}
+
 const containerSx: SxProps = {
     display: "flex",
     flexFlow: "column nowrap",
     boxSizing: "border-box",
 }
+
+
 
 const rowSx: SxProps = {
     display: "flex",
