@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { Actions, Selectors } from "@app/state"
@@ -8,6 +8,8 @@ export const FetchAllHandler = (_props: unknown): JSX.Element => {
 
     const dispatch = useDispatch()
 
+    const [notified, setNotified ] = useState(false)
+
     const updateInProgress = useSelector(Selectors.Images.update.inProgress)
     const shouldFetchNext  = useSelector(Selectors.Images.requests.fetchOnePage.shouldFetch)
 
@@ -15,6 +17,7 @@ export const FetchAllHandler = (_props: unknown): JSX.Element => {
     const totalPages  = useSelector(Selectors.Core.apiPageCount)
 
     const progress = (currentPage / totalPages) * 100
+    const complete = (currentPage == totalPages)
 
     const spinner = <DeterminateSpinner value={progress} />
 
@@ -24,7 +27,14 @@ export const FetchAllHandler = (_props: unknown): JSX.Element => {
                 dispatch(Actions.Images.fetchOnePage())
             }
         }
-    }, [dispatch, updateInProgress, shouldFetchNext])
+        if (complete && !notified) {
+            setNotified(true)
+            dispatch(Actions.Notifications.addNotification({
+                message: "Image Sync Complete",
+                variant: "success",
+            }))
+        }
+    }, [dispatch, updateInProgress, shouldFetchNext, complete, notified, setNotified])
 
     return (
         <OverlaySpinner
