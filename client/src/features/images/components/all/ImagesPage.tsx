@@ -5,34 +5,45 @@ import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import InputAdornment from "@mui/material/InputAdornment"
 import SyncIcon from "@mui/icons-material/Sync"
+import AddIcon from "@mui/icons-material/Add"
 import ClearIcon from "@mui/icons-material/Clear"
+import FileUploadIcon from "@mui/icons-material/FileUpload"
 
 import { isBlank } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
 import { DebouncedTextField, Page } from "@feature/common"
 import { ImagesTable } from "./ImagesTable"
 import { useRef } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const ImagesPage = (_props: unknown): JSX.Element => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const deleting = useSelector(Selectors.Images.requests.delete.submitting)
 
-    const handleClick = () => {
+    const handleRefreshClick = () => {
         dispatch(Actions.Images.beginUpdate())
+    }
+
+    const handleCreateClick = () => {
+        navigate("/images/create")
     }
 
     const pageAction = (
         <Stack direction="row" alignItems="flex-end">
             <Filter />
-            <div>
-                <Tooltip title="Refresh">
-                    <IconButton onClick={handleClick} sx={{ ml: 4 }}>
-                        <SyncIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
+            <Tooltip title="Refresh" placement="top">
+                <IconButton onClick={handleRefreshClick} sx={{ ml: 2 }}>
+                    <SyncIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Upload Image" placement="top">
+                <IconButton onClick={handleCreateClick} sx={{}}>
+                    <AddIcon color="primary" />
+                </IconButton>
+            </Tooltip>
         </Stack>
     )
 
@@ -45,10 +56,9 @@ export const ImagesPage = (_props: unknown): JSX.Element => {
 
 const Filter = (_props: unknown): JSX.Element => {
 
-    const key = useRef(DateTime.now().toISO())
     const dispatch = useDispatch()
-
     const value = useSelector(Selectors.Images.searchFilter)
+    const key = useRef(DateTime.now().toISO())
 
     const handleChange = (event) => {
         dispatch(Actions.Images.setSearchFilter({ filter: event.target.value }))
@@ -77,6 +87,7 @@ const Filter = (_props: unknown): JSX.Element => {
 
     return (
         <DebouncedTextField
+            debounceDuration={150}
             key={key.current}
             label="Filter"
             value={value}
