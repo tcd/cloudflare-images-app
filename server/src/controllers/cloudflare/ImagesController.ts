@@ -1,4 +1,5 @@
-import Cloudflare, { CloudflareClient } from "cloudflare-images"
+import { readFile } from "fs/promises"
+import { CloudflareClient } from "cloudflare-images"
 import { StatusCodes } from "http-status-codes"
 
 import { Req, Res, Next } from "@src/types"
@@ -8,7 +9,6 @@ import {
     IdRequest,
     ListImagesRequest,
 } from "@src/dtos"
-import { createReadStream } from "fs"
 
 // @Controller("/api/cloudflare/images")
 export class ImagesController {
@@ -30,6 +30,7 @@ export class ImagesController {
     // @Post("/create")
     public static async createImage(req: Req<CreateImageRequest>, res: Res, _next: Next) {
         const file = req.files?.[0]
+
         if (isBlank(file)) {
             res
                 .status(StatusCodes.UNPROCESSABLE_ENTITY)
@@ -39,16 +40,18 @@ export class ImagesController {
                 })
             return
         }
+
         const {
             apiKey,
             accountId,
             ...options
         } = req.body
         const credentials = { apiKey, accountId }
+        const buffer = await readFile(file.path)
 
         const client = new CloudflareClient(credentials)
-        const response = await client.createImageFromFile(options, file.path)
-        res.status(StatusCodes.CREATED).json(response)
+        const response = await client.createImageFromBuffer(options, buffer)
+        res.status(StatusCodes.OK).json(response)
     }
 
     // @Post("/delete")

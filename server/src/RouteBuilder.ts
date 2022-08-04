@@ -8,7 +8,6 @@ import {
     VariantsController,
 } from "@src/controllers"
 import { validationMiddleware } from "@src/middleware"
-import { logger } from "@src/util"
 import * as DTOs from "@src/dtos"
 
 const ROUTES: IRouteData[] = [

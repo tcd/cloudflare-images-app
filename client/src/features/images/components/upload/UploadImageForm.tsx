@@ -52,6 +52,9 @@ export const UploadImageForm = (_props: unknown): JSX.Element => {
             if (isBlank(formik.values.fileName)) {
                 formik.setFieldValue("fileName", file.name)
             }
+            if (isBlank(formik.values.id)) {
+                formik.setFieldValue("id", file.name)
+            }
         }
         // debugger
     }
