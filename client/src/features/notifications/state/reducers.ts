@@ -80,6 +80,10 @@ export const extraReducers = (builder: ActionReducerMapBuilder<NotificationsStat
         // ---------------------------------------------------------------------
         // Images
         // ---------------------------------------------------------------------
+        .addCase(ImagesActions.submitCreate.fulfilled, (state) => notifySuccess(state, "Image Uploaded"))
+        .addCase(ImagesActions.submitDelete.fulfilled, (state) => notifySuccess(state, "Image Deleted"))
+        .addCase(ImagesActions.submitCreate.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Upload Image"))
+        .addCase(ImagesActions.submitDelete.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Delete Image"))
         .addCase(ImagesActions.fetchOnePage.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Sync Images"))
         // ---------------------------------------------------------------------
         // Variants
