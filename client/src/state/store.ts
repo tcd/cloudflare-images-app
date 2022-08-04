@@ -49,6 +49,7 @@ const persistConfig = getPersistConfig({
         "Core.requests.fetchUsageStats",
         "Images.ids",
         "Images.entities",
+        "Images.searchFilter",
         "Variants.ids",
         "Variants.entities",
     ],

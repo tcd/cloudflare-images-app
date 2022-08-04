@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 
 import { ImageWithoutVariants, isBlank } from "@app/lib"
-import { Selectors } from "@app/state"
+import { Actions, Selectors } from "@app/state"
 import { DataTable, DataTableColumn  } from "@feature/common"
 
 
@@ -36,7 +36,7 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
             cancellationButtonProps: { color: "info",  variant: "contained" },
         })
             .then(() => {
-                // dispatch(Actions.Images.submitDelete(row.id));
+                dispatch(Actions.Images.submitDelete(row.id))
             })
             .catch(() => {
                 console.debug("image delete not confirmed")
@@ -45,7 +45,7 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
 
     return (
         <Stack direction="row" sx={{ whiteSpace: "nowrap" }}>
-            <Tooltip title="Details" placement="top">
+            {/* <Tooltip title="Details" placement="top">
                 <IconButton onClick={handleViewClick}>
                     <EyeIcon />
                 </IconButton>
@@ -54,10 +54,10 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
                 <IconButton onClick={handleEditClick}>
                     <EditIcon />
                 </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Delete" placement="top">
                 <IconButton onClick={handleDeleteClick}>
-                    <DeleteIcon />
+                    <DeleteIcon color="primary" />
                 </IconButton>
             </Tooltip>
         </Stack>
@@ -81,6 +81,13 @@ const columns: DataTableColumn<ImageWithoutVariants>[] = [
         sortable: true,
         align: "center",
         renderFunc: (row) => DateTime.fromISO(row.uploaded).toFormat("yyyy-MM-dd, hh:mm a"),
+    },
+    {
+        field: "id",
+        header: "Actions",
+        sortable: false,
+        align: "center",
+        renderFunc: (row) => <ActionsColumn row={row} />,
     },
 ]
 

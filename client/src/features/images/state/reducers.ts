@@ -6,6 +6,7 @@ import { ImagesEntityAdapter, ImagesState, INITIAL_IMAGES_STATE } from "./state"
 import {
     fetchOnePage,
     submitCreate,
+    submitDelete,
 } from "./thunks"
 import { parseError } from "@app/lib"
 import { CoreActions } from "@feature/core"
@@ -77,8 +78,26 @@ export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => 
         })
         .addCase(submitCreate.fulfilled, (state, { payload }) => {
             state.requests.create.status = "fulfilled"
-            // state.requests.create.response = payload
+            state.requests.create.response = payload
             state.requests.create.updatedAt = DateTime.now().toISO()
-            // ImagesEntityAdapter.upsertOne(state, payload.result)
+            ImagesEntityAdapter.upsertOne(state, payload.result)
+        })
+        // ---------------------------------------------------------------------
+        // Delete Image
+        // ---------------------------------------------------------------------
+        .addCase(submitDelete.pending, (state, action) => {
+            state.requests.delete.status = "pending"
+            state.activeId = action.meta.arg
+        })
+        .addCase(submitDelete.rejected, (state, { payload }) => {
+            state.requests.delete.status = "rejected"
+            state.requests.delete.error = parseError(payload)
+        })
+        .addCase(submitDelete.fulfilled, (state, { payload }) => {
+            state.requests.delete.status = "fulfilled"
+            state.requests.delete.response = payload
+            state.requests.delete.updatedAt = DateTime.now().toISO()
+            ImagesEntityAdapter.removeOne(state, state.activeId)
+            state.activeId = null
         })
 }
