@@ -1,5 +1,6 @@
 import { ImagesSlice } from "./state"
 import {
+    fetchOne,
     fetchOnePage,
     submitCreate,
     submitDelete,
@@ -7,6 +8,7 @@ import {
 
 export const Actions = {
     ...ImagesSlice.actions,
+    fetchOne,
     fetchOnePage,
     submitCreate,
     submitDelete,

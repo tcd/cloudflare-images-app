@@ -1,4 +1,5 @@
 export * from "./fetchAll"
+export * from "./fetchOne"
 export * from "./fetchOnePage"
 export * from "./submitCreate"
 export * from "./submitDelete"

@@ -4,6 +4,7 @@ import { ActionReducerMapBuilder, PayloadAction } from "@reduxjs/toolkit"
 
 import { ImagesEntityAdapter, ImagesState, INITIAL_IMAGES_STATE } from "./state"
 import {
+    fetchOne,
     fetchOnePage,
     submitCreate,
     submitDelete,
@@ -65,6 +66,22 @@ export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => 
                 state.update.inProgress = false
                 state.update.lastCompleted = DateTime.now().toISO()
             }
+        })
+        // ---------------------------------------------------------------------
+        // Fetch One
+        // ---------------------------------------------------------------------
+        .addCase(fetchOne.pending, (state) => {
+            state.requests.fetchOne.status = "pending"
+        })
+        .addCase(fetchOne.rejected, (state, { payload }) => {
+            state.requests.fetchOne.status = "rejected"
+            state.requests.fetchOne.error = parseError(payload)
+        })
+        .addCase(fetchOne.fulfilled, (state, { payload }) => {
+            state.requests.fetchOne.status = "fulfilled"
+            state.requests.fetchOne.response = payload
+            state.requests.fetchOne.updatedAt = DateTime.now().toISO()
+            ImagesEntityAdapter.upsertOne(state, payload.result)
         })
         // ---------------------------------------------------------------------
         // Upload Image

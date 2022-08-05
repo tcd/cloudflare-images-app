@@ -22,7 +22,7 @@ export interface ImagesState {
     searchFilter: string
     requests: {
         fetchAll: RequestState<any>
-        fetchOne: RequestState<any>
+        fetchOne: RequestState<Responses.GetImage>
         fetchOnePage: RequestState<Responses.ListImages>
         create: RequestState<Responses.CreateImage>
         delete: RequestState<Responses.DeleteImage>

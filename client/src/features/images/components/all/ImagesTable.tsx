@@ -2,65 +2,35 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useConfirm } from "material-ui-confirm"
 import { DateTime } from "luxon"
+
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import EyeIcon from "@mui/icons-material/RemoveRedEye"
 import DeleteIcon from "@mui/icons-material/Delete"
-import EditIcon from "@mui/icons-material/Edit"
+// import EditIcon from "@mui/icons-material/Edit"
+import LaunchIcon from "@mui/icons-material/Launch"
 
-import { ImageWithoutVariants, isBlank } from "@app/lib"
+import { ImageWithoutVariants } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
 import { DataTable, DataTableColumn  } from "@feature/common"
 
+export const ImagesTable = (_props: unknown): JSX.Element => {
 
-const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
-
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const confirm = useConfirm()
-
-    const handleViewClick = () => {
-        navigate(`/images/${row.id}`)
-    }
-
-    const handleEditClick = () => {
-        navigate(`/images/${row.id}/edit`)
-    }
-
-    const handleDeleteClick = () => {
-        confirm({
-            title: "Confirm Deletion",
-            description: "Are you sure you want to delete this image?",
-            confirmationButtonProps: { color: "error", variant: "contained" },
-            cancellationButtonProps: { color: "info",  variant: "contained" },
-        })
-            .then(() => {
-                dispatch(Actions.Images.submitDelete(row.id))
-            })
-            .catch(() => {
-                console.debug("image delete not confirmed")
-            })
-    }
+    const rows = useSelector(Selectors.Images.filteredImages)
 
     return (
-        <Stack direction="row" sx={{ whiteSpace: "nowrap" }}>
-            {/* <Tooltip title="Details" placement="top">
-                <IconButton onClick={handleViewClick}>
-                    <EyeIcon />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit" placement="top">
-                <IconButton onClick={handleEditClick}>
-                    <EditIcon />
-                </IconButton>
-            </Tooltip> */}
-            <Tooltip title="Delete" placement="top">
-                <IconButton onClick={handleDeleteClick}>
-                    <DeleteIcon color="primary" />
-                </IconButton>
-            </Tooltip>
-        </Stack>
+        <DataTable
+            rows={rows}
+            columns={columns}
+            noDataMessage="No images found"
+            // progressPending={fetching}
+            pagination={true}
+            paginationServer={false}
+            paginationComponentOptions={{
+                noRowsPerPage: false,
+            }}
+        />
     )
 }
 
@@ -91,18 +61,60 @@ const columns: DataTableColumn<ImageWithoutVariants>[] = [
     },
 ]
 
-export const ImagesTable = (_props: unknown): JSX.Element => {
+const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
 
-    const rows = useSelector(Selectors.Images.filteredImages)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const confirm = useConfirm()
+
+    const creds = useSelector(Selectors.Core.credentials)
+    const externalLink = `https://dash.cloudflare.com/${creds.accountId}/images/images/${row.id}`
+
+    const handleViewClick = () => {
+        navigate(`/images/${row.id}`)
+    }
+
+    const handleEditClick = () => {
+        navigate(`/images/${row.id}/edit`)
+    }
+
+    const handleDeleteClick = () => {
+        confirm({
+            title: "Confirm Deletion",
+            description: "Are you sure you want to delete this image?",
+            confirmationButtonProps: { color: "error", variant: "contained" },
+            cancellationButtonProps: { color: "info",  variant: "contained" },
+        })
+            .then(() => {
+                dispatch(Actions.Images.submitDelete(row.id))
+            })
+            .catch(() => {
+                console.debug("image delete not confirmed")
+            })
+    }
 
     return (
-        <DataTable
-            rows={rows}
-            columns={columns}
-            // progressPending={fetching}
-            pagination={true}
-            paginationServer={false}
-            noDataMessage="No images found"
-        />
+        <Stack direction="row" sx={{ whiteSpace: "nowrap" }}>
+            <Tooltip title="Details" placement="top">
+                <IconButton onClick={handleViewClick}>
+                    <EyeIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+            {/* <Tooltip title="Edit" placement="top">
+                <IconButton onClick={handleEditClick}>
+                    <EditIcon />
+                </IconButton>
+            </Tooltip> */}
+            <Tooltip title="Delete" placement="top">
+                <IconButton onClick={handleDeleteClick}>
+                    <DeleteIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit on Cloudflare" placement="top">
+                <IconButton component="a" href={externalLink} target="_blank" rel="noopener noreferrer">
+                    <LaunchIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+        </Stack>
     )
 }

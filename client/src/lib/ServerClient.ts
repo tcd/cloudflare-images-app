@@ -49,6 +49,12 @@ export class ServerClient {
         return response.data
     }
 
+    public async getImage(imageId: string): Promise<Responses.GetImage> {
+        const request = this.buildRequest({ id: imageId })
+        const response = await this.client.post("images/get", request)
+        return response.data
+    }
+
     public async deleteImage(imageId: string): Promise<Responses.DeleteImage> {
         const request = this.buildRequest({ id: imageId })
         const response = await this.client.post("images/delete", request)
