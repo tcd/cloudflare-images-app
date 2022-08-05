@@ -42,6 +42,19 @@ const selectActiveEntity = (rootState: RootState) => {
     return all.find(x => x.id === id)
 }
 
+const selectActiveSrc = (rootState: RootState) => {
+    const id = selectActiveId(rootState)
+    if (isBlank(id)) {
+        return null
+    }
+    const hash = CoreSelectors.accountHash(rootState)
+    if (isBlank(hash)) {
+        return null
+    }
+    return `https://imagedelivery.net/${hash}/${id}/public`
+
+}
+
 // =============================================================================
 
 export const MiscSelectors = {
@@ -51,6 +64,7 @@ export const MiscSelectors = {
     active: {
         id: selectActiveId,
         entity: selectActiveEntity,
+        src: selectActiveSrc,
     },
     update: {
         inProgress: selectUpdateInProgress,

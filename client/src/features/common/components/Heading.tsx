@@ -54,13 +54,13 @@ export const Heading = (props: HeadingProps): JSX.Element => {
                 </Grid>
             </Grid>
             <If test={crumbsTest}>
-                <Box sx={breadcrumbRowSx}>
-                    <Breadcrumbs>
-                        <>
+                <Grid item xs={2}>
+                    <Box sx={breadcrumbRowSx}>
+                        <Breadcrumbs>
                             {crumbs?.map(crumb => <Crumb key={crumb.title} {...crumb } />)}
-                        </>
-                    </Breadcrumbs>
-                </Box>
+                        </Breadcrumbs>
+                    </Box>
+                </Grid>
             </If>
             <Divider sx={dividerSx} />
         </Box>
@@ -108,8 +108,6 @@ const containerSx: SxProps = {
     flexFlow: "column nowrap",
     boxSizing: "border-box",
 }
-
-
 
 const rowSx: SxProps = {
     display: "flex",

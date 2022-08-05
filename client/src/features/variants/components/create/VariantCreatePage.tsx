@@ -2,9 +2,14 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 
-import { Page } from "@feature/common"
+import { Page, CrumbProps } from "@feature/common"
 import { Selectors } from "@app/state"
 import { VariantCreateForm } from "."
+
+const crumbs: CrumbProps[] = [
+    { title: "Variants", to: "/variants", last: false },
+    { title: "Create", to: "/variants/create", last: true },
+]
 
 export const VariantCreatePage = (_props: unknown): JSX.Element => {
 
@@ -20,7 +25,7 @@ export const VariantCreatePage = (_props: unknown): JSX.Element => {
     }, [navigate, completed])
 
     return (
-        <Page title="New Variant" loading={submitting}>
+        <Page title="New Variant" loading={submitting} crumbs={crumbs}>
             <VariantCreateForm />
         </Page>
     )

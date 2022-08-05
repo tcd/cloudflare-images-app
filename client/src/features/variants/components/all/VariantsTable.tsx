@@ -8,57 +8,25 @@ import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
 import EyeIcon from "@mui/icons-material/RemoveRedEye"
+import LaunchIcon from "@mui/icons-material/Launch"
 
 import { Actions, Selectors } from "@app/state"
 import { DataTable, DataTableColumn  } from "@feature/common"
 
-const ActionsColumn = ({ row }: { row: Cloudflare.Variants.Variant }): JSX.Element => {
+export const VariantsTable = (_props: unknown): JSX.Element => {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const confirm = useConfirm()
-
-    const handleViewClick = () => {
-        navigate(`/variants/${row.id}`)
-    }
-
-    const handleEditClick = () => {
-        navigate(`/variants/${row.id}/edit`)
-    }
-
-    const handleDeleteClick = () => {
-        confirm({
-            title: "Confirm Deletion",
-            description: "Are you sure you want to delete this variant?",
-            confirmationButtonProps: { color: "error", variant: "contained" },
-            cancellationButtonProps: { color: "info",  variant: "contained" },
-        })
-            .then(() => {
-                dispatch(Actions.Variants.submitDelete(row.id))
-            })
-            .catch(() => {
-                console.debug("variant delete not confirmed")
-            })
-    }
+    const rows = useSelector(Selectors.Variants.filtered)
+    const fetching = useSelector(Selectors.Variants.requests.fetchAll.fetching)
 
     return (
-        <Stack direction="row" sx={{ whiteSpace: "nowrap" }}>
-            {/* <Tooltip title="Details" placement="top">
-                <IconButton onClick={handleViewClick}>
-                    <EyeIcon />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit" placement="top">
-                <IconButton onClick={handleEditClick}>
-                    <EditIcon />
-                </IconButton>
-            </Tooltip> */}
-            <Tooltip title="Delete" placement="top">
-                <IconButton onClick={handleDeleteClick}>
-                    <DeleteIcon color="primary" />
-                </IconButton>
-            </Tooltip>
-        </Stack>
+        <DataTable
+            rows={rows}
+            columns={columns}
+            progressPending={fetching}
+            pagination={false}
+            paginationServer={false}
+            noDataMessage="No variants found"
+        />
     )
 }
 
@@ -98,19 +66,60 @@ const columns: DataTableColumn<Cloudflare.Variants.Variant>[] = [
     },
 ]
 
-export const VariantsTable = (_props: unknown): JSX.Element => {
+const ActionsColumn = ({ row }: { row: Cloudflare.Variants.Variant }): JSX.Element => {
 
-    const rows = useSelector(Selectors.Variants.filtered)
-    const fetching = useSelector(Selectors.Variants.requests.fetchAll.fetching)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const confirm = useConfirm()
+
+    const creds = useSelector(Selectors.Core.credentials)
+    const externalLink = `https://dash.cloudflare.com/${creds.accountId}/images/images/${row.id}`
+
+    const handleViewClick = () => {
+        navigate(`/variants/${row.id}`)
+    }
+
+    const handleEditClick = () => {
+        navigate(`/variants/${row.id}/edit`)
+    }
+
+    const handleDeleteClick = () => {
+        confirm({
+            title: "Confirm Deletion",
+            description: "Are you sure you want to delete this variant?",
+            confirmationButtonProps: { color: "error", variant: "contained" },
+            cancellationButtonProps: { color: "info",  variant: "contained" },
+        })
+            .then(() => {
+                dispatch(Actions.Variants.submitDelete(row.id))
+            })
+            .catch(() => {
+                console.debug("variant delete not confirmed")
+            })
+    }
 
     return (
-        <DataTable
-            rows={rows}
-            columns={columns}
-            progressPending={fetching}
-            pagination={false}
-            paginationServer={false}
-            noDataMessage="No variants found"
-        />
+        <Stack direction="row" sx={{ whiteSpace: "nowrap" }}>
+            {/* <Tooltip title="Details" placement="top">
+                <IconButton onClick={handleViewClick}>
+                    <EyeIcon />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit" placement="top">
+                <IconButton onClick={handleEditClick}>
+                    <EditIcon />
+                </IconButton>
+            </Tooltip> */}
+            <Tooltip title="Edit on Cloudflare" placement="top">
+                <IconButton component="a" href={externalLink} target="_blank" rel="noopener noreferrer">
+                    <LaunchIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete" placement="top">
+                <IconButton onClick={handleDeleteClick}>
+                    <DeleteIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+        </Stack>
     )
 }

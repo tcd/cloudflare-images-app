@@ -3,10 +3,18 @@ import { SxProps } from "@mui/material"
 import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 
-import { Heading, OverlaySpinner, RouterHelper } from "."
+import {
+    Heading,
+    OverlaySpinner,
+    RouterHelper,
+    CrumbProps,
+    If,
+} from "."
+import { isBlank } from "@app/lib"
 
 export interface PageProps {
     title?: string
+    crumbs?: CrumbProps[]
     children: ReactNode
     action?: ReactNode
     loading?: boolean
@@ -14,6 +22,7 @@ export interface PageProps {
 
 const defaultProps: PageProps = {
     title: null,
+    crumbs: [],
     children: null,
     action: null,
     loading: false,
@@ -22,18 +31,21 @@ const defaultProps: PageProps = {
 export const Page = (props: PageProps): JSX.Element => {
     const {
         title,
+        crumbs,
         children,
         action,
         loading,
     } = { ...defaultProps, ...props }
 
-    const heading = title ? <Heading title={title}><>{action}</></Heading> : null
-
     return (
         <Container sx={containerSx}>
             <OverlaySpinner open={loading} />
             <RouterHelper />
-            <>{heading}</>
+            <If test={!isBlank(title)}>
+                <Heading title={title} crumbs={crumbs}>
+                    <>{action}</>
+                </Heading>
+            </If>
             <Box sx={contentSx}>
                 <>{children && children}</>
             </Box>

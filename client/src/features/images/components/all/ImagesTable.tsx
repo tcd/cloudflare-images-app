@@ -71,7 +71,7 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
     const externalLink = `https://dash.cloudflare.com/${creds.accountId}/images/images/${row.id}`
 
     const handleViewClick = () => {
-        navigate(`/images/${row.id}`)
+        navigate(`/images/${encodeURIComponent(row.id)}`)
     }
 
     const handleEditClick = () => {
@@ -105,14 +105,14 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
                     <EditIcon />
                 </IconButton>
             </Tooltip> */}
-            <Tooltip title="Delete" placement="top">
-                <IconButton onClick={handleDeleteClick}>
-                    <DeleteIcon color="primary" />
-                </IconButton>
-            </Tooltip>
             <Tooltip title="Edit on Cloudflare" placement="top">
                 <IconButton component="a" href={externalLink} target="_blank" rel="noopener noreferrer">
                     <LaunchIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete" placement="top">
+                <IconButton onClick={handleDeleteClick}>
+                    <DeleteIcon color="primary" />
                 </IconButton>
             </Tooltip>
         </Stack>

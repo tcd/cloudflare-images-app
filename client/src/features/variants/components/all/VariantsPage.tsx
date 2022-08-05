@@ -10,9 +10,13 @@ import AddIcon from "@mui/icons-material/Add"
 import ClearIcon from "@mui/icons-material/Clear"
 
 import { isBlank } from "@app/lib"
-import { DebouncedTextField, Page } from "@feature/common"
+import { DebouncedTextField, Page, CrumbProps } from "@feature/common"
 import { Actions, Selectors } from "@app/state"
 import { VariantsTable } from "./VariantsTable"
+
+const crumbs: CrumbProps[] = [
+    { title: "Variants", to: "/variants", last: true },
+]
 
 export const VariantsPage = (_props: unknown): JSX.Element => {
 
@@ -45,7 +49,7 @@ export const VariantsPage = (_props: unknown): JSX.Element => {
     )
 
     return (
-        <Page title="Variants" action={pageAction} loading={fetching || deleting}>
+        <Page title="Variants" action={pageAction} loading={fetching || deleting} crumbs={crumbs}>
             <VariantsTable />
         </Page>
     )

@@ -1,3 +1,5 @@
+import { useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { DateTime } from "luxon"
 import Stack from "@mui/material/Stack"
@@ -7,14 +9,16 @@ import InputAdornment from "@mui/material/InputAdornment"
 import SyncIcon from "@mui/icons-material/Sync"
 import AddIcon from "@mui/icons-material/Add"
 import ClearIcon from "@mui/icons-material/Clear"
-import FileUploadIcon from "@mui/icons-material/FileUpload"
+// import FileUploadIcon from "@mui/icons-material/FileUpload"
 
 import { isBlank } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
-import { DebouncedTextField, Page } from "@feature/common"
+import { CrumbProps, DebouncedTextField, Page } from "@feature/common"
 import { ImagesTable } from "./ImagesTable"
-import { useRef } from "react"
-import { useNavigate } from "react-router-dom"
+
+const crumbs: CrumbProps[] = [
+    { title: "Images", to: "/images", last: true },
+]
 
 export const ImagesPage = (_props: unknown): JSX.Element => {
 
@@ -48,7 +52,7 @@ export const ImagesPage = (_props: unknown): JSX.Element => {
     )
 
     return (
-        <Page title="Images" action={pageAction} loading={deleting}>
+        <Page title="Images" action={pageAction} loading={deleting} crumbs={crumbs}>
             <ImagesTable />
         </Page>
     )
