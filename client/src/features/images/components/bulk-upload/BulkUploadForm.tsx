@@ -8,6 +8,7 @@ import InputLabel, { InputLabelProps } from "@mui/material/InputLabel"
 import { Card, FormikInput, FormikFileInput, FormikSwitch } from "@feature/common"
 import { Actions } from "@app/state"
 import { ImageForm, isBlank } from "@app/lib"
+import { Previews, MuiDropzone } from "./v2"
 
 const inputLabelProps: InputLabelProps = {
     htmlFor: "trans-input",
@@ -24,6 +25,17 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
         console.log()
     }
 
+    const onDrop = useCallback((acceptedFiles) => {
+        // Do something with the files
+    }, [])
+
+    const {
+        getRootProps,
+        getInputProps,
+        isDragActive,
+    } = useDropzone({ onDrop })
+
+
     // useEffect(() => {
     //     if (editor.current) {
     //         setContainer(editor.current)
@@ -36,7 +48,8 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
         <Card>
             <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
                 <Box>
-
+                    {/* <Previews /> */}
+                    <MuiDropzone />
                 </Box>
                 <Box sx={{ mt: 3 }}>
                     <LoadingButton
