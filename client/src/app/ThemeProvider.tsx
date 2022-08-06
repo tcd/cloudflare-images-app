@@ -4,13 +4,9 @@ import {
     CssBaseline,
     ThemeProvider as MuiThemeProvider,
 } from "@mui/material"
-import { ConfirmProvider } from "material-ui-confirm"
 
 import { Selectors } from "@app/state"
 import { CloudflareThemes } from "@app/lib"
-import { AppNotifications } from "@feature/notifications"
-import { FetchAllHandler } from "src/features/images/components/FetchAllHandler"
-
 
 export interface ThemeProviderProps {
     children: ReactNode
@@ -42,11 +38,7 @@ export const ThemeProvider = ({ children = null }: ThemeProviderProps): JSX.Elem
     return (
         <MuiThemeProvider theme={theme}>
             <CssBaseline />
-            <AppNotifications />
-            <FetchAllHandler />
-            <ConfirmProvider>
-                {children && children}
-            </ConfirmProvider>
+            {children && children}
         </MuiThemeProvider>
     )
 }
