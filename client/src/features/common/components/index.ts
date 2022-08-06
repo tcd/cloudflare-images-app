@@ -1,5 +1,6 @@
 export * from "./forms"
 export * from "./formik"
+export * from "./mui-dropzone"
 
 export * from "./Card"
 export * from "./Crumb"

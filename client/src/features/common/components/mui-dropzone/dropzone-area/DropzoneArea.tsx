@@ -59,9 +59,10 @@ type DropzoneAreaState = {
  * It supports all props of `DropzoneAreaBase` but keeps the files state internally.
  *
  * ### Note
+ *
  * To listen to file changes, use `onChange` event handler and notice that `onDelete` returns a `File` instance instead of `FileObject`.
  */
-class DropzoneArea extends PureComponent<DropzoneAreaProps, DropzoneAreaState> {
+export class DropzoneArea extends PureComponent<DropzoneAreaProps, DropzoneAreaState> {
 
     public static defaultProps = {
         clearOnUnmount: true,
@@ -179,5 +180,3 @@ class DropzoneArea extends PureComponent<DropzoneAreaProps, DropzoneAreaState> {
         )
     }
 }
-
-export default DropzoneArea
