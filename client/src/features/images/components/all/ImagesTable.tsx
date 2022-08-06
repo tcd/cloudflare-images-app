@@ -2,7 +2,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useConfirm } from "material-ui-confirm"
 import { DateTime } from "luxon"
+import { useQueryParam, NumberParam } from "use-query-params"
 
+
+import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
@@ -10,14 +13,34 @@ import EyeIcon from "@mui/icons-material/RemoveRedEye"
 import DeleteIcon from "@mui/icons-material/Delete"
 import LaunchIcon from "@mui/icons-material/Launch"
 
-import { ImageWithoutVariantsWithSrc } from "@app/lib"
+import { ImageWithoutVariantsWithSrc, isBlank } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
 import { DataTable, DataTableColumn  } from "@feature/common"
-import Box from "@mui/material/Box"
 
 export const ImagesTable = (_props: unknown): JSX.Element => {
 
     const rows = useSelector(Selectors.Images.all.filteredWithSrc)
+
+    const [currentPage, setCurrentPage] = useQueryParam("page", NumberParam, { updateType: "replace" })
+    const [perPage, setPerPage]         = useQueryParam("rows", NumberParam, { updateType: "replace" })
+
+    // if (isBlank(perPage)) {
+    //     setPerPage(10)
+    // }
+
+    const handleChangePage = (page: number, totalRows: number): void => {
+        setCurrentPage(page)
+        // setPerPage(currentRowsPerPage)
+        console.log(currentPage)
+        // console.log(currentPageArg)
+    }
+
+    const handleChangeRowsPerPage = (currentRowsPerPage: number, currentPageArg: number): void => {
+        setPerPage(currentRowsPerPage)
+        // setCurrentPage(currentPageArg)
+        // console.log(currentPage)
+        // console.log(currentPageArg)
+    }
 
     return (
         <DataTable
@@ -27,9 +50,13 @@ export const ImagesTable = (_props: unknown): JSX.Element => {
             // progressPending={fetching}
             pagination={true}
             paginationServer={false}
+            paginationPerPage={15}
             paginationComponentOptions={{
                 noRowsPerPage: false,
             }}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            // paginationRowsPerPageOptions={[ 15, 20, 25, 30 ]}
+            onChangePage={handleChangePage}
         />
     )
 }
@@ -70,7 +97,7 @@ const columns: DataTableColumn<ImageWithoutVariantsWithSrc>[] = [
 
 const ImgColumn = ({ image }: { image: ImageWithoutVariantsWithSrc }): JSX.Element => {
     return (
-        <Box sx={{ height: "190px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Box sx={{ width: "100px", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <img
                 style={{
                     maxWidth: "100%",

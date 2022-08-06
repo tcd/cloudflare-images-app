@@ -1,5 +1,8 @@
 import { Provider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
+import { QueryParamProvider } from "use-query-params"
+import { ReactRouter6Adapter } from "use-query-params/adapters/react-router-6"
+import { parse, stringify } from "query-string"
 import { PersistGate } from "redux-persist/integration/react"
 import { ConfirmProvider } from "material-ui-confirm"
 
@@ -18,7 +21,15 @@ export const App = () => {
                     <FetchAllHandler />
                     <ConfirmProvider>
                         <Router>
-                            <Routes />
+                            <QueryParamProvider
+                                adapter={ReactRouter6Adapter}
+                                options={{
+                                    searchStringToObject: parse,
+                                    objectToSearchString: stringify,
+                                }}
+                            >
+                                <Routes />
+                            </QueryParamProvider>
                         </Router>
                     </ConfirmProvider>
                 </ThemeProvider>
