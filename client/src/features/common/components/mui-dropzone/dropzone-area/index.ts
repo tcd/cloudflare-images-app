@@ -1,1 +1,1 @@
-export * from "./DropzoneArea"
+export * from "./_index"

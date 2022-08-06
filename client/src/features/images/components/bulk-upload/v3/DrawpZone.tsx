@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { DropzoneArea } from "@feature/common"
+import { DropZoneArea } from "@feature/common"
 
 export const DrawpZone = (_props: unknown): JSX.Element => {
     const [files, setFiles] = useState([])
@@ -10,7 +10,7 @@ export const DrawpZone = (_props: unknown): JSX.Element => {
     }
 
     return (
-        <DropzoneArea
+        <DropZoneArea
             onChange={handleChange}
             filesLimit={25}
         />

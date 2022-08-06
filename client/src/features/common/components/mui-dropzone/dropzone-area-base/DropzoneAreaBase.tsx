@@ -1,26 +1,24 @@
-import type { AlertColor } from "@mui/material"
-import { SvgIconComponent } from "@mui/icons-material"
+import type {
+    AlertColor,
+    BoxProps,
+    SnackbarOrigin,
+    Theme,
+    SxProps,
+} from "@mui/material"
+import { PureComponent } from "react"
+import clsx from "clsx"
+import Box from "@mui/material/Box"
+import Snackbar from "@mui/material/Snackbar"
+import Typography from "@mui/material/Typography"
 import AttachFileIcon from "@mui/icons-material/AttachFile"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
-import { Theme } from "@mui/material"
-import Box from "@mui/material/Box"
-import { BoxProps } from "@mui/material/Box"
-import { GridProps } from "@mui/material/Grid"
-import Snackbar, { SnackbarOrigin, SnackbarProps } from "@mui/material/Snackbar"
-import Typography, { TypographyProps } from "@mui/material/Typography"
-import clsx from "clsx"
-import {
-    ComponentProps,
-    Fragment,
-    HTMLProps,
-    PureComponent,
-} from "react"
-import Dropzone, { DropEvent, DropzoneProps, FileRejection, Accept } from "react-dropzone"
+import Dropzone, { DropzoneProps } from "react-dropzone"
 
 // =============================================================================
 
 import { convertBytesToMbsOrKbs, isImage, readFile } from "../helpers"
-import { FileObject } from "../types"
+import { FileObject, GetPreviewIconFunc } from "../types"
+import { DropzoneAreaBaseProps } from "./props"
 import { withTheme } from "../with-theme"
 import { PreviewList, PreviewListProps } from "../PreviewList"
 import { SnackbarContentWrapper } from "../SnackbarContentWrapper"
@@ -32,11 +30,10 @@ const defaultSnackbarAnchorOrigin: SnackbarOrigin = {
     vertical: "bottom",
 }
 
-const defaultGetPreviewIcon: PreviewListProps["getPreviewIcon"] = (fileObject, classes) => {
+const defaultGetPreviewIcon: GetPreviewIconFunc = (fileObject, classes) => {
     const { data, file } = fileObject || {}
     if (isImage(file)) {
         const src = typeof data === "string" ? data : undefined
-
         return <img className={classes?.image} role="presentation" src={src} />
     }
 
@@ -59,196 +56,61 @@ const defaultGetPreviewIcon: PreviewListProps["getPreviewIcon"] = (fileObject, c
     )
 }
 
-export type DropzoneAreaBaseClasses = {
-    /** Material-UI class applied to the root Dropzone div */
-    root: string
-    /** Material-UI class applied to the Dropzone when 'active' */
-    active: string
-    /** Material-UI class applied to the Dropzone when 'invalid' */
-    invalid: string
-    /** Material-UI class applied to the Dropzone text container div */
-    textContainer: string
-    /** Material-UI class applied to the Dropzone text */
-    text: string
-    /** Material-UI class applied to the Dropzone icon */
-    icon: string
-}
-
-export type DropzoneAreaBaseProps = {
-    classes?: Partial<DropzoneAreaBaseClasses>
-    /**
-     * File types to accept.
-     *
-     * @see [react-dropzone docs](https://react-dropzone.js.org/#section-accepting-specific-file-types)
-     * @see [react-dropzone/issues/1220](https://github.com/react-dropzone/react-dropzone/issues/1220)
-     */
-    accept?: Accept
-    /** Maximum number of files that can be loaded into the dropzone. */
-    filesLimit?: number
-    /** Currently loaded files. */
-    fileObjects: FileObject[]
-    /** Icon to be displayed inside the dropzone area. */
-    Icon?: SvgIconComponent
-    /** Maximum file size (in bytes) that the dropzone will accept. */
-    maxFileSize?: number
-    /** Text inside the dropzone. */
-    dropzoneText?: string
-    /** The label for the file preview section. */
-    previewText?: string
-    /** Shows previews **BELOW** the dropzone. */
-    showPreviews?: boolean
-    /** Shows preview **INSIDE** the dropzone area. */
-    showPreviewsInDropzone?: boolean
-    /** Shows file name under the image. */
-    showFileNamesInPreview?: boolean
-    /** Shows file name under the dropzone image. */
-    showFileNames?: boolean
-    /**
-     * Custom CSS classNames for preview Grid components.
-     *
-     * Should be in the form {container: string, item: string, image: string}.
-     */
-    previewGridClasses?: {
-        container?: string
-        item?: string
-        image?: string
-    }
-    /**
-     * Props to pass to the Material-UI Grid components.
-     *
-     * Should be in the form {container: GridProps, item: GridProps}.
-     *
-     * @see See [Material-UI Grid](https://material-ui.com/api/grid/#props) for available GridProps values.
-     */
-    previewGridProps?: {
-        container?: GridProps
-        item?: GridProps
-    }
-    /**
-     * Shows styled Material-UI Snackbar when files are dropped, deleted or rejected.
-     *
-     * - can be a boolean ("global" `true` or `false` for all alerts).
-     * - can be an array, with values 'error', 'info', 'success', 'warning' to select to view only certain alerts:
-     *  - showAlerts={['error']} for only errors.
-     *  - showAlerts={['error', 'info']} for both errors and info.
-     *  - showAlerts={['error', 'success', 'info', 'warning']} is same as showAlerts={true}.
-     *  - showAlerts={[]} is same as showAlerts={false}.
-     */
-    showAlerts?: boolean | AlertColor[]
-    /**
-     * Props to pass to the Material-UI Snackbar components.
-     * Requires `showAlerts` prop to be `true`.
-     *
-     * @see See [Material-UI Snackbar](https://material-ui.com/api/snackbar/#props) for available values.
-     */
-    alertSnackbarProps?: SnackbarProps
-    /**
-     * Props to pass to the Dropzone component.
-     *
-     * @see See [Dropzone props](https://react-dropzone.js.org/#src) for available values.
-     */
-    dropzoneProps?: DropzoneProps
-    /**
-     * Attributes applied to the input element.
-     *
-     * @see See [MDN Input File attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Additional_attributes) for available values.
-     */
-    inputProps?: HTMLProps<HTMLInputElement>
-    clearOnUnmount?: boolean
-    /** Custom CSS class name for dropzone container. */
-    dropzoneClass?: string
-    /** Custom CSS class name for text inside the container. */
-    dropzoneParagraphClass?: string
-    /** Disable feedback effect when dropping rejected files. */
-    disableRejectionFeedback?: boolean
-    /**
-     * Fired when new files are added to dropzone.
-     *
-     * @param {FileObject[]} newFiles The new files added to the dropzone.
-     */
-    onAdd?: (newFiles: FileObject[]) => void
-    /**
-     * Fired when a file is deleted from the previews panel.
-     *
-     * @param {FileObject} deletedFileObject The file that was removed.
-     * @param {number} index The index of the removed file object.
-     */
-    onDelete?: (deletedFileObject: FileObject, index: number) => void
-    /**
-     * Fired when the user drops files into the dropzone.
-     *
-     * @param {File[]} droppedFiles All the files dropped into the dropzone.
-     * @param {Event} event The react-dropzone drop event.
-     */
-    onDrop?: (droppedFiles: File[], event: DropEvent) => void
-    /**
-     * Fired when a file is rejected because of wrong file type, size or goes beyond the filesLimit.
-     *
-     * @param {FileRejection[]} rejectedFiles All the rejected files.
-     * @param {Event} event The react-dropzone drop event.
-     */
-    onDropRejected?: (rejectedFiles: FileRejection[], event: DropEvent) => void
-    /**
-     * Fired when an alert is triggered.
-     *
-     * @param {string} message Alert message.
-     * @param {string} variant One of "error", "info", "success".
-     */
-    onAlert?: (message: string, variant: AlertColor) => void
-    /**
-     * Get alert message to display when files limit is exceed.
-     *
-     * *Default*: "Maximum allowed number of files exceeded. Only ${filesLimit} allowed"
-     *
-     * @param {number} filesLimit The `filesLimit` currently set for the component.
-     */
-    getFileLimitExceedMessage?: (filesLimit: number) => string
-    /**
-     * Get alert message to display when a new file is added.
-     *
-     * *Default*: "File ${fileName} successfully added."
-     *
-     * @param {string} fileName The newly added file name.
-     */
-    getFileAddedMessage?: (fileName: string) => string
-    /**
-     * Get alert message to display when a file is removed.
-     *
-     * *Default*: "File ${fileName} removed."
-     *
-     * @param {string} fileName The name of the removed file.
-     */
-    getFileRemovedMessage?: (fileName: string) => string
-    /**
-     * Get alert message to display when a file is rejected onDrop.
-     *
-     * *Default*: "File ${rejectedFile.name} was rejected."
-     *
-     * @param {FileRejection} rejectedFile The file that got rejected
-     * @param {Accept} accept The `accept` prop currently set for the component
-     * @param {number} maxFileSize The `maxFileSize` prop currently set for the component
-     */
-    getDropRejectMessage?: (
-        rejectedFile: FileRejection,
-        accept: Accept,
-        maxFileSize: number
-    ) => string
-    /**
-     * A function which determines which icon to display for a file preview.
-     *
-     * *Default*: If its an image then displays a preview the image, otherwise it will display an attachment icon
-     *
-     * @param {FileObject} fileObject The file which the preview will belong to
-     * @param {Object} classes The classes for the file preview icon, in the default case we use the 'image' className.
-     */
-    getPreviewIcon?: PreviewListProps["getPreviewIcon"]
-}
-
 type DropzoneAreaBaseState = {
     openSnackBar: boolean
     snackbarMessage: string
     snackbarVariant: AlertColor
 }
+
+type DefaultSx = {
+    root: SxProps
+    active: SxProps
+    invalid: SxProps
+    textContainer: SxProps
+    text: SxProps
+    icon: SxProps
+}
+
+const DEFAULT_PROPS: Partial<DropzoneAreaBaseProps> = {
+    accept: {},
+    filesLimit: 3,
+    fileObjects: [] as FileObject[],
+    maxFileSize: 3_000_000,
+    dropzoneText: "Drag and drop a file here or click",
+    previewText: "Preview:",
+    disableRejectionFeedback: false,
+    showPreviews: false, // By default previews show up under in the dialog and inside in the standalone
+    showPreviewsInDropzone: true,
+    showFileNames: false,
+    showFileNamesInPreview: false,
+    previewGridClasses: {},
+    previewGridProps: {},
+    showAlerts: true,
+    alertSnackbarProps: {
+        anchorOrigin: {
+            horizontal: "left",
+            vertical: "bottom",
+        },
+        autoHideDuration: 6000,
+    },
+    getFileLimitExceedMessage: (filesLimit: number): string => `Maximum allowed number of files exceeded. Only ${filesLimit} allowed`,
+    getFileAddedMessage: ((fileName) => `File ${fileName} successfully added.`) as NonNullable<DropzoneAreaBaseProps["getFileAddedMessage"]>,
+    getPreviewIcon: defaultGetPreviewIcon,
+    getFileRemovedMessage: ((fileName) => `File ${fileName} removed.`) as NonNullable<DropzoneAreaBaseProps["getFileRemovedMessage"]>,
+    getDropRejectMessage: ((rejectedFile, accept, maxFileSize): string => {
+        let message = `File ${rejectedFile.file.name} was rejected. `
+        if (!Object.values(accept).flat().includes(rejectedFile.file.type)) {
+            message += "File type not supported. "
+        }
+        if (rejectedFile?.file.size > maxFileSize) {
+            message += "File is too big. Size limit is " + convertBytesToMbsOrKbs(maxFileSize) + ". "
+        }
+        return message
+    }) as NonNullable<DropzoneAreaBaseProps["getDropRejectMessage"]>,
+}
+
+// const DEFAULT_SX: DefaultSx = {
+// }
 
 /**
  * This components creates a Material-UI Dropzone, with previews and snackbar notifications.
@@ -258,52 +120,7 @@ class DropzoneAreaBase extends PureComponent<
     DropzoneAreaBaseState
 > {
 
-    public static defaultProps: Partial<DropzoneAreaBaseProps> = {
-        accept: {},
-        filesLimit: 3,
-        fileObjects: [] as FileObject[],
-        maxFileSize: 3_000_000,
-        dropzoneText: "Drag and drop a file here or click",
-        previewText: "Preview:",
-        disableRejectionFeedback: false,
-        showPreviews: false, // By default previews show up under in the dialog and inside in the standalone
-        showPreviewsInDropzone: true,
-        showFileNames: false,
-        showFileNamesInPreview: false,
-        previewGridClasses: {},
-        previewGridProps: {},
-        showAlerts: true,
-        alertSnackbarProps: {
-            anchorOrigin: {
-                horizontal: "left",
-                vertical: "bottom",
-            },
-            autoHideDuration: 6000,
-        },
-        getFileLimitExceedMessage: ((filesLimit) =>
-            `Maximum allowed number of files exceeded. Only ${filesLimit} allowed`) as NonNullable<
-      DropzoneAreaBaseProps["getFileLimitExceedMessage"]
-    >,
-        getFileAddedMessage: ((fileName) =>
-            `File ${fileName} successfully added.`) as NonNullable<
-      DropzoneAreaBaseProps["getFileAddedMessage"]
-    >,
-        getPreviewIcon: defaultGetPreviewIcon,
-        getFileRemovedMessage: ((fileName) =>
-            `File ${fileName} removed.`) as NonNullable<
-      DropzoneAreaBaseProps["getFileRemovedMessage"]
-    >,
-        getDropRejectMessage: ((rejectedFile, accept, maxFileSize) => {
-            let message = `File ${rejectedFile.file.name} was rejected. `
-            if (!Object.values(accept).flat().includes(rejectedFile.file.type)) {
-                message += "File type not supported. "
-            }
-            if (rejectedFile?.file.size > maxFileSize) {
-                message += "File is too big. Size limit is " + convertBytesToMbsOrKbs(maxFileSize) + ". "
-            }
-            return message
-        }) as NonNullable<DropzoneAreaBaseProps["getDropRejectMessage"]>,
-    }
+    public static defaultProps: Partial<DropzoneAreaBaseProps> = DEFAULT_PROPS
 
     public state: DropzoneAreaBaseState = {
         openSnackBar: false,
@@ -322,17 +139,14 @@ class DropzoneAreaBase extends PureComponent<
     public handleDropAccepted: DropzoneProps["onDropAccepted"] = async (acceptedFiles, evt) => {
         const {
             fileObjects,
-            filesLimit = DropzoneAreaBase.defaultProps.filesLimit,
-            getFileAddedMessage = DropzoneAreaBase.defaultProps.getFileAddedMessage,
-            getFileLimitExceedMessage = DropzoneAreaBase.defaultProps.getFileLimitExceedMessage,
+            filesLimit = DEFAULT_PROPS.filesLimit,
+            getFileAddedMessage = DEFAULT_PROPS.getFileAddedMessage,
+            getFileLimitExceedMessage = DEFAULT_PROPS.getFileLimitExceedMessage,
             onAdd,
             onDrop,
         } = this.props
 
-        if (
-            filesLimit > 1 &&
-            fileObjects.length + acceptedFiles.length > filesLimit
-        ) {
+        if (filesLimit > 1 && fileObjects.length + acceptedFiles.length > filesLimit) {
             this.setState(
                 {
                     openSnackBar: true,
@@ -383,11 +197,11 @@ class DropzoneAreaBase extends PureComponent<
     public handleDropRejected: DropzoneProps["onDropRejected"] = (rejectedFiles, evt) => {
         const {
             accept,
-            filesLimit = DropzoneAreaBase.defaultProps.filesLimit,
+            filesLimit = DEFAULT_PROPS.filesLimit,
             fileObjects,
-            getDropRejectMessage = DropzoneAreaBase.defaultProps.getDropRejectMessage,
-            getFileLimitExceedMessage = DropzoneAreaBase.defaultProps.getFileLimitExceedMessage,
-            maxFileSize = DropzoneAreaBase.defaultProps.maxFileSize,
+            getDropRejectMessage = DEFAULT_PROPS.getDropRejectMessage,
+            getFileLimitExceedMessage = DEFAULT_PROPS.getFileLimitExceedMessage,
+            maxFileSize = DEFAULT_PROPS.maxFileSize,
             onDropRejected,
         } = this.props
 
@@ -423,7 +237,7 @@ class DropzoneAreaBase extends PureComponent<
 
         const {
             fileObjects,
-            getFileRemovedMessage = DropzoneAreaBase.defaultProps.getFileRemovedMessage,
+            getFileRemovedMessage = DEFAULT_PROPS.getFileRemovedMessage,
             onDelete,
         } = this.props
 
@@ -451,7 +265,7 @@ class DropzoneAreaBase extends PureComponent<
         })
     }
 
-    public defaultSx = {
+    public defaultSx: DefaultSx = {
         root: {
             "@keyframes progress": {
                 "0%": {
@@ -471,30 +285,30 @@ class DropzoneAreaBase extends PureComponent<
             boxSizing: "border-box",
             cursor: "pointer",
             overflow: "hidden",
-        } as BoxProps["sx"],
+        },
         active: {
             animation: "$progress 2s linear infinite !important",
             backgroundImage: `repeating-linear-gradient(-45deg, ${this.props.theme.palette.background.paper}, ${this.props.theme.palette.background.paper} 25px, ${this.props.theme.palette.divider} 25px, ${this.props.theme.palette.divider} 50px)`,
             backgroundSize: "150% 100%",
             border: "solid",
             borderColor: "primary.light",
-        } as BoxProps["sx"],
+        },
         invalid: {
             backgroundImage: `repeating-linear-gradient(-45deg, ${this.props.theme.palette.error.light}, ${this.props.theme.palette.error.light} 25px, ${this.props.theme.palette.error.dark} 25px, ${this.props.theme.palette.error.dark} 50px)`,
             borderColor: "error.main",
-        } as BoxProps["sx"],
+        },
         textContainer: {
             textAlign: "center",
-        } as BoxProps["sx"],
+        },
         text: {
             marginBottom: 3,
             marginTop: 3,
-        } as TypographyProps["sx"],
+        },
         icon: {
             width: 51,
             height: 51,
             color: "text.primary",
-        } as ComponentProps<SvgIconComponent>["sx"],
+        },
     }
 
     public render() {
@@ -508,8 +322,8 @@ class DropzoneAreaBase extends PureComponent<
             dropzoneProps,
             dropzoneText,
             fileObjects,
-            filesLimit = DropzoneAreaBase.defaultProps.filesLimit,
-            getPreviewIcon = DropzoneAreaBase.defaultProps.getPreviewIcon,
+            filesLimit = DEFAULT_PROPS.filesLimit,
+            getPreviewIcon = DEFAULT_PROPS.getPreviewIcon,
             Icon,
             inputProps,
             maxFileSize,
@@ -530,7 +344,7 @@ class DropzoneAreaBase extends PureComponent<
         const previewsInDropzoneVisible = showPreviewsInDropzone && fileObjects.length > 0
 
         return (
-            <Fragment>
+            <>
                 <Dropzone
                     {...dropzoneProps}
                     accept={accept}
@@ -601,7 +415,7 @@ class DropzoneAreaBase extends PureComponent<
                 </Dropzone>
 
                 {previewsVisible ? (
-                    <Fragment>
+                    <>
                         <Typography variant="subtitle1" component="span">
                             {previewText}
                         </Typography>
@@ -614,7 +428,7 @@ class DropzoneAreaBase extends PureComponent<
                             previewGridClasses={previewGridClasses}
                             previewGridProps={previewGridProps}
                         />
-                    </Fragment>
+                    </>
                 ) : null}
 
                 {(typeof showAlerts === "boolean" && showAlerts) ||
@@ -633,7 +447,7 @@ class DropzoneAreaBase extends PureComponent<
                             />
                         </Snackbar>
                     ) : null}
-            </Fragment>
+            </>
         )
     }
 }

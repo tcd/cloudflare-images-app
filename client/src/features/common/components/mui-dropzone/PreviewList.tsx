@@ -5,22 +5,14 @@ import Fab from "@mui/material/Fab"
 import Typography from "@mui/material/Typography"
 import DeleteIcon from "@mui/icons-material/Delete"
 
-import { FileObject } from "./types"
-
-type GetPreviewIconFunc = (
-    fileObject: FileObject,
-    classes: PreviewListProps["classes"],
-) => JSX.Element
-
-export interface PreviewListPropsClasses {
-    image?: string
-    imageContainer?: string
-    removeButton?: string
-    root?: string
-}
+import {
+    FileObject,
+    GetPreviewIconFunc,
+    PreviewListClasses,
+} from "./types"
 
 export interface PreviewListProps {
-    classes?: PreviewListPropsClasses
+    classes?: PreviewListClasses
     fileObjects: FileObject[]
     getPreviewIcon: GetPreviewIconFunc
     handleRemove: (index: number) => React.EventHandler<any>
