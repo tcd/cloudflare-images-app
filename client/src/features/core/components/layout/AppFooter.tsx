@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import BottomNavigation from "@mui/material/BottomNavigation"
 import BottomNavigationAction from "@mui/material/BottomNavigationAction"
-import Paper, { PaperProps} from "@mui/material/Paper"
+import Paper, { PaperProps } from "@mui/material/Paper"
 
 import { NavItemProps } from "@app/lib"
 import { navItems } from "./nav-items"
@@ -39,7 +39,7 @@ export const AppFooter = (_props: unknown): JSX.Element => {
 
 // =============================================================================
 
-export const FooterAction = (props: NavItemProps): JSX.Element => {
+const FooterAction = (props: NavItemProps): JSX.Element => {
 
     const {
         title,
@@ -66,5 +66,3 @@ export const FooterAction = (props: NavItemProps): JSX.Element => {
         />
     )
 }
-
-// =============================================================================

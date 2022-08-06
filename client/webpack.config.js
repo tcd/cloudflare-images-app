@@ -80,6 +80,10 @@ const webpackConfig = {
                     "css-loader",
                 ],
             },
+            // {
+            //     test: /\.(png|svg)/,
+            //     type: "asset/resource",
+            // },
         ],
     },
 }
