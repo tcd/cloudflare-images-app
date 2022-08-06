@@ -10,11 +10,18 @@ import SyncIcon from "@mui/icons-material/Sync"
 import AddIcon from "@mui/icons-material/Add"
 import ClearIcon from "@mui/icons-material/Clear"
 // import FileUploadIcon from "@mui/icons-material/FileUpload"
+import {
+    mdiFileUpload,
+    mdiFileUploadOutline,
+    mdiFolderUpload,
+    mdiFolderUploadOutline,
+    mdiFolderArrowUp,
+} from "@mdi/js"
 
 import { isBlank } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
-import { CrumbProps, DebouncedTextField, Page } from "@feature/common"
-import { ImagesTable, ImagesGrid } from "."
+import { CrumbProps, DebouncedTextField, Page, MdiIcon } from "@feature/common"
+import { ImagesTable, ImagesGrid } from "./views"
 
 const crumbs: CrumbProps[] = [
     { title: "Images", to: "/images", last: true },
@@ -35,6 +42,10 @@ export const ImagesPage = (_props: unknown): JSX.Element => {
         navigate("/images/create")
     }
 
+    const handleBulkUploadClick = () => {
+        navigate("/images/bulk-upload")
+    }
+
     const pageAction = (
         <Stack direction="row" alignItems="flex-end">
             <Filter />
@@ -45,7 +56,14 @@ export const ImagesPage = (_props: unknown): JSX.Element => {
             </Tooltip>
             <Tooltip title="Upload Image" placement="top">
                 <IconButton onClick={handleCreateClick} sx={{}}>
-                    <AddIcon color="primary" />
+                    {/* <AddIcon color="primary" /> */}
+                    <MdiIcon path={mdiFileUpload} />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Bulk Upload" placement="top">
+                <IconButton onClick={handleBulkUploadClick} sx={{}}>
+                    {/* <MdiIcon path={mdiFolderArrowUp} /> */}
+                    <MdiIcon path={mdiFolderUpload} />
                 </IconButton>
             </Tooltip>
         </Stack>
