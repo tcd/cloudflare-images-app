@@ -1,4 +1,6 @@
-import { Box, CircularProgress, SxProps } from "@mui/material"
+import type { SxProps } from "@mui/material"
+import Box from "@mui/material/Box"
+import CircularProgress from "@mui/material/CircularProgress"
 
 const FLEX_CENTER_SX: SxProps = {
     display: "flex",

@@ -1,9 +1,6 @@
-import {
-    SxProps,
-    TextFieldProps,
-} from "@mui/material"
+import type { SxProps } from "@mui/material"
 import MenuItem from "@mui/material/MenuItem"
-import TextField from "@mui/material/TextField"
+import TextField, { TextFieldProps } from "@mui/material/TextField"
 
 const defaultCustomSelectStyles: SxProps = {
     width: "250px",

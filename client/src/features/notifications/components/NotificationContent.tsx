@@ -1,6 +1,6 @@
 import { forwardRef, SyntheticEvent } from "react"
-import { AlertProps, SxProps } from "@mui/material"
-import Alert from "@mui/material/Alert"
+import type { SxProps } from "@mui/material"
+import Alert, { AlertProps } from "@mui/material/Alert"
 import IconButton from "@mui/material/IconButton"
 import CloseIcon from "@mui/icons-material/Close"
 

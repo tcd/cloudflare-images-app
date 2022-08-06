@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { SxProps } from "@mui/material"
+import type { SxProps } from "@mui/material"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"

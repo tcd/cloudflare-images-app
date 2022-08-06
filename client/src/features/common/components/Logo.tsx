@@ -1,5 +1,5 @@
 import merge from "lodash/merge"
-import { SxProps } from "@mui/material"
+import type { SxProps } from "@mui/material"
 import Box from "@mui/material/Box"
 
 import { CLOUDFLARE_COLORS } from "@app/lib"

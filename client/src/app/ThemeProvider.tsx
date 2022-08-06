@@ -1,9 +1,9 @@
 import { ReactNode } from "react"
 import { useSelector } from "react-redux"
 import {
-    CssBaseline,
     ThemeProvider as MuiThemeProvider,
 } from "@mui/material"
+import CssBaseline from "@mui/material/CssBaseline"
 
 import { Selectors } from "@app/state"
 import { CloudflareThemes } from "@app/lib"

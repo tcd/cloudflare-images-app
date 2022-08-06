@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { SxProps } from "@mui/material"
+import type { SxProps } from "@mui/material"
 import Box from "@mui/material/Box"
 import Grid, { GridProps } from "@mui/material/Grid"
 import Divider from "@mui/material/Divider"

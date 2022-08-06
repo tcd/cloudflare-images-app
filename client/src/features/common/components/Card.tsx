@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { SxProps } from "@mui/material"
+import type { SxProps } from "@mui/material"
 import Box from "@mui/material/Box"
 import MuiCard, { CardProps as MuiCardProps } from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
