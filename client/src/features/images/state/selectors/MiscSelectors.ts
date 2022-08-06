@@ -1,4 +1,4 @@
-import { isBlank } from "@app/lib"
+import { isBlank, ImageWithoutVariantsWithSrc } from "@app/lib"
 import { RootState } from "@app/state"
 import { CoreSelectors } from "@feature/core"
 import { EntitySelectors } from "./EntitySelectors"
@@ -23,6 +23,17 @@ const selectAll = (rootState: RootState) => {
     return EntitySelectors.selectAll(rootState) ?? []
 }
 
+const selectAllWithSrc = (rootState: RootState): ImageWithoutVariantsWithSrc[] => {
+    const hash = CoreSelectors.accountHash(rootState)
+    if (isBlank(hash)) {
+        return []
+    }
+    return selectAll(rootState).map(x => ({
+        ...x,
+        src: `https://imagedelivery.net/${hash}/${x.id}/public`,
+    }))
+}
+
 const selectFiltered = (rootState: RootState) => {
     const all = selectAll(rootState)
     const filter = selectSearchFilter(rootState)
@@ -31,6 +42,17 @@ const selectFiltered = (rootState: RootState) => {
     }
     const filtered = all.filter(x => (x.id + x.filename)?.toLocaleLowerCase().includes(filter))
     return filtered
+}
+
+const selectFilteredWithSrc = (rootState: RootState): ImageWithoutVariantsWithSrc[] => {
+    const hash = CoreSelectors.accountHash(rootState)
+    if (isBlank(hash)) {
+        return []
+    }
+    return selectFiltered(rootState).map(x => ({
+        ...x,
+        src: `https://imagedelivery.net/${hash}/${x.id}/public`,
+    }))
 }
 
 const selectActiveEntity = (rootState: RootState) => {
@@ -52,15 +74,17 @@ const selectActiveSrc = (rootState: RootState) => {
         return null
     }
     return `https://imagedelivery.net/${hash}/${id}/public`
-
 }
 
 // =============================================================================
 
 export const MiscSelectors = {
-    allImages: selectAll,
-    filteredImages: selectFiltered,
-    searchFilter: selectSearchFilter,
+    all: {
+        all: selectAll,
+        withSrc: selectAllWithSrc,
+        filtered: selectFiltered,
+        filteredWithSrc: selectFilteredWithSrc,
+    },
     active: {
         id: selectActiveId,
         entity: selectActiveEntity,

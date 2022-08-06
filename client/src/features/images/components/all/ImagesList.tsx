@@ -29,11 +29,11 @@ export const ImagesList = ({ images }: ImagesListProps): JSX.Element => {
 // List Item
 // =============================================================================
 
-export interface ImageProps {
+interface ImageProps {
     image: Cloudflare.Images.Image
 }
 
-export const Image = ({ image }: ImageProps): JSX.Element => {
+const Image = ({ image }: ImageProps): JSX.Element => {
 
     if (!image) {
         return null

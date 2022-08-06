@@ -14,7 +14,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import { isBlank } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
 import { CrumbProps, DebouncedTextField, Page } from "@feature/common"
-import { ImagesTable } from "./ImagesTable"
+import { ImagesTable, ImagesGrid } from "."
 
 const crumbs: CrumbProps[] = [
     { title: "Images", to: "/images", last: true },
@@ -53,7 +53,8 @@ export const ImagesPage = (_props: unknown): JSX.Element => {
 
     return (
         <Page title="Images" action={pageAction} loading={deleting} crumbs={crumbs}>
-            <ImagesTable />
+            {/* <ImagesTable /> */}
+            <ImagesGrid />
         </Page>
     )
 }

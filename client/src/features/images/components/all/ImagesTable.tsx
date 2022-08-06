@@ -17,7 +17,7 @@ import { DataTable, DataTableColumn  } from "@feature/common"
 
 export const ImagesTable = (_props: unknown): JSX.Element => {
 
-    const rows = useSelector(Selectors.Images.filteredImages)
+    const rows = useSelector(Selectors.Images.all.filtered)
 
     return (
         <DataTable
