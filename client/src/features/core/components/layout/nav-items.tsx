@@ -11,7 +11,7 @@ export const navItems: NavItemProps[] = [
         title: "Images",
         url: "/images",
         icon: <PhotoLibraryIcon />,
-        matchPattern: /(^\/$)|(^\/images$)/,
+        matchPattern: /(^\/$)|(^\/images(\/create)?(\/bulk-upload)?$)/,
     },
     {
         title: "Variants",
