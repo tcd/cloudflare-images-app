@@ -1,7 +1,6 @@
 import type { AlertColor, SxProps } from "@mui/material"
 import type { SvgIconComponent } from "@mui/icons-material"
 import clsx from "clsx"
-import PropTypes from "prop-types"
 import { forwardRef, useMemo } from "react"
 import Box from "@mui/material/Box"
 import IconButton from "@mui/material/IconButton"
@@ -30,7 +29,7 @@ export interface SnackbarContentWrapperProps extends Omit<SnackbarContentProps, 
     variant?: AlertColor
 }
 
-const SnackbarContentWrapper = forwardRef(function SnackbarContentWrapper(
+export const SnackbarContentWrapper = forwardRef(function SnackbarContentWrapper(
     props: SnackbarContentWrapperProps,
     ref: SnackbarContentProps["ref"],
 ) {
@@ -97,13 +96,3 @@ const sx: Record<"icon" | "message", SxProps> = {
         },
     },
 }
-
-SnackbarContentWrapper.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    message: PropTypes.node,
-    onClose: PropTypes.func,
-    variant: PropTypes.oneOf(["success", "warning", "error", "info"]),
-}
-
-export default SnackbarContentWrapper
