@@ -11,6 +11,7 @@ import {
     ImagesPage,
     ImageDetailPage,
     UploadImagePage,
+    BulkUploadPage,
 } from "@feature/images"
 
 import {
@@ -32,7 +33,7 @@ const routes = (): RouteObject[] => {
                 // -----------------------------------------------------------------
                 // Root
                 // -----------------------------------------------------------------
-                { index: true, element: <ImagesPage /> },
+                { index: true,      element: <ImagesPage />   },
                 { path: "settings", element: <SettingsPage /> },
                 // -----------------------------------------------------------------
                 // Images
@@ -40,9 +41,10 @@ const routes = (): RouteObject[] => {
                 {
                     path: "images",
                     children: [
-                        { index: true, element: <ImagesPage /> },
-                        { path: "create", element: <UploadImagePage /> },
-                        { path: ":imageId", element: <ImageDetailPage /> },
+                        { index: true,         element: <ImagesPage />      },
+                        { path: "bulk-upload", element: <BulkUploadPage />  },
+                        { path: "create",      element: <UploadImagePage /> },
+                        { path: ":imageId",    element: <ImageDetailPage /> },
                     ],
                 },
                 // -----------------------------------------------------------------
@@ -51,8 +53,8 @@ const routes = (): RouteObject[] => {
                 {
                     path: "variants",
                     children: [
-                        { index: true, element: <VariantsPage /> },
-                        { path: "create", element: <VariantCreatePage /> },
+                        { index: true,        element: <VariantsPage />      },
+                        { path: "create",     element: <VariantCreatePage /> },
                         { path: ":variantId", element: <VariantDetailPage /> },
                     ],
                 },
