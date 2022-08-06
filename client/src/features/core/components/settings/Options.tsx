@@ -22,7 +22,7 @@ export const Options = (_props: unknown): JSX.Element => {
     }
 
     return (
-        <Card title="Preferences" sx={{ my: 4 }}>
+        <Card title="Preferences" sx={{ my: 0 }}>
             <List>
                 <ListItem>
                     <ListItemIcon>
