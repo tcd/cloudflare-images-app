@@ -1,13 +1,9 @@
 import { ReactNode } from "react"
-import {
-    CardProps as MuiCardProps,
-    SxProps,
-    TypographyProps,
-} from "@mui/material"
+import { SxProps } from "@mui/material"
 import Box from "@mui/material/Box"
-import MuiCard from "@mui/material/Card"
+import MuiCard, { CardProps as MuiCardProps } from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
+import Typography, { TypographyProps } from "@mui/material/Typography"
 
 export interface CardProps {
     title?: string

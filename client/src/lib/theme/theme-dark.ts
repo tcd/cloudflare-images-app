@@ -63,6 +63,18 @@ const componentOverrides: Components = {
             },
         },
     },
+    // MuiBottomNavigationAction: {
+    //     styleOverrides: {
+    //         root: {
+    //             "&.Mui-selected": {
+    //                 color: "red",
+    //             },
+    //         },
+    //         selected: {
+    //             backgroundColor: "red",
+    //         },
+    //     },
+    // },
     MuiListItemButton: {
         styleOverrides: {
             root: {

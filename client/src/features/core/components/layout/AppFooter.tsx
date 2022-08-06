@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import BottomNavigation from "@mui/material/BottomNavigation"
-import BottomNavigationAction from "@mui/material/BottomNavigationAction"
+import BottomNavigationAction, { BottomNavigationActionProps } from "@mui/material/BottomNavigationAction"
 import Paper, { PaperProps } from "@mui/material/Paper"
 
 import { NavItemProps } from "@app/lib"
@@ -26,7 +26,7 @@ const paperProps: PaperProps = {
 
 export const AppFooter = (_props: unknown): JSX.Element => {
 
-    const $actions = navItems.map((x) => <FooterAction key={x.title} {...x}/>)
+    const $actions = navItems.map((x) => <FooterAction key={x.title} {...x} />)
 
     return (
         <Paper {...paperProps}>
@@ -51,8 +51,8 @@ const FooterAction = (props: NavItemProps): JSX.Element => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    // const active = !!location?.pathname?.match(matchPattern)
-    // const className = active ? ".Mui-selected" : ""
+    const active = location?.pathname?.match(matchPattern) != null
+    const className = active ? "Mui-selected" : ""
 
     const handleClick = () => { navigate(url) }
 
@@ -60,7 +60,7 @@ const FooterAction = (props: NavItemProps): JSX.Element => {
         <BottomNavigationAction
             label={title}
             icon={icon}
-            value={title}
+            className={className}
             showLabel={true}
             onClick={handleClick}
         />
