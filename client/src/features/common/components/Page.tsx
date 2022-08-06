@@ -64,11 +64,15 @@ const containerSx: SxProps = {
     flexFlow: "column nowrap",
     alignItems: "stretch",
     boxSizing: "border-box",
-    mt: 7,
+    mt: 3,
 }
 
 const contentSx: SxProps = {
     flexGrow: 1,
     boxSizing: "border-box",
     pt: 2,
+    pb: {
+        xs: "16px",
+        sm: "24px",
+    },
 }

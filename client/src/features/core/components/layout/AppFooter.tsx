@@ -17,7 +17,7 @@ const paperProps: PaperProps = {
         right: 0,
         display: {
             xs: "block",
-            sm: "none",
+            md: "none",
         },
     },
 }
