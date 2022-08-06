@@ -53,8 +53,8 @@ export const ImagesPage = (_props: unknown): JSX.Element => {
 
     return (
         <Page title="Images" action={pageAction} loading={deleting} crumbs={crumbs}>
-            {/* <ImagesTable /> */}
-            <ImagesGrid />
+            <ImagesTable />
+            {/* <ImagesGrid /> */}
         </Page>
     )
 }

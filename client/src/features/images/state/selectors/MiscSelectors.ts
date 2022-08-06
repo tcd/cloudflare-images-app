@@ -79,6 +79,7 @@ const selectActiveSrc = (rootState: RootState) => {
 // =============================================================================
 
 export const MiscSelectors = {
+    searchFilter: selectSearchFilter,
     all: {
         all: selectAll,
         withSrc: selectAllWithSrc,

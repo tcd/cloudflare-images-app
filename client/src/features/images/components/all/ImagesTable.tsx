@@ -8,16 +8,16 @@ import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import EyeIcon from "@mui/icons-material/RemoveRedEye"
 import DeleteIcon from "@mui/icons-material/Delete"
-// import EditIcon from "@mui/icons-material/Edit"
 import LaunchIcon from "@mui/icons-material/Launch"
 
-import { ImageWithoutVariants } from "@app/lib"
+import { ImageWithoutVariantsWithSrc } from "@app/lib"
 import { Actions, Selectors } from "@app/state"
 import { DataTable, DataTableColumn  } from "@feature/common"
+import Box from "@mui/material/Box"
 
 export const ImagesTable = (_props: unknown): JSX.Element => {
 
-    const rows = useSelector(Selectors.Images.all.filtered)
+    const rows = useSelector(Selectors.Images.all.filteredWithSrc)
 
     return (
         <DataTable
@@ -34,7 +34,14 @@ export const ImagesTable = (_props: unknown): JSX.Element => {
     )
 }
 
-const columns: DataTableColumn<ImageWithoutVariants>[] = [
+const columns: DataTableColumn<ImageWithoutVariantsWithSrc>[] = [
+    {
+        field: "id",
+        header: null,
+        sortable: false,
+        align: "center",
+        renderFunc: (row) => <ImgColumn image={row} />,
+    },
     {
         field: "id",
         header: "Id",
@@ -57,25 +64,40 @@ const columns: DataTableColumn<ImageWithoutVariants>[] = [
         header: "Actions",
         sortable: false,
         align: "center",
-        renderFunc: (row) => <ActionsColumn row={row} />,
+        renderFunc: (row) => <ActionsColumn image={row} />,
     },
 ]
 
-const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
+const ImgColumn = ({ image }: { image: ImageWithoutVariantsWithSrc }): JSX.Element => {
+    return (
+        <Box sx={{ height: "190px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <img
+                style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                }}
+                src={image.src}
+                alt={image.filename}
+            />
+        </Box>
+    )
+}
+
+const ActionsColumn = ({ image }: { image: ImageWithoutVariantsWithSrc }): JSX.Element => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const confirm = useConfirm()
 
     const creds = useSelector(Selectors.Core.credentials)
-    const externalLink = `https://dash.cloudflare.com/${creds.accountId}/images/images/${row.id}`
+    const externalLink = `https://dash.cloudflare.com/${creds.accountId}/images/images/${image.id}`
 
     const handleViewClick = () => {
-        navigate(`/images/${encodeURIComponent(row.id)}`)
+        navigate(`/images/${encodeURIComponent(image.id)}`)
     }
 
     const handleEditClick = () => {
-        navigate(`/images/${row.id}/edit`)
+        navigate(`/images/${image.id}/edit`)
     }
 
     const handleDeleteClick = () => {
@@ -86,7 +108,7 @@ const ActionsColumn = ({ row }: { row: ImageWithoutVariants }): JSX.Element => {
             cancellationButtonProps: { color: "info",  variant: "contained" },
         })
             .then(() => {
-                dispatch(Actions.Images.submitDelete(row.id))
+                dispatch(Actions.Images.submitDelete(image.id))
             })
             .catch(() => {
                 console.debug("image delete not confirmed")
