@@ -58,19 +58,13 @@ export const Page = (props: PageProps): JSX.Element => {
 // =============================================================================
 
 const containerSx: SxProps = {
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexFlow: "column nowrap",
-    // justifyContent: "center", // center items vertically, in this case
-    alignItems: "stretch",     // center items horizontally, in this case
+    alignItems: "stretch",
     boxSizing: "border-box",
-    // pt: "24px",
-    // pb: `${(ThemeVariables.footerHeight * 2)}px`,
-    // height: "100vh",
-    // mt: {
-    //     xs: "48px",
-    //     sm: "20px",
-    //     md: "50px",
-    // },
+    mt: 7,
 }
 
 const contentSx: SxProps = {

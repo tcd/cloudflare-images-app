@@ -10,13 +10,13 @@ import Tooltip from "@mui/material/Tooltip"
 import { Selectors } from "@app/state"
 
 export interface DrawerItemProps {
-    text: string
+    title: string
     url: string
     matchPattern: RegExp
     icon: JSX.Element
 }
 
-export const DrawerItem = ({ text, url, icon, matchPattern }: DrawerItemProps): JSX.Element => {
+export const DrawerItem = ({ title, url, icon, matchPattern }: DrawerItemProps): JSX.Element => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -41,13 +41,13 @@ export const DrawerItem = ({ text, url, icon, matchPattern }: DrawerItemProps): 
     }
 
     return (
-        <Tooltip title={text} placement="right">
+        <Tooltip title={title} placement="right">
             <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton sx={buttonSx} onClick={handleClick} selected={active}>
                     <ListItemIcon sx={iconWrapperSx}>
                         {icon}
                     </ListItemIcon>
-                    <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                    <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
             </ListItem>
         </Tooltip>

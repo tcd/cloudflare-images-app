@@ -1,24 +1,25 @@
 import { RouteObject, useRoutes } from "react-router-dom"
 
 import {
+    Layout,
     MiniDrawer,
     // HomePage,
     NotFoundPage,
     SettingsPage,
 } from "@feature/core"
-
 import {
     ImagesPage,
     ImageDetailPage,
     UploadImagePage,
     BulkUploadPage,
 } from "@feature/images"
-
 import {
     VariantsPage,
     VariantCreatePage,
     VariantDetailPage,
 } from "@feature/variants"
+
+// =============================================================================
 
 export const Routes = (_props: unknown): JSX.Element => {
     return useRoutes(routes())
@@ -28,7 +29,7 @@ const routes = (): RouteObject[] => {
     return [
         {
             path: "/",
-            element: <MiniDrawer />,
+            element: <Layout />,
             children: [
                 // -----------------------------------------------------------------
                 // Root
