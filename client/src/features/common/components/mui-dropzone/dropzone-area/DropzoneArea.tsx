@@ -38,9 +38,9 @@ export type DropzoneAreaProps = Omit<DropzoneAreaBaseProps, "fileObjects" | "onA
     /**
      * Fired when the files inside dropzone change.
      *
-     * @param {File[]} loadedFiles All the files currently loaded into the dropzone.
+     * @param {FileObject[]} loadedFiles All the files currently loaded into the dropzone.
      */
-    onChange?: (loadedFiles: File[]) => void
+    onChange?: (loadedFiles: FileObject[]) => void
     /**
      * Fired when a file is deleted from the previews panel.
      *
@@ -64,7 +64,7 @@ type DropzoneAreaState = {
  */
 export class DropzoneArea extends PureComponent<DropzoneAreaProps, DropzoneAreaState> {
 
-    public static defaultProps = {
+    public static defaultProps: Partial<DropzoneAreaProps> = {
         clearOnUnmount: true,
         filesLimit: 3,
         initialFiles: [] as NonNullable<DropzoneAreaProps["initialFiles"]>,
@@ -91,7 +91,8 @@ export class DropzoneArea extends PureComponent<DropzoneAreaProps, DropzoneAreaS
         const { fileObjects } = this.state
 
         if (onChange) {
-            onChange(fileObjects.map((fileObject) => fileObject.file))
+            // onChange(fileObjects.map((fileObject) => fileObject.file))
+            onChange(fileObjects)
         }
     }
 

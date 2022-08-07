@@ -8,6 +8,7 @@ import {
     fetchOnePage,
     submitCreate,
     submitDelete,
+    submitFileForBulk,
 } from "./thunks"
 import { parseError } from "@app/lib"
 import { CoreActions } from "@feature/core"
@@ -27,6 +28,18 @@ export const reducers = {
     },
     clearSearchFilter: (state: ImagesState) => {
         state.searchFilter = INITIAL_IMAGES_STATE.searchFilter
+    },
+    beginBulkUpload: (state: ImagesState, { payload: { totalImages } }: PayloadAction<{ totalImages: Integer }>) => {
+        if (state.bulkUpload.inProgress === true) {
+            return state
+        }
+        state.requests.createBulk = { ...INITIAL_IMAGES_STATE.requests.createBulk }
+        state.bulkUpload = {
+            inProgress: true,
+            currentIndex: 0,
+            totalImages: totalImages,
+            errors: [],
+        }
     },
 }
 
@@ -116,5 +129,28 @@ export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => 
             state.requests.delete.updatedAt = DateTime.now().toISO()
             ImagesEntityAdapter.removeOne(state, state.activeId)
             state.activeId = null
+        })
+        // ---------------------------------------------------------------------
+        // Upload One File in Bulk Upload
+        // ---------------------------------------------------------------------
+        .addCase(submitFileForBulk.pending, (state) => {
+            state.requests.createBulk.status = "pending"
+        })
+        .addCase(submitFileForBulk.rejected, (state, { payload }) => {
+            state.requests.createBulk.status = "rejected"
+            state.requests.createBulk.error = parseError(payload)
+            state.bulkUpload.errors.push(parseError(payload))
+            state.bulkUpload.currentIndex++
+            state.bulkUpload.inProgress = false
+        })
+        .addCase(submitFileForBulk.fulfilled, (state, { payload }) => {
+            state.requests.createBulk.status = "fulfilled"
+            state.requests.createBulk.response = payload
+            state.requests.createBulk.updatedAt = DateTime.now().toISO()
+            state.bulkUpload.currentIndex++
+            ImagesEntityAdapter.upsertOne(state, omit(payload?.result, ["variants"]))
+            if ((state.bulkUpload.currentIndex) > (state.bulkUpload.totalImages)) {
+                state.bulkUpload.inProgress = false
+            }
         })
 }

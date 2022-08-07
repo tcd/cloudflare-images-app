@@ -4,6 +4,7 @@ import {
     fetchOnePage,
     submitCreate,
     submitDelete,
+    submitFileForBulk,
 } from "./thunks"
 
 export const Actions = {
@@ -12,4 +13,5 @@ export const Actions = {
     fetchOnePage,
     submitCreate,
     submitDelete,
+    submitFileForBulk,
 }

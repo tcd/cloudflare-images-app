@@ -1,13 +1,13 @@
 import { RootState } from "@app/state"
 import { CoreSelectors } from "@feature/core"
 import { selectSlice } from ".."
-import { UpdateSelectors } from "../UpdateSelectors"
+import { BulkUploadSelectors } from "../BulkUploadSelectors"
 
-const _request = (rootState: RootState) => selectSlice(rootState)?.requests?.fetchOnePage
+const _request = (rootState: RootState) => selectSlice(rootState)?.requests?.createBulk
 const _status = (rootState: RootState) => _request(rootState)?.status
 
-const selectShouldFetch = (rootState: RootState, inThunk = false): boolean => {
-    if (!UpdateSelectors.inProgress(rootState)) {
+const selectShouldSubmit = (rootState: RootState, inThunk = false): boolean => {
+    if (!BulkUploadSelectors.inProgress(rootState)) {
         return false
     }
     if (!CoreSelectors.haveCredentials(rootState)) {
@@ -27,11 +27,11 @@ const selectShouldFetch = (rootState: RootState, inThunk = false): boolean => {
     return true
 }
 
-const selectFetching = (rootState: RootState): boolean => {
+const selectSubmitting = (rootState: RootState): boolean => {
     return _status(rootState) === "pending"
 }
 
-export const FetchOnePageSelectors = {
-    fetching: selectFetching,
-    shouldFetch: selectShouldFetch,
+export const CreateBulkSelectors = {
+    submitting: selectSubmitting,
+    shouldSubmit: selectShouldSubmit,
 }

@@ -19,7 +19,7 @@ export class ServerClient {
         this.baseUrl = CONFIG.apiUrl
         this.client = axios.create({
             baseURL: this.baseUrl,
-            // timeout: 1000,
+            // timeout: 2_000,
             // headers: { "X-Custom-Header": "foobar" },
         })
     }

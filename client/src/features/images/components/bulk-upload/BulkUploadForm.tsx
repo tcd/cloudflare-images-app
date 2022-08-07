@@ -16,6 +16,7 @@ import {
     FormikSwitch,
     FormikSelect,
     DropZoneArea,
+    FileObject,
     If,
 } from "@feature/common"
 import { Actions } from "@app/state"
@@ -46,14 +47,25 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
 
     const filesArray = useRef([])
     const [files, setFiles] = useState<File[]>([])
+    const [fileObjects, setFileObjects] = useState<FileObject[]>([])
+    const [fileData, setFileData] = useState<Record<string, any>>({})
+
+    // const setFiles = (files: File[]) => {
+    //     const fileNames = files.map(x => x.name)
+    //     const newFileData = {}
+    //     for (const name of fileNames) {
+
+    //     }
+    //     // const newFileData = fileData.filter()
+    // }
 
     // const handleSubmitClick = (values) => {
     //     alert(JSON.stringify(values, null, 4))
     // }
 
-    const handleFileDrop = (files) => {
-        setFiles(files)
-        console.log(files)
+    const handleFilesChange = (files: FileObject[]) => {
+        setFileObjects(files)
+        setFiles(files.map(x => x.file))
     }
 
     const formik = useFormik({
@@ -107,11 +119,12 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
             </Card>
             <Card title="Files" {...cardProps}>
                 <DropZoneArea
-                    onChange={handleFileDrop}
+                    onChange={handleFilesChange}
                     filesLimit={25}
                     showAlerts={false}
                     showFileNamesInPreview={true}
                     showFileNames={true}
+                    // on
                 />
             </Card>
             <Card title="Results" {...cardProps}>

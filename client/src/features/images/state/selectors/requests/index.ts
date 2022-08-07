@@ -1,3 +1,4 @@
+import { CreateBulkSelectors } from "./CreateBulkSelectors"
 import { CreateSelectors } from "./CreateSelectors"
 import { DeleteSelectors } from "./DeleteSelectors"
 import { FetchAllSelectors } from "./FetchAllSelectors"
@@ -10,4 +11,5 @@ export const RequestsSelectors = {
     fetchOnePage: FetchOnePageSelectors,
     create: CreateSelectors,
     delete: DeleteSelectors,
+    createBulk: CreateBulkSelectors,
 }

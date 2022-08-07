@@ -7,18 +7,6 @@ import { selectSlice } from "."
 const selectActiveId = (rootState: RootState): string => selectSlice(rootState)?.activeId
 const selectSearchFilter = (rootState: RootState): string => selectSlice(rootState)?.searchFilter?.toLocaleLowerCase()
 
-const selectUpdateInProgress = (rootState: RootState): boolean => {
-    return selectSlice(rootState)?.update?.inProgress === true
-}
-
-const selectCurrentUpdatePage = (rootState: RootState): Integer => {
-    return selectSlice(rootState)?.update?.currentPage
-}
-
-const selectUpdateComplete = (rootState: RootState): boolean => {
-    return selectCurrentUpdatePage(rootState) > CoreSelectors.apiPageCount(rootState)
-}
-
 const selectAll = (rootState: RootState) => {
     return EntitySelectors.selectAll(rootState) ?? []
 }
@@ -90,10 +78,5 @@ export const MiscSelectors = {
         id: selectActiveId,
         entity: selectActiveEntity,
         src: selectActiveSrc,
-    },
-    update: {
-        inProgress: selectUpdateInProgress,
-        currentPage: selectCurrentUpdatePage,
-        complete: selectUpdateComplete,
     },
 }
