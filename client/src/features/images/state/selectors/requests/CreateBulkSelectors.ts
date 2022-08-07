@@ -10,6 +10,9 @@ const selectShouldSubmit = (rootState: RootState, inThunk = false): boolean => {
     if (!BulkUploadSelectors.inProgress(rootState)) {
         return false
     }
+    if (BulkUploadSelectors.complete(rootState)) {
+        return false
+    }
     if (!CoreSelectors.haveCredentials(rootState)) {
         return false
     }

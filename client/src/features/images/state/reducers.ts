@@ -157,7 +157,7 @@ export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => 
             const slimData = omit(payload?.result, ["variants"])
             state.bulkUpload.uploaded.push(slimData)
             ImagesEntityAdapter.upsertOne(state, slimData)
-            if ((state.bulkUpload.currentIndex) > (state.bulkUpload.totalImages)) {
+            if ((state.bulkUpload.currentIndex + 1) > (state.bulkUpload.totalImages)) {
                 state.bulkUpload.inProgress = false
             }
         })
