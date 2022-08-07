@@ -1,3 +1,4 @@
+import merge from "lodash/merge"
 import {
     createTheme,
     Components,
@@ -8,6 +9,7 @@ import {
 
 import { zIndexOptions } from "./z-index"
 import { defaultPaletteOptions } from "./palette"
+import { sharedComponentOverrides } from "./components"
 
 // =============================================================================
 // Options
@@ -21,7 +23,7 @@ const paletteOptions: PaletteOptions = {
     },
     text: {
         primary: "#D5D7D8",
-    }
+    },
 }
 
 // =============================================================================
@@ -29,12 +31,6 @@ const paletteOptions: PaletteOptions = {
 // =============================================================================
 
 const componentOverrides: Components = {
-    MuiTextField: {
-        defaultProps: {
-            variant: "standard",
-            margin: "dense",
-        },
-    },
     MuiPaper: {
         styleOverrides: {
             root: {
@@ -85,9 +81,6 @@ const componentOverrides: Components = {
                         backgroundColor: "#2E2720",
                     },
                 },
-                "&.Mui-selected .MuiListItemIcon-root .MuiSvgIcon-root": {
-                    color: "#F38020",
-                },
                 "&:hover": {
                     backgroundColor: "#2E2720",
                 },
@@ -108,7 +101,7 @@ const componentOverrides: Components = {
  */
 const options: ThemeOptions = {
     palette: paletteOptions,
-    components: componentOverrides,
+    components: merge({}, sharedComponentOverrides, componentOverrides),
     zIndex: zIndexOptions,
 }
 

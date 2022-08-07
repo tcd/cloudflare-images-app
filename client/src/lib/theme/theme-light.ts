@@ -1,3 +1,4 @@
+import merge from "lodash/merge"
 import {
     createTheme,
     Components,
@@ -9,6 +10,7 @@ import {
 
 import { zIndexOptions } from "./z-index"
 import { defaultPaletteOptions } from "./palette"
+import { sharedComponentOverrides } from "./components"
 
 // =============================================================================
 // Options
@@ -17,6 +19,9 @@ import { defaultPaletteOptions } from "./palette"
 const paletteOptions: PaletteOptions = {
     ...defaultPaletteOptions,
     mode: "light",
+    text: {
+        primary: "#222222",
+    },
 }
 
 // =============================================================================
@@ -26,12 +31,6 @@ const paletteOptions: PaletteOptions = {
 // const palette = createTheme({ palette: paletteOptions }).palette
 
 const componentOverrides: Components = {
-    MuiTextField: {
-        defaultProps: {
-            variant: "standard",
-            margin: "dense",
-        },
-    },
     MuiPaper: {
         styleOverrides: {
             root: {
@@ -42,16 +41,13 @@ const componentOverrides: Components = {
     MuiListItemButton: {
         styleOverrides: {
             root: {
-                color: "#1D1F20",
+                // color: "#1D1F20",
                 "&.Mui-selected": {
                     color: "#1D1F20",
                     backgroundColor: "#E9EAEB",
                     "&:hover": {
                         backgroundColor: "#E9EAEB",
                     },
-                },
-                "&.Mui-selected .MuiListItemIcon-root .MuiSvgIcon-root": {
-                    color: "#f38020",
                 },
                 "&:hover": {
                     backgroundColor: "#E9EAEB",
@@ -77,16 +73,6 @@ const componentOverrides: Components = {
                     backgroundColor: "#F8FBFB",
                 },
             },
-        },
-    },
-    MuiTypography: {
-        styleOverrides: {
-            h1: { color: "#222222" },
-            h2: { color: "#222222" },
-            h3: { color: "#222222" },
-            h4: { color: "#222222" },
-            h5: { color: "#222222" },
-            h6: { color: "#222222" },
         },
     },
     // MuiButton: {
@@ -130,7 +116,7 @@ const componentOverrides: Components = {
  */
 const options: ThemeOptions = {
     palette: paletteOptions,
-    components: componentOverrides,
+    components: merge({}, sharedComponentOverrides, componentOverrides),
     zIndex: zIndexOptions,
 }
 
