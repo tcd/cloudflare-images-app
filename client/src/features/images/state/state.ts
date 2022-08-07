@@ -37,6 +37,7 @@ export interface ImagesState {
         totalImages: Integer
         currentIndex: Integer
         errors: any[]
+        uploaded: ImageWithoutVariants[]
     }
 }
 
@@ -65,6 +66,7 @@ export const INITIAL_IMAGES_STATE: ImagesState = {
         totalImages: 0,
         currentIndex: 0,
         errors: [],
+        uploaded: [],
     },
 }
 

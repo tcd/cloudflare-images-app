@@ -22,7 +22,7 @@ const selectComplete = (rootState: RootState): boolean => {
 const selectProgress = (rootState: RootState): number => {
     const currentIndex = selectCurrentIndex(rootState)
     const totalImages = selectTotalToUpload(rootState)
-    const progress = (currentIndex / (totalImages - 1)) * 100
+    const progress = (currentIndex / (totalImages)) * 100
     return progress
 }
 

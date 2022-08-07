@@ -25,6 +25,7 @@ export const CaseChanges = {
     "pathCase":     "pathCase",
     "sentenceCase": "sentenceCase",
     "snakeCase":    "snakeCase",
+    "lower case":   "lowerCase",
 } as const
 
 export type CaseChangeName = keyof typeof CaseChanges
@@ -43,6 +44,7 @@ export const CaseChangeDescriptions: Record<CaseChange, string> = {
     "pathCase":     "Transform into a lower case string with slashes between words.",
     "sentenceCase": "Transform into a lower case with spaces between words, then capitalize the string.",
     "snakeCase":    "Transform into a lower case string with underscores between words.",
+    "lowerCase":    "Transform all letters in the string to lower case.",
 }
 
 export const changeCase = (input: string, caseChange: CaseChange): string => {
@@ -59,6 +61,7 @@ export const changeCase = (input: string, caseChange: CaseChange): string => {
         case "pathCase":     return pathCase(input)
         case "sentenceCase": return sentenceCase(input)
         case "snakeCase":    return snakeCase(input)
+        case "lowerCase":    return input?.toLocaleLowerCase() ?? ""
         default:             return input
     }
 }

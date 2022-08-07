@@ -39,6 +39,7 @@ export const reducers = {
             currentIndex: 0,
             totalImages: totalImages,
             errors: [],
+            uploaded: [],
         }
     },
     cancelBulkUpload: (state: ImagesState, { payload }: PayloadAction<{ message: string, details?: Record<string, any> }>) => {
@@ -153,7 +154,9 @@ export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => 
             state.requests.createBulk.response = payload
             state.requests.createBulk.updatedAt = DateTime.now().toISO()
             state.bulkUpload.currentIndex++
-            ImagesEntityAdapter.upsertOne(state, omit(payload?.result, ["variants"]))
+            const slimData = omit(payload?.result, ["variants"])
+            state.bulkUpload.uploaded.push(slimData)
+            ImagesEntityAdapter.upsertOne(state, slimData)
             if ((state.bulkUpload.currentIndex) > (state.bulkUpload.totalImages)) {
                 state.bulkUpload.inProgress = false
             }

@@ -13,7 +13,7 @@ export const initialValues: BulkUploadFormData = {
     requireSignedURLs: false,
     removeExtension: true,
     caseChange: "none",
-    idTransform: "",
+    idTransform: "<name>",
 }
 
 export const validate = (values: BulkUploadFormData): Record<keyof BulkUploadFormData, string> => {
