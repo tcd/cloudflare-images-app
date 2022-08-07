@@ -13,6 +13,7 @@ import {
 } from "change-case"
 
 export const CaseChanges = {
+    "none":         "none",
     "camelCase":    "camelCase",
     "Capital Case":  "capitalCase",
     "CONSTANT_CASE": "constantCase",
@@ -30,6 +31,7 @@ export type CaseChangeName = keyof typeof CaseChanges
 export type CaseChange = typeof CaseChanges[CaseChangeName]
 
 export const CaseChangeDescriptions: Record<CaseChange, string> = {
+    "none":         "No Transformation",
     "camelCase":    "Transform into a string with the separator denoted by the next word capitalized.",
     "capitalCase":  "Transform into a space separated string with each word capitalized.",
     "constantCase": "Transform into upper case string with an underscore between words.",
@@ -45,6 +47,7 @@ export const CaseChangeDescriptions: Record<CaseChange, string> = {
 
 export const changeCase = (input: string, caseChange: CaseChange): string => {
     switch (caseChange) {
+        case "none":         return input
         case "camelCase":    return camelCase(input)
         case "capitalCase":  return capitalCase(input)
         case "constantCase": return constantCase(input)

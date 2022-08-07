@@ -13,6 +13,9 @@ export const DrawpZone = (_props: unknown): JSX.Element => {
         <DropZoneArea
             onChange={handleChange}
             filesLimit={25}
+            showAlerts={false}
+            showFileNamesInPreview={true}
+            showFileNames={true}
         />
     )
 }

@@ -1,9 +1,16 @@
-import { ReactNode } from "react"
-import type { SxProps } from "@mui/material"
+import type { ReactNode } from "react"
+import type {
+    SxProps,
+    CardProps as MuiCardProps,
+    TypographyProps,
+} from "@mui/material"
+import merge from "lodash/merge"
 import Box from "@mui/material/Box"
-import MuiCard, { CardProps as MuiCardProps } from "@mui/material/Card"
+import MuiCard from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
-import Typography, { TypographyProps } from "@mui/material/Typography"
+import Typography from "@mui/material/Typography"
+
+import { If } from "@feature/common"
 
 export interface CardProps {
     title?: string
@@ -12,6 +19,44 @@ export interface CardProps {
     sx?: SxProps
     footer?: ReactNode
 }
+
+export const Card = (props: CardProps): JSX.Element => {
+    const mergedProps = merge({}, defaultProps, props)
+    const {
+        title,
+        children,
+        sx,
+        CardProps,
+        footer,
+    // } = merge({}, defaultProps, props)
+    } = { ...defaultProps, ...props }
+    // } = mergedProps
+
+    return (
+        <MuiCard sx={sx} {...CardProps}>
+            <CardContent>
+                <If test={!!title}>
+                    <Typography {...titleProps}>
+                        {title}
+                    </Typography>
+                </If>
+                {/* {!!title &&
+                    <Typography {...titleProps} key="">
+                        {title}
+                    </Typography>
+                } */}
+                <Box>
+                    <>{children && children}</>
+                </Box>
+                {footer && footer}
+            </CardContent>
+        </MuiCard>
+    )
+}
+
+// =============================================================================
+// Helpers
+// =============================================================================
 
 const defaultProps: CardProps = {
     title: null,
@@ -24,48 +69,7 @@ const defaultProps: CardProps = {
     footer: null,
 }
 
-export const Card = (props: CardProps): JSX.Element => {
-    props = { ...defaultProps, ...props }
-
-    const {
-        title,
-        children,
-        sx,
-        CardProps,
-        footer,
-    } = props
-
-    const titleProps: TypographyProps = {
-        gutterBottom: true,
-        variant: "h4",
-    }
-
-    let $title: JSX.Element = null
-    if (title) {
-        $title = (
-            <Typography {...titleProps}>
-                {title}
-            </Typography>
-        )
-    }
-    let $footer: JSX.Element = null
-    if (footer) {
-        $footer = (
-            <>
-                {footer}
-            </>
-        )
-    }
-
-    return (
-        <MuiCard sx={sx} {...CardProps}>
-            <CardContent>
-                {$title}
-                <Box>
-                    <>{children && children}</>
-                </Box>
-                {$footer}
-            </CardContent>
-        </MuiCard>
-    )
+const titleProps: TypographyProps = {
+    gutterBottom: true,
+    variant: "h4",
 }
