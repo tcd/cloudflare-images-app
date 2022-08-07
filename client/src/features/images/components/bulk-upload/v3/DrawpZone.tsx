@@ -7,6 +7,7 @@ export const DrawpZone = (_props: unknown): JSX.Element => {
 
     const handleChange = (files) => {
         setFiles(files)
+        console.log(files)
     }
 
     return (

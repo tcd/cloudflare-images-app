@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react"
 import type { InputLabelProps } from "@mui/material"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { useFormik } from "formik"
 import Box from "@mui/material/Box"
+import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
 import InputLabel from "@mui/material/InputLabel"
 import LoadingButton from "@mui/lab/LoadingButton"
-
 
 import {
     Card,
@@ -15,11 +15,14 @@ import {
     FormikFileInput,
     FormikSwitch,
     FormikSelect,
+    DropZoneArea,
+    If,
 } from "@feature/common"
 import { Actions } from "@app/state"
 import { BulkUploadForm as FormData } from "@app/lib"
 // import { Previews, MuiDropzone } from "./v2"
-import { DrawpZone } from "./v3"
+import { FileNamePreview } from "./FileNamePreview"
+import { ResultsPreview } from "./ResultsPreview"
 
 const inputLabelProps: InputLabelProps = {
     htmlFor: "trans-input",
@@ -30,26 +33,34 @@ const inputLabelProps: InputLabelProps = {
 
 const cardProps: Partial<CardProps> = {
     CardProps: {
-        elevation: 3,
+        elevation: 4,
     },
     sx: {
-        my: 2,
+        display: "flex",
+        flexFlow: "column nowrap",
+        mb: 4,
     },
 }
 
 export const BulkUploadForm = (_props: unknown): JSX.Element => {
 
     const filesArray = useRef([])
+    const [files, setFiles] = useState<File[]>([])
 
-    const handleSubmitClick = () => {
-        console.log()
+    // const handleSubmitClick = (values) => {
+    //     alert(JSON.stringify(values, null, 4))
+    // }
+
+    const handleFileDrop = (files) => {
+        setFiles(files)
+        console.log(files)
     }
 
     const formik = useFormik({
         initialValues: FormData.initialValues,
-        // validationSchema: VariantSchema,
-        // validate: VariantForm.validate,
+        validate: FormData.validate,
         onSubmit: (values) => {
+            // handleSubmitClick(values)
             alert(JSON.stringify(values, null, 4))
         },
     })
@@ -63,7 +74,6 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
     //     getInputProps,
     //     isDragActive,
     // } = useDropzone({ onDrop })
-
 
     // useEffect(() => {
     //     if (editor.current) {
@@ -87,32 +97,32 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
                         label="Case Change"
                         options={FormData.caseChangeOptions}
                     />
-                    <br />
                     <FormikInput
                         formik={formik}
-                        id="transformationInput"
-                        label="Transformation - Input"
-                        type="text"
-                    />
-                    <FormikInput
-                        formik={formik}
-                        id="transformationOutput"
-                        label="Transformation - Output"
+                        id="idTransform"
+                        label="Id Transformation"
                         type="text"
                     />
                 </Grid>
             </Card>
             <Card title="Files" {...cardProps}>
-                {/* <Previews /> */}
-                {/* <MuiDropzone /> */}
-                <DrawpZone />
+                <DropZoneArea
+                    onChange={handleFileDrop}
+                    filesLimit={25}
+                    showAlerts={false}
+                    showFileNamesInPreview={true}
+                    showFileNames={true}
+                />
+            </Card>
+            <Card title="Results" {...cardProps}>
+                <ResultsPreview files={files} options={formik.values} />
             </Card>
             <Box sx={{ mt: 3 }}>
                 <LoadingButton
                     variant="contained"
                     // loading={formik.isSubmitting}
                     // disabled={!formik.isValid}
-                    onClick={handleSubmitClick}
+                    onClick={formik.submitForm}
                 >
                     Submit
                 </LoadingButton>

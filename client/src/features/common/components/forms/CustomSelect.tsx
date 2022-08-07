@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem"
 import TextField, { TextFieldProps } from "@mui/material/TextField"
 
 const defaultCustomSelectStyles: SxProps = {
-    width: "250px",
+    // width: "250px",
 }
 
 export interface CustomSelectOption<T = string> {
