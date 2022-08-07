@@ -1,6 +1,11 @@
 import type { ZIndex as MuiZIndex } from "@mui/material/styles/zIndex"
 
 declare module "@mui/material/styles" {
+
+    // =========================================================================
+    // Z-Index
+    // =========================================================================
+
     interface ZIndex extends MuiZIndex {
         mainContent: number
         layoutSideNav: number
@@ -19,4 +24,24 @@ declare module "@mui/material/styles" {
     }
 
     type ZIndexOptions = Partial<ZIndex>;
+
+    // =========================================================================
+    // Typography
+    // =========================================================================
+
+    interface TypographyVariants {
+        code: React.CSSProperties;
+    }
+
+    // allow configuration using `createTheme`
+    interface TypographyVariantsOptions {
+        code?: React.CSSProperties;
+    }
+}
+
+// Update the Typography's variant prop options
+declare module "@mui/material/Typography" {
+    interface TypographyPropsVariantOverrides {
+        code: true
+    }
 }

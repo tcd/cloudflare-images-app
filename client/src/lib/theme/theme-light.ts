@@ -8,7 +8,7 @@ import {
     ThemeOptions,
 } from "@mui/material"
 
-import { zIndexOptions } from "./z-index"
+import { zIndexOptions, typographyOptions } from "./shared"
 import { defaultPaletteOptions } from "./palette"
 import { sharedComponentOverrides } from "./components"
 
@@ -76,6 +76,13 @@ const componentOverrides: Components = {
         },
     },
     // MuiButton: {
+    //     styleOverrides: {
+    //         text: {
+    //             color: "#222222",
+    //         },
+    //     },
+    // },
+    // MuiButton: {
     //     defaultProps: {
     //         variant: "outlined",
     //     },
@@ -115,9 +122,10 @@ const componentOverrides: Components = {
  * - [Components](https://mui.com/customization/theme-components/)
  */
 const options: ThemeOptions = {
+    zIndex: zIndexOptions,
+    typography: typographyOptions,
     palette: paletteOptions,
     components: merge({}, sharedComponentOverrides, componentOverrides),
-    zIndex: zIndexOptions,
 }
 
 export const lightTheme: Theme = createTheme(options)
