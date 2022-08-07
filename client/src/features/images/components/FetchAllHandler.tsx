@@ -8,7 +8,7 @@ export const FetchAllHandler = (_props: unknown): JSX.Element => {
 
     const dispatch = useDispatch()
 
-    const [notified, setNotified ] = useState(false)
+    const [notified, setNotified] = useState(false)
 
     const updateInProgress = useSelector(Selectors.Images.update.inProgress)
     const shouldFetchNext  = useSelector(Selectors.Images.requests.fetchOnePage.shouldFetch)
@@ -19,7 +19,7 @@ export const FetchAllHandler = (_props: unknown): JSX.Element => {
     const progress = (currentPage / totalPages) * 100
     const complete = (currentPage == totalPages)
 
-    const spinner = <DeterminateSpinner value={progress} />
+    const $spinner = <DeterminateSpinner value={progress} />
 
     useEffect(() => {
         if (updateInProgress) {
@@ -39,7 +39,7 @@ export const FetchAllHandler = (_props: unknown): JSX.Element => {
     return (
         <OverlaySpinner
             open={updateInProgress}
-            spinner={spinner}
+            spinner={$spinner}
         />
     )
 }

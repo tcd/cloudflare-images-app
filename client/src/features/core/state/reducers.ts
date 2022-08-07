@@ -9,7 +9,8 @@ import {
 
 export const reducers = {
     resetState: () => INITIAL_CORE_STATE,
-    locationChange: (state: CoreState, _action: PayloadAction<LocationChangePayload>) => {
+    locationChange: (state: CoreState, { payload }: PayloadAction<LocationChangePayload>) => {
+        state.previousLocation = payload.location
         return state
     },
     setAppTitle: (state: CoreState, { payload: { title } }: PayloadAction<{ title: string }>) => {

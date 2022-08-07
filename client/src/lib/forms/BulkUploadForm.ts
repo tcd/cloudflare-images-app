@@ -3,19 +3,21 @@ import { isBlank } from "../helpers/is-blank"
 // import { isRegexValid } from "../helpers/is-regex-valid"
 
 export interface BulkUploadFormData {
+    requireSignedURLs: boolean
     removeExtension: boolean
     caseChange: CaseChange
     idTransform: string
 }
 
 export const initialValues: BulkUploadFormData = {
-    removeExtension: false,
+    requireSignedURLs: false,
+    removeExtension: true,
     caseChange: "none",
     idTransform: "",
 }
 
 export const validate = (values: BulkUploadFormData): Record<keyof BulkUploadFormData, string> => {
-    console.log({ values })
+    // console.log({ values })
     const errors = {} as Record<keyof BulkUploadFormData, string>
 
     // if (isBlank(values.id))                { errors.id = "required" }

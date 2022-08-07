@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import type { SxProps, Theme } from "@mui/material"
 import Backdrop from "@mui/material/Backdrop"
 import CircularProgress from "@mui/material/CircularProgress"
@@ -13,7 +14,7 @@ export interface OverlaySpinnerProps {
      * Optional.
      * Spinner component.
      */
-    spinner?: JSX.Element
+    spinner?: ReactNode
 }
 
 export const OverlaySpinner = ({ open, ...props }: OverlaySpinnerProps): JSX.Element => {

@@ -2,8 +2,10 @@ export const isImage = (file: File): boolean => {
     return file?.type?.split("/")?.[0] === "image"
 }
 
-const bytesInKiloB = 1024 as const // 2 ** 10;
-const bytesInMegaB = 1048576 as const // bytesInKiloB ** 2;
+/** 2 ** 10 */
+const bytesInKiloB = 1024 as const
+/** bytesInKiloB ** 2 */
+const bytesInMegaB = 1048576 as const
 
 export const convertBytesToMbsOrKbs = (fileSize: number): string => {
     let size = ""

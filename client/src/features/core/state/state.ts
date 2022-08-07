@@ -1,3 +1,4 @@
+import type { Location } from "react-router-dom"
 import { createSlice } from "@reduxjs/toolkit"
 import { DateTime } from "luxon"
 
@@ -15,6 +16,7 @@ export interface CoreState {
     requests: {
         fetchUsageStats: RequestState<Cloudflare.Responses.UsageStatistics>
     }
+    previousLocation: Location
 }
 
 // =============================================================================
@@ -32,6 +34,7 @@ export const INITIAL_CORE_STATE: CoreState = {
     requests: {
         fetchUsageStats: { status: "idle", updatedAt: DateTime.now().toISO() },
     },
+    previousLocation: null,
 }
 
 // =============================================================================

@@ -5,6 +5,7 @@ import { selectSlice } from "."
 
 const selectAppTitle = (rootState: RootState): string => selectSlice(rootState)?.appTitle
 const selectDrawerOpen = (rootState: RootState): boolean => selectSlice(rootState)?.drawerOpen
+const selectPreviousLocation = (rootState: RootState) => selectSlice(rootState)?.previousLocation
 const selectThemeMode = (rootState: RootState): ThemeMode => selectSlice(rootState)?.themeMode
 const selectDarkModeEnabled = (rootState: RootState): boolean => selectThemeMode(rootState) === "dark"
 
@@ -48,4 +49,5 @@ export const MiscSelectors = {
     haveCredentials: selectHaveCredentials,
     apiImageCount: selectApiImageCount,
     apiPageCount: selectApiImagePageCount,
+    previousLocation: selectPreviousLocation,
 }

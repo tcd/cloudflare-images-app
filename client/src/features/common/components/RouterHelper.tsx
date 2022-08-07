@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import { useLocation, useParams } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
-import { Actions } from "@app/state"
+import { Actions, Selectors } from "@app/state"
 
 export const RouterHelper = (_props: unknown): JSX.Element => {
 
@@ -10,10 +10,13 @@ export const RouterHelper = (_props: unknown): JSX.Element => {
     const params = useParams()
     const location = useLocation()
 
+    const previousLocation = useSelector(Selectors.Core.previousLocation)
+
     useEffect(() => {
         dispatch(Actions.Core.locationChange({
             pathParams: params,
-            location,
+            location: location,
+            previousLocation: previousLocation,
         }))
     }, [])
 

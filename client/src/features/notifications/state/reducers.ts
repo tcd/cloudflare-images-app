@@ -77,17 +77,22 @@ export const extraReducers = (builder: ActionReducerMapBuilder<NotificationsStat
         .addCase(CoreActions.resetState, () => INITIAL_NOTIFICATIONS_STATE)
         .addCase(CoreActions.fetchUsageStats.fulfilled, (state) => notifySuccess(state, "Credentials Confirmed"))
         .addCase(CoreActions.fetchUsageStats.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Confirm Credentials"))
-        // ---------------------------------------------------------------------
+        // =====================================================================
         // Images
-        // ---------------------------------------------------------------------
+        // =====================================================================
         .addCase(ImagesActions.submitCreate.fulfilled, (state) => notifySuccess(state, "Image Uploaded"))
         .addCase(ImagesActions.submitDelete.fulfilled, (state) => notifySuccess(state, "Image Deleted"))
         .addCase(ImagesActions.submitCreate.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Upload Image"))
         .addCase(ImagesActions.submitDelete.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Delete Image"))
         .addCase(ImagesActions.fetchOnePage.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Sync Images"))
         // ---------------------------------------------------------------------
-        // Variants
+        // Bulk Upload
         // ---------------------------------------------------------------------
+        .addCase(ImagesActions.submitFileForBulk.rejected, (state, { payload }) => notifyError(state, payload, "Unable to Upload Image"))
+        .addCase(ImagesActions.cancelBulkUpload,           (state, { payload }) => notifyError(state, payload, "Error Uploading Images"))
+        // =====================================================================
+        // Variants
+        // =====================================================================
         .addCase(VariantsActions.submitCreate.fulfilled, (state) => notifySuccess(state, "Variant Created"))
         .addCase(VariantsActions.submitDelete.fulfilled, (state) => notifySuccess(state, "Variant Deleted"))
         .addCase(VariantsActions.fetchAll.rejected,     (state, { payload }) => notifyError(state, payload, "Unable to Sync Variants"))

@@ -12,4 +12,5 @@ export type IPathParams = Partial<Record<PathParamValue, string>>;
 export interface LocationChangePayload {
     pathParams: IPathParams
     location: Location
+    previousLocation?: Location
 }

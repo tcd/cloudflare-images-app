@@ -1,36 +1,29 @@
-import type { InputLabelProps } from "@mui/material"
-import { useCallback, useEffect, useRef, useState } from "react"
-import { useDropzone } from "react-dropzone"
+import { useCallback, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useFormik } from "formik"
+import { DateTime } from "luxon"
 import Box from "@mui/material/Box"
-import Divider from "@mui/material/Divider"
 import Grid from "@mui/material/Grid"
-import InputLabel from "@mui/material/InputLabel"
 import LoadingButton from "@mui/lab/LoadingButton"
 
 import {
     Card,
     CardProps,
     FormikInput,
-    FormikFileInput,
     FormikSwitch,
     FormikSelect,
     DropZoneArea,
     FileObject,
-    If,
 } from "@feature/common"
-import { Actions } from "@app/state"
-import { BulkUploadForm as FormData } from "@app/lib"
-// import { Previews, MuiDropzone } from "./v2"
-import { FileNamePreview } from "./FileNamePreview"
+import { Actions, Selectors } from "@app/state"
+import {
+    BulkUploadForm as FormConfig,
+    transformFileName,
+    isDataUri,
+    isBlank,
+    fileObjectToFormData,
+} from "@app/lib"
 import { ResultsPreview } from "./ResultsPreview"
-
-const inputLabelProps: InputLabelProps = {
-    htmlFor: "trans-input",
-    sx: {
-        mb: 2,
-    },
-}
 
 const cardProps: Partial<CardProps> = {
     CardProps: {
@@ -45,23 +38,14 @@ const cardProps: Partial<CardProps> = {
 
 export const BulkUploadForm = (_props: unknown): JSX.Element => {
 
-    const filesArray = useRef([])
+    const dispatch = useDispatch()
+
+    const inProgress = useSelector(Selectors.Images.bulkUpload.inProgress)
+    const currentIndex = useSelector(Selectors.Images.bulkUpload.currentIndex)
+    const shouldUploadNext = useSelector(Selectors.Images.requests.createBulk.shouldSubmit)
+
     const [files, setFiles] = useState<File[]>([])
     const [fileObjects, setFileObjects] = useState<FileObject[]>([])
-    const [fileData, setFileData] = useState<Record<string, any>>({})
-
-    // const setFiles = (files: File[]) => {
-    //     const fileNames = files.map(x => x.name)
-    //     const newFileData = {}
-    //     for (const name of fileNames) {
-
-    //     }
-    //     // const newFileData = fileData.filter()
-    // }
-
-    // const handleSubmitClick = (values) => {
-    //     alert(JSON.stringify(values, null, 4))
-    // }
 
     const handleFilesChange = (files: FileObject[]) => {
         setFileObjects(files)
@@ -69,35 +53,65 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
     }
 
     const formik = useFormik({
-        initialValues: FormData.initialValues,
-        validate: FormData.validate,
-        onSubmit: (values) => {
-            // handleSubmitClick(values)
-            alert(JSON.stringify(values, null, 4))
+        initialValues: FormConfig.initialValues,
+        validate: FormConfig.validate,
+        onSubmit: (_values) => {
+            dispatch(Actions.Images.beginBulkUpload({ totalImages: files.length }))
         },
     })
 
-    // const onDrop = useCallback((acceptedFiles) => {
-    //     // Do something with the files
-    // }, [])
+    const uploadCurrentFile = useCallback(async () => {
+        try {
+            if (!inProgress) { return null }
+            const { values } = formik
+            const fileObject = fileObjects[currentIndex]
+            const { file, data } = fileObject
+            if (isBlank(data)) {
+                dispatch(Actions.Images.cancelBulkUpload({ message: `no data for file named '${file?.name}' at index '${currentIndex}'` }))
+                return null
+            }
+            // const formData = await fileObjectToFormData(fileObject)
+            const formData = new FormData()
+            formData.append("id", transformFileName({ fileName: file.name, options: values }))
+            formData.append("fileName", file.name)
+            formData.append("requireSignedURLs", values.requireSignedURLs.toString())
+            if (isDataUri(data)) {
+                const fileData: Blob = await (await fetch(data)).blob()
+                formData.append("fileData", fileData, file.name)
+            } else {
+                const fileData: Blob = new Blob([data])
+                formData.append("fileData", fileData, file.name)
+            }
+            // const metadata = {
+            //     updatedAt: DateTime.now().toISO(),
+            //     size: file.size,
+            // }
+            dispatch(Actions.Images.submitFileForBulk(formData))
+        } catch (error) {
+            dispatch(Actions.Images.cancelBulkUpload({ message: error }))
+            return null
+        }
+    }, [dispatch, inProgress, currentIndex, formik, fileObjects])
 
-    // const {
-    //     getRootProps,
-    //     getInputProps,
-    //     isDragActive,
-    // } = useDropzone({ onDrop })
+    useEffect(() => {
+        if (inProgress) {
+            if (shouldUploadNext) {
+                uploadCurrentFile()
+            }
+        }
+    }, [dispatch, inProgress, shouldUploadNext, uploadCurrentFile])
 
-    // useEffect(() => {
-    //     if (editor.current) {
-    //         setContainer(editor.current)
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [editor.current])
+    const canSubmit = (!inProgress && formik.isValid && (files?.length ?? 0) > 0)
 
     return (
         <Card>
-            <Card title="Keys" {...cardProps}>
+            <Card title="Options" {...cardProps}>
                 <Grid container direction="column">
+                    <FormikSwitch
+                        formik={formik}
+                        id="requireSignedURLs"
+                        label="Require Signed URLs"
+                    />
                     <FormikSwitch
                         formik={formik}
                         id="removeExtension"
@@ -106,8 +120,8 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
                     <FormikSelect
                         formik={formik}
                         id="caseChange"
-                        label="Case Change"
-                        options={FormData.caseChangeOptions}
+                        label="Id Case Change"
+                        options={FormConfig.caseChangeOptions}
                     />
                     <FormikInput
                         formik={formik}
@@ -124,7 +138,6 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
                     showAlerts={false}
                     showFileNamesInPreview={true}
                     showFileNames={true}
-                    // on
                 />
             </Card>
             <Card title="Results" {...cardProps}>
@@ -133,8 +146,8 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
             <Box sx={{ mt: 3 }}>
                 <LoadingButton
                     variant="contained"
-                    // loading={formik.isSubmitting}
-                    // disabled={!formik.isValid}
+                    loading={inProgress}
+                    disabled={!canSubmit}
                     onClick={formik.submitForm}
                 >
                     Submit

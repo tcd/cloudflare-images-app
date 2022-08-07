@@ -24,13 +24,13 @@ export const parseError = (error: any, defaultMessage = "Error"): string => {
             return error
         }
 
-        // if (!isBlank(error?.message)) {
-        //     if (error?.message?.startsWith("Error")) {
-        //         return error.message
-        //     } else {
-        //         return `Error: '${error.message}'`
-        //     }
-        // }
+        if (!isBlank(error?.message)) {
+            if (error?.message?.startsWith("Error")) {
+                return error.message
+            } else {
+                return `Error: '${error.message}'`
+            }
+        }
         //
         // if (!isBlank(error?.cause?.message)) {
         //     if (error?.cause?.message?.startsWith("Error")) {

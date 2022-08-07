@@ -18,6 +18,11 @@ export interface PageProps {
     children: ReactNode
     action?: ReactNode
     loading?: boolean
+    /**
+     * Optional.
+     * Spinner component to place in overlay when `loading` is `true`.
+     */
+    spinner?: ReactNode
 }
 
 const defaultProps: PageProps = {
@@ -26,6 +31,7 @@ const defaultProps: PageProps = {
     children: null,
     action: null,
     loading: false,
+    spinner: null,
 }
 
 export const Page = (props: PageProps): JSX.Element => {
@@ -35,11 +41,12 @@ export const Page = (props: PageProps): JSX.Element => {
         children,
         action,
         loading,
+        spinner,
     } = { ...defaultProps, ...props }
 
     return (
         <Container sx={containerSx}>
-            <OverlaySpinner open={loading} />
+            <OverlaySpinner open={loading} spinner={spinner} />
             <RouterHelper />
             <If test={!isBlank(title)}>
                 <Heading title={title} crumbs={crumbs}>

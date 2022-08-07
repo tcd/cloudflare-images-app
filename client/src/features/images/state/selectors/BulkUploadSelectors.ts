@@ -19,10 +19,18 @@ const selectComplete = (rootState: RootState): boolean => {
     return selectCurrentIndex(rootState) > selectTotalToUpload(rootState)
 }
 
+const selectProgress = (rootState: RootState): number => {
+    const currentIndex = selectCurrentIndex(rootState)
+    const totalImages = selectTotalToUpload(rootState)
+    const progress = (currentIndex / (totalImages - 1)) * 100
+    return progress
+}
+
 // =============================================================================
 
 export const BulkUploadSelectors = {
     inProgress:   selectInProgress,
     currentIndex: selectCurrentIndex,
     complete:     selectComplete,
+    progress:     selectProgress,
 }

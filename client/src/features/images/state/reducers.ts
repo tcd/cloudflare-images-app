@@ -41,6 +41,11 @@ export const reducers = {
             errors: [],
         }
     },
+    cancelBulkUpload: (state: ImagesState, { payload }: PayloadAction<{ message: string, details?: Record<string, any> }>) => {
+        state.bulkUpload.inProgress = false
+        // state.bulkUpload.currentIndex = (state.bulkUpload.totalImages + 10)
+        state.bulkUpload.errors.push(payload)
+    },
 }
 
 export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => {
