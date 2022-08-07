@@ -22,7 +22,7 @@ const webpackConfig = {
         // filename: "[name].dist.js",
     },
     mode: "development",
-    devtool: "inline-source-map",
+    devtool: "eval-source-map",
     /** @type {import("webpack").Configuration} */
     devServer: {
         static: [
@@ -50,6 +50,12 @@ const webpackConfig = {
                 NODE_ENV: "development",
             }),
         }),
+        // new webpack.EvalSourceMapDevToolPlugin({}),
+        // new webpack.SourceMapDevToolPlugin({
+        //     filename: null,
+        //     exclude: [/node_modules/],
+        //     test: /\.tsx?($|\?)/i,
+        // }),
     ],
     resolve: {
         extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],
@@ -70,8 +76,8 @@ const webpackConfig = {
             },
             {
                 enforce: "pre",
-                test: /\.tsx?$/,
-                use: "source-map-loader",
+                test: /\.(ts|js)x?/,
+                use: ["source-map-loader"],
             },
             {
                 test: /\.s?css$/,

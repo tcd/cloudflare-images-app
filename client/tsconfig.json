@@ -7,9 +7,13 @@
         "isolatedModules": true,
         "jsx": "react-jsx",
         "lib": ["dom", "dom.iterable", "esnext"],
-        "module": "esnext",
+        "module": "ESNext",
         "moduleResolution": "node",
-        "noEmit": true,
+        "noEmit": false,
+        // "noEmit": false,
+        // "declaration": true,
+        // "removeComments": false,
+        // "outDir": "ts-outDir",
         "noFallthroughCasesInSwitch": true,
         "resolveJsonModule": true,
         "downlevelIteration": true,
@@ -37,4 +41,7 @@
     "include": [
         "src",
     ],
+    // "exclude": [
+    //     "node_modules",
+    // ],
 }
