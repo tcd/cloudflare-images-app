@@ -8,8 +8,11 @@ import Paper from "@mui/material/Paper"
 
 import {
     transformFileName,
+    formatBytes,
     BulkUploadForm as FormData,
 } from "@app/lib"
+import { useSelector } from "react-redux"
+import { Selectors } from "@app/state"
 
 interface ResultsPreviewProps {
     files: File[]
@@ -26,7 +29,10 @@ export const ResultsPreview = (props: ResultsPreviewProps): JSX.Element => {
         options,
     } = { ...defaultProps, ...props }
 
+    const uploadedNames = useSelector(Selectors.Images.bulkUpload.uploadedNames)
+
     const $rows = files.map((file, index) => {
+        const isUploaded = uploadedNames.includes(file.name)
         return (
             <TableRow
                 key={index}
@@ -34,6 +40,8 @@ export const ResultsPreview = (props: ResultsPreviewProps): JSX.Element => {
             >
                 <TableCell>{file.name}</TableCell>
                 <TableCell>{transformFileName({ fileName: file.name, options })}</TableCell>
+                <TableCell>{formatBytes(file.size)}</TableCell>
+                <TableCell>{isUploaded ? "✔️" : null}</TableCell>
             </TableRow>
         )
     })
@@ -45,6 +53,8 @@ export const ResultsPreview = (props: ResultsPreviewProps): JSX.Element => {
                     <TableRow>
                         <TableCell>Original File Name</TableCell>
                         <TableCell>Transformed Key</TableCell>
+                        <TableCell>Size</TableCell>
+                        <TableCell>Uploaded</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

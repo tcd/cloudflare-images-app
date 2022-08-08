@@ -1,5 +1,5 @@
 import isString from "lodash/isString"
-import { AxiosError } from "axios"
+import type { AxiosError } from "axios"
 
 import { isBlank } from "@app/lib"
 
@@ -7,6 +7,14 @@ import { isBlank } from "@app/lib"
 const isAxiosError = (value: any): value is AxiosError => {
     return value?.isAxiosError == true
 }
+
+const isError = (value: any): value is Error => {
+    if (value instanceof Error) {
+        return true
+    }
+    return false
+}
+
 
 export const parseError = (error: any, defaultMessage = "Error"): string => {
     try {
@@ -56,7 +64,7 @@ export const parseError = (error: any, defaultMessage = "Error"): string => {
 
         return defaultMessage
     } catch (anotherError) {
-        console.error(anotherError)
+        // console.error(anotherError)
         return defaultMessage
     }
 }
