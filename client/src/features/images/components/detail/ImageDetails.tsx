@@ -16,12 +16,26 @@ export const ImageDetails = (_props: unknown): JSX.Element => {
         return null
     }
 
+    let $meta: any = "none"
+    if (!isBlank(active?.meta)) {
+        const items = Object.entries(active.meta).map(([key, value]) => {
+            return (
+                <Fragment key={key}>
+                    <dt>{key}</dt>
+                    <dd>{value}</dd>
+                </Fragment>
+            )
+        })
+        $meta = (
+            <dl>{items}</dl>
+        )
+    }
+
     const details = [
         { title: "Id", description: active?.id },
         { title: "File Name", description: active?.filename },
         { title: "Require Signed URLs", description: (active?.requireSignedURLs == true).toString() },
         { title: "Uploaded", description: active?.uploaded },
-        { title: "Metadata", description: JSON.stringify(active?.metadata) ?? "none" },
     ]
 
     const $details = details.map(({ title, description }) => {
@@ -34,13 +48,16 @@ export const ImageDetails = (_props: unknown): JSX.Element => {
     })
 
     return (
-        <Grid container direction="row" columns={2}>
-            <Grid item xs={2} sm={1}>
+        <Grid container direction="row" columns={3}>
+            <Grid item xs={3} sm={1}>
                 <dl>
                     {$details}
                 </dl>
             </Grid>
-            <Grid item xs={2} sm={1}>
+            <Grid item xs={3} sm={1}>
+                {$meta}
+            </Grid>
+            <Grid item xs={3} sm={1}>
                 <img src={src} alt={active?.filename} />
             </Grid>
         </Grid>

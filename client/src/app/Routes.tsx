@@ -6,6 +6,7 @@ import {
     // HomePage,
     NotFoundPage,
     SettingsPage,
+    TestPage,
 } from "@feature/core"
 import {
     ImagesPage,
@@ -36,6 +37,7 @@ const routes = (): RouteObject[] => {
                 // -----------------------------------------------------------------
                 { index: true,      element: <ImagesPage />   },
                 { path: "settings", element: <SettingsPage /> },
+                { path: "test",     element: <TestPage /> },
                 // -----------------------------------------------------------------
                 // Images
                 // -----------------------------------------------------------------
