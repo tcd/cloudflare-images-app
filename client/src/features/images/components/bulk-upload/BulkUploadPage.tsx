@@ -20,12 +20,11 @@ export const BulkUploadPage = (_props: unknown): JSX.Element => {
 
     const inProgress = useSelector(Selectors.Images.bulkUpload.inProgress)
     const progress = useSelector(Selectors.Images.bulkUpload.progress)
-    const complete = useSelector(Selectors.Images.bulkUpload.complete)
 
     const $spinner = <DeterminateSpinner value={progress} />
 
     useEffect(() => {
-        if (complete && !notified) {
+        if (progress === 100 && !notified) {
             setNotified(true)
             dispatch(Actions.Notifications.addNotification({
                 message: "Bulk Upload Completed",
@@ -33,7 +32,7 @@ export const BulkUploadPage = (_props: unknown): JSX.Element => {
             }))
             navigate("/images")
         }
-    }, [dispatch, navigate, complete, notified, setNotified])
+    }, [dispatch, navigate, progress, notified, setNotified])
 
     return (
         <Page

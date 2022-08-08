@@ -26,7 +26,7 @@ export class CreateImageRequest {
     public fileData: Blob
 
     @IsOptional()
-    public metadata?: Metadata
+    public metadata?: string | Metadata
 
     @IsOptional()
     public requireSignedURLs?: boolean

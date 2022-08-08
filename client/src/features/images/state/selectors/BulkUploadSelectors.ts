@@ -1,5 +1,5 @@
 import type { RootState } from "@app/state"
-import { selectSlice } from "."
+import { selectSlice } from "./select-slice"
 
 const _selectBulkUpload = (rootState: RootState) => selectSlice(rootState)?.bulkUpload
 

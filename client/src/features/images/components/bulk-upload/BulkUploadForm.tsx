@@ -70,22 +70,11 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
                 dispatch(Actions.Images.cancelBulkUpload({ message: `no data for file named '${file?.name}' at index '${currentIndex}'` }))
                 return null
             }
-            // const formData = await fileObjectToFormData(fileObject)
-            const formData = new FormData()
-            formData.append("id", transformFileName({ fileName: file.name, options: values }))
-            formData.append("fileName", file.name)
-            formData.append("requireSignedURLs", values.requireSignedURLs.toString())
-            if (isDataUri(data)) {
-                const fileData: Blob = await (await fetch(data)).blob()
-                formData.append("fileData", fileData, file.name)
-            } else {
-                const fileData: Blob = new Blob([data])
-                formData.append("fileData", fileData, file.name)
-            }
-            // const metadata = {
-            //     updatedAt: DateTime.now().toISO(),
-            //     size: file.size,
-            // }
+            const formData = await fileObjectToFormData(fileObject, {
+                id: transformFileName({ fileName: file.name, options: values }),
+                requireSignedURLs: values.requireSignedURLs,
+                fileName: file.name,
+            })
             dispatch(Actions.Images.submitFileForBulk(formData))
         } catch (error) {
             dispatch(Actions.Images.cancelBulkUpload({ message: error }))

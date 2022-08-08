@@ -3,7 +3,7 @@ import { CloudflareClient } from "cloudflare-images"
 import { StatusCodes } from "http-status-codes"
 
 import { Req, Res, Next } from "@src/types"
-import { isBlank, logger } from "@src/util"
+import { isBlank } from "@src/util"
 import {
     CreateImageRequest,
     IdRequest,
@@ -44,10 +44,17 @@ export class ImagesController {
         const {
             apiKey,
             accountId,
-            ...options
+            metadata,
+            ...passedOptions
         } = req.body
         const credentials = { apiKey, accountId }
         const buffer = await readFile(file.path)
+        const options: any = { ...passedOptions }
+
+        if (!isBlank(metadata)) {
+            // @ts-ignore: next-line
+            options.metadata = JSON.parse(metadata)
+        }
 
         const client = new CloudflareClient(credentials)
         const response = await client.createImageFromBuffer(options, buffer)

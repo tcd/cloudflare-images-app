@@ -6,9 +6,9 @@ import { CONFIG } from "@src/config"
 
 export const errorMiddleware = (error: HttpException, req: Request, res: Response, next: NextFunction) => {
     try {
-        if (CONFIG.notProduction) {
-            debugger
-        }
+        // if (CONFIG.notProduction) {
+        //     debugger
+        // }
         const status: number  = error.httpCode || 500
         const message: string = error.message || "Something went wrong"
         if (isAxiosError(error)) {

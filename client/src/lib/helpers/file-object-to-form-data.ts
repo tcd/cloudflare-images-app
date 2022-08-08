@@ -1,5 +1,6 @@
+import type Cloudflare from "cloudflare-images"
 import { DateTime } from "luxon"
-import { getImageDimensions, isDataUri } from "@app/lib"
+import { getImageDimensions, isDataUri, isBlank } from "@app/lib"
 
 interface FileObject {
     readonly file: File
@@ -7,7 +8,7 @@ interface FileObject {
     readonly data?: string | ArrayBuffer
 }
 
-export const fileObjectToFormData = async (fileObject: FileObject): Promise<FormData> => {
+export const fileObjectToFormData = async (fileObject: FileObject, req: Partial<Cloudflare.Requests.CreateImage> = {}): Promise<FormData> => {
     const { file, data } = fileObject
     if (!isDataUri(data)) {
         throw new Error("data passed was not a data uri")
@@ -21,8 +22,11 @@ export const fileObjectToFormData = async (fileObject: FileObject): Promise<Form
         ...dimensions,
     }
     const formData = new FormData()
-    formData.append("fileName", file.name)
-    formData.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }))
     formData.append("fileData", fileData, file.name)
+    // formData.append("metadata", new Blob([JSON.stringify(metadata)]), { contentType: "application/json" })
+    formData.append("metadata", JSON.stringify(metadata))
+    if (!isBlank(req?.id))                { formData.append("id", req.id) }
+    if (!isBlank(req?.fileName))          { formData.append("fileName", req.fileName) }
+    if (!isBlank(req?.requireSignedURLs)) { formData.append("requireSignedURLs", req.requireSignedURLs == true ? "true" : "false") }
     return formData
 }
