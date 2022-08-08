@@ -15,19 +15,21 @@ import { CoreActions } from "@feature/core"
 
 export const reducers = {
     resetState: () => INITIAL_IMAGES_STATE,
-    beginUpdate: (state: ImagesState) => {
-        if (state.update.inProgress === true) {
-            return state
-        }
-        state.update.inProgress = true
-        state.update.currentPage = 1
-        state.requests.fetchOnePage = { ...INITIAL_IMAGES_STATE.requests.fetchOnePage }
-    },
     setSearchFilter: (state: ImagesState, { payload: { filter } }: PayloadAction<{ filter: string }>) => {
         state.searchFilter = filter
     },
     clearSearchFilter: (state: ImagesState) => {
         state.searchFilter = INITIAL_IMAGES_STATE.searchFilter
+    },
+    beginUpdate: (state: ImagesState) => {
+        if (state.update.inProgress === true) {
+            return state
+        }
+        state.ids = []
+        state.entities = {}
+        state.update.inProgress = true
+        state.update.currentPage = 1
+        state.requests.fetchOnePage = { ...INITIAL_IMAGES_STATE.requests.fetchOnePage }
     },
     beginBulkUpload: (state: ImagesState, { payload: { totalImages } }: PayloadAction<{ totalImages: Integer }>) => {
         if (state.bulkUpload.inProgress === true) {
