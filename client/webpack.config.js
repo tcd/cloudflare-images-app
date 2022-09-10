@@ -31,7 +31,7 @@ const webpackConfig = {
             },
         ],
         historyApiFallback: true,
-        port: 8090,
+        port: 4012,
         allowedHosts: "all",
         hot: true,
     },
