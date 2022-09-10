@@ -24,6 +24,7 @@ export interface ImagesState {
         fetchOne: RequestState<Responses.GetImage>
         fetchOnePage: RequestState<Responses.ListImages>
         create: RequestState<Responses.CreateImage>
+        update: RequestState<Responses.UpdateImage>
         delete: RequestState<Responses.DeleteImage>
         createBulk: RequestState<Responses.CreateImage>
     }
@@ -53,6 +54,7 @@ export const INITIAL_IMAGES_STATE: ImagesState = {
         fetchOne:     { status: "idle", updatedAt: DateTime.now().toISO() },
         fetchOnePage: { status: "idle", updatedAt: DateTime.now().toISO() },
         create:       { status: "idle", updatedAt: DateTime.now().toISO() },
+        update:       { status: "idle", updatedAt: DateTime.now().toISO() },
         delete:       { status: "idle", updatedAt: DateTime.now().toISO() },
         createBulk:   { status: "idle", updatedAt: DateTime.now().toISO() },
     },

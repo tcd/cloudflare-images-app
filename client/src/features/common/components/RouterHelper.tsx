@@ -18,6 +18,7 @@ export const RouterHelper = (_props: unknown): JSX.Element => {
             location: location,
             previousLocation: previousLocation,
         }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

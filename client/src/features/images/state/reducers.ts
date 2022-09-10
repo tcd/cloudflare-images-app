@@ -9,6 +9,7 @@ import {
     submitCreate,
     submitDelete,
     submitFileForBulk,
+    submitUpdate,
 } from "./thunks"
 import { parseError } from "@app/lib"
 import { CoreActions } from "@feature/core"
@@ -162,5 +163,21 @@ export const extraReducers = (builder: ActionReducerMapBuilder<ImagesState>) => 
             if ((state.bulkUpload.currentIndex + 1) > (state.bulkUpload.totalImages)) {
                 state.bulkUpload.inProgress = false
             }
+        })
+        // ---------------------------------------------------------------------
+        // Update
+        // ---------------------------------------------------------------------
+        .addCase(submitUpdate.pending, (state) => {
+            state.requests.update.status = "pending"
+        })
+        .addCase(submitUpdate.rejected, (state, { payload }) => {
+            state.requests.update.status = "rejected"
+            state.requests.update.error = parseError(payload)
+        })
+        .addCase(submitUpdate.fulfilled, (state, { payload }) => {
+            state.requests.update.status = "fulfilled"
+            state.requests.update.response = payload
+            state.requests.update.updatedAt = DateTime.now().toISO()
+            ImagesEntityAdapter.upsertOne(state, payload.result)
         })
 }

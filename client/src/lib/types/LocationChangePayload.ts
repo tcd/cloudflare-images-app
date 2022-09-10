@@ -1,11 +1,8 @@
-import { Location } from "react-router-dom"
+import type { Location } from "react-router-dom"
 
-export const PathParamValues = {
-    variantId: "variantId",
-    imageId:   "imageId",
-} as const
-type PathParamValuesKey = keyof typeof PathParamValues
-export type PathParamValue = typeof PathParamValues[PathParamValuesKey]
+export type PathParamValue =
+    | "variantId"
+    | "imageId"
 
 export type IPathParams = Partial<Record<PathParamValue, string>>;
 

@@ -13,6 +13,7 @@ import {
     ImageDetailPage,
     UploadImagePage,
     BulkUploadPage,
+    UpdateImagePage,
 } from "@feature/images"
 import {
     VariantsPage,
@@ -44,10 +45,11 @@ const routes = (): RouteObject[] => {
                 {
                     path: "images",
                     children: [
-                        { index: true,         element: <ImagesPage />      },
-                        { path: "bulk-upload", element: <BulkUploadPage />  },
-                        { path: "create",      element: <UploadImagePage /> },
-                        { path: ":imageId",    element: <ImageDetailPage /> },
+                        { index: true,             element: <ImagesPage />      },
+                        { path: "bulk-upload",     element: <BulkUploadPage />  },
+                        { path: "create",          element: <UploadImagePage /> },
+                        { path: ":imageId",        element: <ImageDetailPage /> },
+                        { path: ":imageId/update", element: <UpdateImagePage /> },
                     ],
                 },
                 // -----------------------------------------------------------------

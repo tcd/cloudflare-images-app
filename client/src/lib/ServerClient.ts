@@ -55,6 +55,12 @@ export class ServerClient {
         return response.data
     }
 
+    public async updateImage(imageId: string, options: Requests.UpdateImage): Promise<Responses.UpdateImage> {
+        const request = this.buildRequest({ id: imageId, options: options })
+        const response = await this.client.post("images/update", request)
+        return response.data
+    }
+
     public async deleteImage(imageId: string): Promise<Responses.DeleteImage> {
         const request = this.buildRequest({ id: imageId })
         const response = await this.client.post("images/delete", request)
