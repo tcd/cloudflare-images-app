@@ -7,6 +7,9 @@ const _request = (rootState: RootState) => selectSlice(rootState)?.requests?.fet
 const _status = (rootState: RootState) => _request(rootState)?.status
 
 const selectShouldFetch = (rootState: RootState, inThunk = false): boolean => {
+    if (_status(rootState) === "rejected") {
+        return false
+    }
     if (!UpdateSelectors.inProgress(rootState)) {
         return false
     }
@@ -27,6 +30,23 @@ const selectShouldFetch = (rootState: RootState, inThunk = false): boolean => {
     return true
 }
 
+/** used to disable *refresh images* button */
+const canFetch = (rootState: RootState): boolean => {
+    if (!CoreSelectors.haveCredentials(rootState)) {
+        return false
+    }
+    if (!(CoreSelectors.apiPageCount(rootState) > 0)) {
+        return false
+    }
+    if (_status(rootState) === "rejected") {
+        return false
+    }
+    if (_status(rootState) === "pending") {
+        return false
+    }
+    return true
+}
+
 const selectFetching = (rootState: RootState): boolean => {
     return _status(rootState) === "pending"
 }
@@ -34,4 +54,5 @@ const selectFetching = (rootState: RootState): boolean => {
 export const FetchOnePageSelectors = {
     fetching: selectFetching,
     shouldFetch: selectShouldFetch,
+    canRefresh: canFetch,
 }

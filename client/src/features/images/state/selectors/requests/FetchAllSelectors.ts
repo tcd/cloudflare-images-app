@@ -14,7 +14,13 @@ const selectShouldFetch = (rootState: RootState): boolean => {
 }
 
 const selectCanFetch = (rootState: RootState): boolean => {
-    return !isBlank(CoreSelectors.apiImageCount(rootState))
+    if (_selectRequestStatus(rootState) === "rejected") {
+        return false
+    }
+    if (!isBlank(CoreSelectors.apiImageCount(rootState))) {
+        return true
+    }
+    return false
 }
 
 const selectFetching = (rootState: RootState): boolean => {
