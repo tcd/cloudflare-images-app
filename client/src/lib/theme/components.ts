@@ -23,4 +23,15 @@ export const sharedComponentOverrides: Components = {
             },
         },
     },
+    MuiIconButton: {
+        styleOverrides: {
+            root: {
+                "&.Mui-disabled": {
+                    ".MuiSvgIcon-root": {
+                        color: "#ffffff4d",
+                    },
+                },
+            },
+        },
+    },
 }
