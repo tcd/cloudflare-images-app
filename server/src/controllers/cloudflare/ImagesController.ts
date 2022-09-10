@@ -8,6 +8,7 @@ import {
     CreateImageRequest,
     IdRequest,
     ListImagesRequest,
+    UpdateImageRequest,
 } from "@src/dtos"
 
 // @Controller("/api/cloudflare/images")
@@ -65,6 +66,12 @@ export class ImagesController {
     public static async deleteImage(req: Req<IdRequest>, res: Res, _next: Next) {
         const client = new CloudflareClient(req.body.credentials)
         const response = await client.deleteImage(req.body.id)
+        res.status(StatusCodes.OK).json(response)
+    }
+
+    public static async updateImage(req: Req<UpdateImageRequest>, res: Res, _next: Next) {
+        const client = new CloudflareClient(req.body.credentials)
+        const response = await client.updateImage(req.body.id, req.body.options)
         res.status(StatusCodes.OK).json(response)
     }
 }

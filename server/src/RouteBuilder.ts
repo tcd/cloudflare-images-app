@@ -20,6 +20,7 @@ const ROUTES: IRouteData[] = [
     { method: "POST", route: "/api/cloudflare/images/get",    handler: ImagesController.getImage    },
     { method: "POST", route: "/api/cloudflare/images/create", handler: ImagesController.createImage, dto: DTOs.CreateImageRequest },
     { method: "POST", route: "/api/cloudflare/images/delete", handler: ImagesController.deleteImage },
+    { method: "POST", route: "/api/cloudflare/images/update", handler: ImagesController.updateImage },
 
     { method: "POST", route: "/api/cloudflare/variants/list",   handler: VariantsController.listVariants  },
     { method: "POST", route: "/api/cloudflare/variants/get",    handler: VariantsController.getVariant    },
