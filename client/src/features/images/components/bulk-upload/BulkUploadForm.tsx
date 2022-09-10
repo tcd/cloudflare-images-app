@@ -123,7 +123,7 @@ export const BulkUploadForm = (_props: unknown): JSX.Element => {
             <Card title="Files" {...cardProps}>
                 <DropZoneArea
                     onChange={handleFilesChange}
-                    filesLimit={25}
+                    filesLimit={26}
                     showAlerts={false}
                     showFileNamesInPreview={true}
                     showFileNames={true}
