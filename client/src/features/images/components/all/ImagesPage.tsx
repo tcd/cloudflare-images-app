@@ -29,53 +29,17 @@ const crumbs: CrumbProps[] = [
 
 export const ImagesPage = (_props: unknown): JSX.Element => {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
     const deleting = useSelector(Selectors.Images.requests.delete.submitting)
 
-    const handleRefreshClick = () => {
-        dispatch(Actions.Images.beginUpdate())
-    }
-
-    const handleCreateClick = () => {
-        navigate("/images/create")
-    }
-
-    const handleBulkUploadClick = () => {
-        navigate("/images/bulk-upload")
-    }
-
-    const pageAction = (
-        <Stack direction="row" alignItems="flex-end">
-            <Filter />
-            <Tooltip title="Refresh" placement="top">
-                <IconButton onClick={handleRefreshClick} sx={{ ml: 2 }}>
-                    <SyncIcon color="primary" />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Upload Image" placement="top">
-                <IconButton onClick={handleCreateClick} sx={{}}>
-                    {/* <AddIcon color="primary" /> */}
-                    <MdiIcon path={mdiFileUpload} />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Bulk Upload" placement="top">
-                <IconButton onClick={handleBulkUploadClick} sx={{}}>
-                    {/* <MdiIcon path={mdiFolderArrowUp} /> */}
-                    <MdiIcon path={mdiFolderUpload} />
-                </IconButton>
-            </Tooltip>
-        </Stack>
-    )
-
     return (
-        <Page title="Images" action={pageAction} loading={deleting} crumbs={crumbs}>
+        <Page title="Images" action={<PageAction />} loading={deleting} crumbs={crumbs}>
             <ImagesTable />
             {/* <ImagesGrid /> */}
         </Page>
     )
 }
+
+// =============================================================================
 
 const Filter = (_props: unknown): JSX.Element => {
 
@@ -117,5 +81,52 @@ const Filter = (_props: unknown): JSX.Element => {
             onChange={handleChange}
             InputProps={{ endAdornment: clearButton }}
         />
+    )
+}
+
+const PageAction = (_props: unknown): JSX.Element => {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const deleting = useSelector(Selectors.Images.requests.delete.submitting)
+    const canRefresh = useSelector(Selectors.Images.requests.fetchOnePage.canRefresh)
+    const haveCredentials = useSelector(Selectors.Core.haveCredentials)
+
+    console.log(!haveCredentials)
+
+    const handleRefreshClick = () => {
+        dispatch(Actions.Images.beginUpdate())
+    }
+
+    const handleCreateClick = () => {
+        navigate("/images/create")
+    }
+
+    const handleBulkUploadClick = () => {
+        navigate("/images/bulk-upload")
+    }
+
+    return (
+        <Stack direction="row" alignItems="flex-end">
+            <Filter />
+            <Tooltip title="Refresh" placement="top">
+                <IconButton disabled={!canRefresh} onClick={handleRefreshClick} sx={{ ml: 2 }}>
+                    <SyncIcon color="primary" />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Upload Image" placement="top">
+                <IconButton disabled={!haveCredentials} onClick={handleCreateClick} sx={{}}>
+                    {/* <AddIcon color="primary" /> */}
+                    <MdiIcon path={mdiFileUpload} />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Bulk Upload" placement="top">
+                <IconButton disabled={!haveCredentials} onClick={handleBulkUploadClick} sx={{}}>
+                    {/* <MdiIcon path={mdiFolderArrowUp} /> */}
+                    <MdiIcon path={mdiFolderUpload} />
+                </IconButton>
+            </Tooltip>
+        </Stack>
     )
 }
